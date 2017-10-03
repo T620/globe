@@ -1,6 +1,12 @@
+import os
 from globe import app, db
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
+app.config.from_envvar('APP_CONFIG_FILE')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 
 
 class User(db.Model):
@@ -12,9 +18,9 @@ class User(db.Model):
 	forename = db.Column(db.String(20))
 	surname = db.Column(db.String(20))
 	city = db.Column(db.String(40))
-	followers = db.Column(db.Text(6000))
-	following = db.Column(db.Text(6000))
-	biography = db.Column(db.Text(200))
+	followers = db.Column(db.String(6000))
+	following = db.Column(db.String(6000))
+	biography = db.Column(db.String(200))
 
 	def is_authenticated(self):
 		return True
@@ -29,79 +35,116 @@ class User(db.Model):
 		return unicode(self.id)
 
 
-	def __init__(self, id, email, username, password, reset_key, confirmation_token, verified):
+	def __init__(self, id, email, username, forename, city, followers, following, biography):
 		self.id = id
 		self.email=email
 		self.username=username
-		self.password=password
-		self.reset_key=reset_key
-		self.confirmation_token=confirmation_token
-		self.verified=verified
+		self.forename=forename
+		self.surname=surname
+		self.city=city
+		self.followers=followers
+		self.following=following
+		self.biography=biography
+
 
 	def __repr__(self):
-		return '<Name %r>' % self.username
+		return '<Username %r>' % self.username
 
 
-class UserAut(db.Model):
-	
-
-class Roster(db.Model):
+class UserAuth(db.Model):
 	__table_args__ = {'extend_existing': True}
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	member_type = db.Column(db.String(20))
-	name = db.Column(db.String(80), unique=True)
 
-	def __init__(self, id, name, member_type):
-		self.id = id
-		self.name = name
-		self.member_type = member_type
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	email = db.Column(db.String(30), unique=True)
+	username = db.Column(db.String(30))
+	registeredOn = db.Column(db.String(30))
+	confirmationToken = db.Column(db.String(30))
+	passwordToken = db.Column(db.String(30))
+	lastLogin = db.Column(db.String(30))
+	lastIPUsed = db.Column(db.String(15))
+	verified = db.Column(db.Boolean)
+
+
+
+
+def __init__(self, id, email, username, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
+	self.id = id
+	self.email = email
+	self.username = username
+	self.registeredOn = registeredOn
+	self.confirmationToken = confirmationToken
+	self.passwordToken = passwordToken
+	self.lastLogin = lastLogin
+	self.lastIPUsed = lastIPUsed
+	self.verified = verified
 
 	def __repr__(self):
-		return '<Name %r>' % self.name
+		return '<User %r>' % self.username
 
 
-class Events(db.Model):
+
+class Post(db.Model):
 	__table_args__ = {'extend_existing': True}
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	title = db.Column(db.String(80))
-	img = db.Column(db.String(120))
-	post = db.Column(db.String(2000))
 
-	def __init__(self, id, title, img, post):
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	username = db.Column(db.String(30))
+	postedOn = db.Column(db.String(30))
+	postContent = db.Column(db.String(30))
+	likes = db.Column(db.String(5))
+	image = db.Column(db.String(30))
+	city = db.Column(db.String(15))
+	appreaciated = db.Column(db.Boolean)
+
+	def __init__(self, id, email, username, postedOn, postContent, likes, image, city, appreaciated):
 		self.id = id
-		self.title = title
-		self.img = img
-		self.post = post
+		self.username=username
+		self.postedOn = postedOn
+		self.postContent = postContent
+		self.likes = likes
+		self.image = image
+		self.city = city
+		self.appreaciated = appreaciated
+
 
 	def __repr__(self):
-		return '<Title %r>' % self.title
+		return '<Id %r>' % self.id
 
 
-class Testimonials(db.Model):
-		__table_args__ = {'extend_existing': True}
-		id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-		name = db.Column(db.String(40))
-		content = db.Column(db.String(200))
+class Admin(db.Model):
+	__table_args__ = {'extend_existing': True}
 
-		def __init__(self, id, name, content):
-			self.id = id
-			self.name = name
-			self.content = content
-
-		def __repr__(self):
-			return '<Comment %r>' % self.content
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	email = db.Column(db.String(30), unique=True)
+	username = db.Column(db.String(30))
+	registeredOn = db.Column(db.String(30))
+	confirmationToken = db.Column(db.String(30))
+	passwordToken = db.Column(db.String(30))
+	lastLogin = db.Column(db.String(30))
+	lastIPUsed = db.Column(db.String(15))
 
 
-class Gallery(db.Model):
-		__table_args__ = {'extend_existing': True}
-		id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-		img = db.Column(db.String(200))
-		comment = db.Column(db.String(200))
+	def __init__(self, id, email, username, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed):
+		self.id = id
+		self.email = email
+		self.username = username
+		self.registeredOn = registeredOn
+		self.confirmationToken = confirmationToken
+		self.passwordToken = passwordToken
+		self.lastLogin = lastLogin
+		self.lastIPUsed=lastIPUsed
 
-		def __init__(self, id, img, comment):
-			self.id = id
-			self.img = img
-			self.comment = comment
 
-		def __repr__(self):
-			return '<Image %r>' % self.img
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return unicode(self.id)
+
+	def __repr__(self):
+		return '<Username %r>' % self.username
