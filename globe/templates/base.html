@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Globe</title>
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all">
+
+  <link rel="canonical" href="">
+
+    <!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  	<script
+    	src="https://code.jquery.com/jquery-3.2.1.min.js"
+    	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    	crossorigin="anonymous">
+	</script>
+	<!--include css -->
+</head>
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+ 	<a class="navbar-brand" href="/">Globe</a>
+ 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    	<span class="navbar-toggler-icon"></span>
+ 	</button>
+ 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+  			<li class="nav-item active">
+        		<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      		</li>
+      		<li class="nav-item">
+        		<a class="nav-link" href="#">Link</a>
+      		</li>
+      		<li class="nav-item">
+        		<a class="nav-link disabled" href="#">Disabled</a>
+      		</li>
+    	</ul>
+    	<form class="form-inline my-2 my-lg-0">
+      		<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    	</form>
+  	</div>
+</nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+
+<!-- Pushy JS -->
+<script src="/static/js/pushy.min.js"></script>
+
+
+<footer class="site-footer">
+  <div class="bottom">
+	<div class="container no-padding">
+	  <div class="row">
+
+		<div class="col-lg-6 col-xs-12 text-lg-left text-center">
+		  <p class="copyright-text">
+			© Globe 2017
+		  </p>
+		  <div class="cheers-for-the-promo-guys">
+			<a href="https://whaticando.co.uk/">Created</a> by Josh Tait
+		  </div>
+		</div>
+
+		<div class="col-lg-6 col-xs-12 text-lg-right text-center">
+		  <ul class="list-inline">
+			<li class="list-inline-item">
+			  <a href="/admin">Admin</a>
+			</li>
+
+			<li class="list-inline-item">
+			  <a href="#about">Sitemap</a>
+			</li>
+
+			<li class="list-inline-item">
+			  <a href="#features">Privacy Policy</a>
+			</li>
+
+			<li class="list-inline-item">
+			  <a href="#contact">Contact</a>
+			</li>
+		  </ul>
+		  <div class="social">
+  				<a href="https://facebook.com/TCOEPD" target="_blank">Facebook</a> &middot; <a href="https://twitter.com/" target="_blank"> Twitter </a>
+		  </div>
+  		</div>
+
+		</div>
+
+	  </div>
+	</div>
+  </div>
+</footer>
+</html>
