@@ -1,4 +1,5 @@
-@import 'base';
+@import 'typography';
+@import 'components';
 
 .intro{
 	background: url('../img/main-bg.jpg') #272727;
@@ -14,4 +15,18 @@
 .intro h1, h3{
 	color: #f0f0f0;
 	margin-top: 5%;
+}
+
+
+
+body {
+	.unsplash-credit{
+		position: fixed;
+		z-index: 9999;
+		bottom: 0px;
+		left: 5px;
+		color: #f0f0f0;
+		padding: 1%;
+		background: #000;
+	}
 }
