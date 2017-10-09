@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ app.config.from_envvar('APP_CONFIG_FILE')
 
 db = SQLAlchemy(app)
 
+mail=Mail(app)
 
 import globe.models
 
