@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app.config.from_envvar('APP_CONFIG_FILE')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DATABASE_URL']
 
 
 
@@ -67,16 +67,16 @@ class UserAuth(db.Model):
 
 
 
-def __init__(self, id, email, username, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
-	self.id = id
-	self.email = email
-	self.username = username
-	self.registeredOn = registeredOn
-	self.confirmationToken = confirmationToken
-	self.passwordToken = passwordToken
-	self.lastLogin = lastLogin
-	self.lastIPUsed = lastIPUsed
-	self.verified = verified
+	def __init__(self, id, email, username, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
+		self.id = id
+		self.email = email
+		self.username = username
+		self.registeredOn = registeredOn
+		self.confirmationToken = confirmationToken
+		self.passwordToken = passwordToken
+		self.lastLogin = lastLogin
+		self.lastIPUsed = lastIPUsed
+		self.verified = verified
 
 	def __repr__(self):
 		return '<User %r>' % self.username
