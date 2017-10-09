@@ -13,7 +13,7 @@ class User(db.Model):
 	__table_args__ = {'extend_existing': True}
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	email = db.Column(db.String(30), unique=True)
+	email = db.Column(db.String(60), unique=True)
 	username = db.Column(db.String(30), unique=True)
 	forename = db.Column(db.String(20))
 	surname = db.Column(db.String(20))
@@ -35,7 +35,7 @@ class User(db.Model):
 		return unicode(self.id)
 
 
-	def __init__(self, id, email, username, forename, city, followers, following, biography):
+	def __init__(self, id, email, username, forename, surname, city, followers, following, biography):
 		self.id = id
 		self.email=email
 		self.username=username
@@ -55,8 +55,9 @@ class UserAuth(db.Model):
 	__table_args__ = {'extend_existing': True}
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	email = db.Column(db.String(30), unique=True)
-	username = db.Column(db.String(30))
+	email = db.Column(db.String(60), unique=True)
+	username = db.Column(db.String(30), unique=True)
+	password=db.Column(db.String(30))
 	registeredOn = db.Column(db.String(30))
 	confirmationToken = db.Column(db.String(30))
 	passwordToken = db.Column(db.String(30))
