@@ -1,11 +1,11 @@
 import os
-from globe import app
+from globe import app, db
 from flask import render_template, request, redirect, url_for, session, abort
 
 
 @app.route('/')
 def load_index():
-	return "Hello World!"
+	return render_template("index.html")
 
 
 
