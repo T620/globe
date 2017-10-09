@@ -1,6 +1,14 @@
 @import 'typography';
 
-body { 
-	font-family: $font-stack;
-	color: $default-color;
+
+body {
+	.unsplash-credit{
+		position: fixed;
+		z-index: 9999;
+		bottom: 0px;
+		left: 5px;
+		color: #f0f0f0;
+		padding: 1%;
+		background: #000;
+	}
 }
