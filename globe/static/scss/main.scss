@@ -1,0 +1,18 @@
+@import 'base';
+
+.intro{
+	font-family: $font-stack;
+	background: url('../img/main-bg.jpg') #272727;
+	background-position: center;
+	background-size: cover;
+	height: 100vh;
+}
+
+.intro h1{
+	font-size: 6em;
+}
+
+.intro h1, h3{
+	color: #f0f0f0;
+	margin-top: 5%;
+}
