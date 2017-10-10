@@ -107,6 +107,9 @@ migrations/
 
 # static
 .sass-cache
-css/
+css
 *.css.map
 .css
+
+
+web_resources.md
