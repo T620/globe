@@ -10,6 +10,11 @@ login_manager.init_app(app)
 login_manager.login_view =  "login"
 
 
+@login_manager.user_loader
+def load_user(userid):
+	from models import User
+	return User.query.filter(User.id==userid).first()
+
 bcrypt = Bcrypt(app)
 
 @app.route('/')
@@ -45,10 +50,9 @@ def register():
 		email = request.form['email']
 
 
-		#build the query
+		#add basic profile details to User
 		newAccount = User(
-			#just call it here
-			id = userID,
+			id=userID,
 			email=email,
 			username=request.form['forename'] + '.' + request.form['surname'] + "56",
 			forename=request.form['forename'],
@@ -61,8 +65,7 @@ def register():
 
 		#now add the secure details to UserAuth
 		from models import UserAuth
-
-		auth = UserAuth(
+		newAccountAuth = UserAuth(
 			id=userID,
 			email=email,
 			username=request.form['forename'] + '.' + request.form['surname'] + "56",
@@ -75,26 +78,110 @@ def register():
 			verified=False
 		)
 
-		emailTo = email.split(" ")
 
+		emailTo = email.split(" ")
 		from mail import send_email
 		subject = "Globe: Confirm your account"
 		sender = "no-reply@globe.com"
 		recipients = emailTo
 		text_body="Hi!"
-		html_body=render_template("confirm_email.html", username=auth.username, token=confirmToken)
+		html_body=render_template("user/confirm_email.html", username=newAccountAuth.username, token=confirmToken)
 		send_email(subject, sender, recipients, text_body, html_body)
 
+		#commit the data
 		db.session.add(newAccount)
-		db.session.add(auth)
+		db.session.add(newAccountAuth)
 		db.session.commit()
 
-		return "You've successfully created your account. Please wait while your account is confirmed. You will be contacted via email when this is done."
+		return render_template('user/register_step-2.html', username=newAccountAuth.username)
 
 	else:
 		return render_template("register.html")
 
 
+
+@app.route("/register/auth/")
+def confirm_new_user():
+	#user didnt post anything, so they've accessed this URL from their email
+	token = request.args.get("token", None)
+	username = request.args.get("username", None)
+	print "[INFO] Token: %s" % token
+	print "[INFO] Username: %s" % username
+
+	if token is not None and username is not None:
+		#no need to check CSRF here
+		from models import UserAuth
+		#if the token matches the token in the url, it's the correct user
+		user = UserAuth.query.filter_by(username=username).first_or_404()
+		if token == user.confirmationToken:
+			#verify the new account
+			print "[INFO]: tokens match. Tokens: %s" % token + ", " + user.confirmationToken
+
+			user.verified=True
+
+			db.session.add(user)
+			db.session.commit()
+
+			print 'new user confirmed'
+
+			#now send the user their username and tell them that their account is verified/confirmed
+			#send_email() doesnt accept a string format, so convert the variable into a list with a single item
+			emailTo = user.email.split(" ")
+
+			#send the user a confirmation email
+			from mail import send_email
+			subject = "Globe: New Account"
+			sender=["no-reply@globe.com"]
+			recipients=emailTo
+			text_body="Welcome!"
+			html_body=render_template("user/new_account.html", username=username)
+
+			return render_template('user/register_step-3.html')
+
+		else:
+			return "tokens do not match"
+
+	else:
+		return 'tokens are invalid'
+
+
+
+@app.route("/register/resend-email", methods=["GET", "POST"])
+def resend_email():
+	if request.method == "POST":
+		username = request.args.get("username", None)
+		if username is not None:
+			#create a new confirm token and send them it.
+			from models import UserAuth
+			user = UserAuth.query.filter_by(username=username).first_or_404()
+
+			confirmToken = uuid.uuid4().hex
+			user.confirmationToken = confirmToken
+
+			db.session.add(user)
+			db.session.commit()
+
+			#resend the email
+			emailTo = user.email.split(" ")
+
+			#send the user a confirmation email
+			from mail import send_email
+			subject = "Globe: New Account"
+			sender=["no-reply@globe.com"]
+			recipients=emailTo
+			text_body="Welcome!"
+			html_body=render_template("user/new_account.html", username=username)
+
+			return "email re-sent!"
+
+	else:
+		abort(403)
+
+
+
+@app.route("/login/")
+def login_main():
+	return 'login'
 
 
 
