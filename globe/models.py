@@ -14,7 +14,7 @@ class User(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	email = db.Column(db.String(60), unique=True)
-	username = db.Column(db.String(30), unique=True)
+	username = db.Column(db.String(60), unique=True)
 	forename = db.Column(db.String(20))
 	surname = db.Column(db.String(20))
 	city = db.Column(db.String(40))
@@ -56,22 +56,21 @@ class UserAuth(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	email = db.Column(db.String(60), unique=True)
-	username = db.Column(db.String(30), unique=True)
-	password=db.Column(db.String(30))
-	registeredOn = db.Column(db.String(30))
-	confirmationToken = db.Column(db.String(30))
-	passwordToken = db.Column(db.String(30))
-	lastLogin = db.Column(db.String(30))
+	username = db.Column(db.String(60), unique=True)
+	password=db.Column(db.String(60))
+	registeredOn = db.Column(db.String(60))
+	confirmationToken = db.Column(db.String(60))
+	passwordToken = db.Column(db.String(60))
+	lastLogin = db.Column(db.String(60))
 	lastIPUsed = db.Column(db.String(15))
 	verified = db.Column(db.Boolean)
 
 
-
-
-	def __init__(self, id, email, username, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
+	def __init__(self, id, email, username, password, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
 		self.id = id
 		self.email = email
 		self.username = username
+		self.password = password
 		self.registeredOn = registeredOn
 		self.confirmationToken = confirmationToken
 		self.passwordToken = passwordToken
@@ -88,11 +87,11 @@ class Post(db.Model):
 	__table_args__ = {'extend_existing': True}
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	username = db.Column(db.String(30))
-	postedOn = db.Column(db.String(30))
-	postContent = db.Column(db.String(30))
+	username = db.Column(db.String(60))
+	postedOn = db.Column(db.String(60))
+	postContent = db.Column(db.String(60))
 	likes = db.Column(db.String(5))
-	image = db.Column(db.String(30))
+	image = db.Column(db.String(60))
 	city = db.Column(db.String(15))
 	appreaciated = db.Column(db.Boolean)
 
@@ -115,12 +114,12 @@ class Admin(db.Model):
 	__table_args__ = {'extend_existing': True}
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	email = db.Column(db.String(30), unique=True)
-	username = db.Column(db.String(30))
-	registeredOn = db.Column(db.String(30))
-	confirmationToken = db.Column(db.String(30))
-	passwordToken = db.Column(db.String(30))
-	lastLogin = db.Column(db.String(30))
+	email = db.Column(db.String(60), unique=True)
+	username = db.Column(db.String(60))
+	registeredOn = db.Column(db.String(60))
+	confirmationToken = db.Column(db.String(60))
+	passwordToken = db.Column(db.String(60))
+	lastLogin = db.Column(db.String(60))
 	lastIPUsed = db.Column(db.String(15))
 
 
