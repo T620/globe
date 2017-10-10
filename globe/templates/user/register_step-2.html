@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="register">
+ 	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="card" style="width:30rem;">
+					<div class="card-body">
+						<h2 class="card-title">Confirm Your Account</h2>
+						<h6 class="card-subtitle mb-5">Click on the link sent to the email address you provided to confirm your account.</h6>
+						<i class="fa fa-lock fa-5x text-info"></i>
+						<form class="card-form" method="post" action="/register/resend-email?username={{username}}">
+							<div class="text-center">
+								<i>Didn't get an email? Checked your spam folder? </i>
+								<input type="submit" name="submit" class="btn btn-primary text-center" value="Re-Send Email" />
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="progress m-3">
+  					<div class="progress-bar progress-bar-striped m-3" role="progressbar" aria-valuenow="66.6" aria-valuemin="0" aria-valuemax="100" style="width: 66.6%; height: 30px;"></div>
+				</div>
+  		</div>
+	</div>
+</section>
+
+
+
+
+{% endblock %}
