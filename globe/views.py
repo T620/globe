@@ -12,8 +12,8 @@ login_manager.login_view =  "login"
 
 @login_manager.user_loader
 def load_user(userid):
-	from models import User
-	return User.query.filter(User.id==userid).first()
+	from models import UserAuth
+	return UserAuth.query.filter(UserAuth.id==userid).first()
 
 bcrypt = Bcrypt(app)
 
@@ -21,10 +21,35 @@ bcrypt = Bcrypt(app)
 def load_index():
 	return render_template("index.html")
 
+@app.route("/feed/")
+@login_required
+def load_feed():
+	return render_template("feed.html")
 
-@app.route('/login/')
+@app.route('/login/', methods=["GET", "POST"])
 def login():
-	return 'yeah'
+	if request.method=="GET":
+		return render_template("/user/login.html")
+	else:
+		from models import UserAuth
+		user = UserAuth.query.filter_by(username=request.form['username']).first()
+		if user is not None:
+			print "[INFO]: User exists, checking password"
+			#check if the user is verified
+			if user.verified == True:
+				if bcrypt.check_password_hash(user.password, request.form['password']):
+					print "[INFO]: Password hash matches. Logging in..."
+					login_user(user)
+					#return redirect(url_for('admin_area'))
+					return redirect(request.args.get('next') or url_for('load_feed') )
+				else:
+					print "[INFO]: User password hash failed to match!"
+					return "incorrect password :("
+			else:
+				return "You can't log in until you confirm your account. Please check your email inbox"
+		else:
+			return "User does not exist."
+
 
 @app.route('/register/', methods=["GET", "POST"])
 def register():
@@ -177,11 +202,6 @@ def resend_email():
 	else:
 		abort(403)
 
-
-
-@app.route("/login/")
-def login_main():
-	return 'login'
 
 
 
