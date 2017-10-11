@@ -22,18 +22,6 @@ class User(db.Model):
 	following = db.Column(db.String(6000))
 	biography = db.Column(db.String(200))
 
-	def is_authenticated(self):
-		return True
-
-	def is_active(self):
-		return True
-
-	def is_anonymous(self):
-		return False
-
-	def get_id(self):
-		return unicode(self.id)
-
 
 	def __init__(self, id, email, username, forename, surname, city, followers, following, biography):
 		self.id = id
@@ -64,6 +52,19 @@ class UserAuth(db.Model):
 	lastLogin = db.Column(db.String(60))
 	lastIPUsed = db.Column(db.String(15))
 	verified = db.Column(db.Boolean)
+
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return unicode(self.id)
 
 
 	def __init__(self, id, email, username, password, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
