@@ -5,10 +5,18 @@
  	<div class="container text-center">
 		<div class="row">
 			<div class="col">
-				<h1>This is Globe.</h1>
-				<h3>Explore Earth.
-				<br /> In 3D, on your smartphone.</h3>
-				<a href="/explore" class="btn btn-primary mt-3">Explore</a>
+				<div class="card">
+					<div class="card-body">
+						<h2 class="card-title">Filter Posts</h2>
+						<h6 class="card-subtitle mb-5">Click on the link sent to the email address you provided to confirm your account.</h6>
+						<i class="fa fa-lock fa-5x text-info"></i>
+						<form class="card-form" method="post" action="/register/resend-email?username={{username}}">
+							<div class="text-center">
+								<i>Didn't get an email? Checked your spam folder? </i>
+								<input type="submit" name="submit" class="btn btn-primary text-center" value="Re-Send Email" />
+							</div>
+						</form>
+					</div>
 			</div>
   		</div>
 	</div>
