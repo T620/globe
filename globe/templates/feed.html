@@ -1,31 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
+<script src="https://storage.googleapis.com/vrview/2.0/build/vrview.min.js"></script>
 
-<section class="intro">
+<section class="feed-main">
  	<div class="container text-center">
 		<div class="row">
 			<div class="col">
-				<div class="card">
-					<div class="card-body">
-						<h2 class="card-title">Filter Posts</h2>
-						<h6 class="card-subtitle mb-5">Click on the link sent to the email address you provided to confirm your account.</h6>
-						<i class="fa fa-lock fa-5x text-info"></i>
-						<form class="card-form" method="post" action="/register/resend-email?username={{username}}">
-							<div class="text-center">
-								<i>Didn't get an email? Checked your spam folder? </i>
-								<input type="submit" name="submit" class="btn btn-primary text-center" value="Re-Send Email" />
-							</div>
-						</form>
-					</div>
+				<h1>Your Feed</h1>
 			</div>
   		</div>
+		<div class="row">
+			<div class="col">
+				<h2>Showing {{ postCount }} Posts</h2>
+			</div>
+			{% for post in content %}
+				<div class="col">
+					{{ post.id }}
+					{{ post.image | safe }}
+					{{ post.likes}} likes
+				</div>
+			{% endfor %}
+			</div>
+		</div>
 	</div>
 </section>
 
-
-<a class="unsplash-credit" href="https://unsplash.com/@nasa?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer"
-title="Download free do whatever you want high-resolution photos from NASA">
-Image Credits: NASA</a>
 
 
 
