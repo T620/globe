@@ -10,12 +10,17 @@ login_manager.init_app(app)
 login_manager.login_view =  "login"
 
 
+bcrypt = Bcrypt(app)
+
+
 @login_manager.user_loader
 def load_user(userid):
 	from models import UserAuth
-	return UserAuth.query.filter(UserAuth.id==userid).first()
-
-bcrypt = Bcrypt(app)
+	user = UserAuth.query.filter(UserAuth.id==userid).first()
+	session['user'] = user.id
+	print "[INFO]: Current User: %s" % session['user']
+	print "aka %s" % user.username
+	return user
 
 @app.route('/')
 def load_index():
@@ -24,7 +29,67 @@ def load_index():
 @app.route("/feed/")
 @login_required
 def load_feed():
-	return render_template("feed.html")
+	from models import Post
+
+	content = Post.query.all()
+	postCount = Post.query.count()
+
+	return render_template("feed.html", content=content, postCount=postCount)
+
+
+
+@app.route("/explore/")
+def explore():
+	return 'enter a country'
+
+
+@app.route("/map/")
+def load_map():
+	from models import Post
+	products = Post.query.filter_by(status="Available").all()
+	count = Post.query.filter_by(status="Available").count()
+
+	#Grab the API key for GMaps
+	key = os.environ.get('MAPS_API_KEY')
+
+	return render_template("map.html", products=products, key=key, count=count)
+
+
+@app.route("/user/")
+def redr_to_profile():
+	return redirect(url_for('load_int_user'))
+
+
+#this is the current user's personal profile
+@login_required
+@app.route("/user/profile/")
+def load_int_user():
+	#grab the users details
+	from models import User
+	user = User.query.filter_by(id=session['user']).first_or_404()
+
+	if user is not None:
+		return render_template("user/profile.html", user=user)
+	else:
+		return "User not found after logging in??"
+
+
+#external user (not the person logged in, someone else)
+@app.route("/user/<username>")
+def load_ext_user(username):
+	#grab the user's basic profile info
+	from models import User, Post, Booking
+	user = User.query.filter_by(username=unicode.title(username)).first_or_404()
+
+	return render_template("user/ext_profile.html", user=user, itemsBorrowed=None)
+
+
+
+@app.route("/user/posts/")
+def redr_to_all():
+	#default is /all/, so redirect the user to prevent 404
+	return redirect(url_for('load_users_posts', _filter='all'))
+
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -41,7 +106,7 @@ def login():
 					print "[INFO]: Password hash matches. Logging in..."
 					login_user(user)
 					#return redirect(url_for('admin_area'))
-					return redirect(request.args.get('next') or url_for('load_feed') )
+					return redirect(request.args.get('next'))
 				else:
 					print "[INFO]: User password hash failed to match!"
 					return "incorrect password :("
@@ -68,12 +133,7 @@ def register():
 		resetToken = uuid.uuid4().hex
 		confirmToken = uuid.uuid4().hex
 
-		print "[INFO]: Hash = %s" % hashedPassword
-		print "[INFO]: Reset Key = %s" % resetToken
-		print "[INFO]: Confirm Token = %s" % confirmToken
-
 		email = request.form['email']
-
 
 		#add basic profile details to User
 		newAccount = User(
