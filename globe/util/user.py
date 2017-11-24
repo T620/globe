@@ -1,7 +1,15 @@
 #used to handle user authentication, registration, and user's folder
 
+def get_id(username):
+	from models import User
+
+	user = User.query.filter_by(username=username).first()
+
+ 	return user.id
+
+
 def exists(userid):
-	from models import UserAuth
+	from models import User
 
 	checkUser = UserAuth.query.filter_by(id=userid).first.count()
 
@@ -22,7 +30,7 @@ def password_hash_matches(userid, password):
 
 
 
-def register(userID, forename, surname, password, email, city):
+def register(newUser):
 	from models import User, UserAuth
 	import string
 
@@ -33,12 +41,13 @@ def register(userID, forename, surname, password, email, city):
 	from globe.util import id_gen, clock
 
 	userID = id_gen.user_id(5, string.digits)
-	username = id_gen.username(forname, surname)
+
+	username = id_gen.username(newUser['forename'], newUser['surname'])
 
 	passwordToken = uuid.uuid4().hex
 	confirmToken = uuid.uuid4().hex
 
-	fullname = unicode.title(forename) + unicode.title(surname)
+	fullname = unicode.title(newUser['forename']) + unicode.title(newUser['surname'])
 
 	todaysDate = clock.timeNow()
 
@@ -47,10 +56,10 @@ def register(userID, forename, surname, password, email, city):
 	#add the user to UserAuth
 	newAccount = User(
 		id=userID,
-		email=email,
+		email=newUser['email'],
 		username=username,
 		fullname=fullName,
-		city=city,
+		city=newUser['city'],
 		followers=0,
 		following="None"
 		biography="None"
@@ -58,12 +67,12 @@ def register(userID, forename, surname, password, email, city):
 
 	newAccountAuth = UserAuth(
 		id=userID,
-		email=email,
+		email=newUser['email'],
 		username=username,
 		password=hashedPassword,
 		registeredOn=todaysDate,
 		lastLogin="None",
-		lastIPUsed=snooper.getUserIP,
+		lastIPUsed=snooper.getUserIP(),
 		verified="False"
 	)
 
@@ -71,7 +80,9 @@ def register(userID, forename, surname, password, email, city):
 		db.session.add(newAccount)
 		db.session.add(newAccountAuth)
 		db.session.commit()
-		return True
+
+		return mkdirs(userID, None)
+
 	except:
 		return False
 
@@ -89,7 +100,7 @@ def authorise(token, username):
 		db.session.add(user)
 		db.session.commit()
 
-		print 'new user confirmed'
+		return True
 	else:
 		return False
 
@@ -124,9 +135,14 @@ def create_profile(userID, destFolder):
 
 	src_files = os.listdir(src)
 
-	for file_name in src_files:
-    	full_file_name = os.path.join(src, file_name)
-    	if (os.path.isfile(full_file_name)):
-        	shutil.copy(full_file_name, destFolder)
+	try:
 
-	return 'done'
+		for file_name in src_files:
+    		full_file_name = os.path.join(src, 	file_name)
+    		if (os.path.isfile(full_file_name)):
+        		shutil.copy(full_file_name, destFolder)
+
+		return True
+
+	except:
+		return False
