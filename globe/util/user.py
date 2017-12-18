@@ -18,6 +18,7 @@ def exists(userid):
 	else:
 		return False
 
+
 def password_hash_matches(userid, password):
 	from models import UserAuth
 

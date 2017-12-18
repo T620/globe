@@ -18,5 +18,20 @@ def appreciate(post):
 			post.appreciated = "True"
 			db.session.add(post)
 			db.session.commit()
+			return True
+	else:
+		return False
+
+
+def add_like(postID, author):
+	from globe.models import Post
+
+	post = Post.query.filter_by(id=postID).first()
+
+	if post.id is not None:
+		post.likes =+ 1
+		db.session.add(post)
+		db.session.commit()
+		return True
 	else:
 		return False

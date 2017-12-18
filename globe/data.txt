@@ -1,0 +1,40 @@
+User
+	Username
+	Forename
+	Surname
+	City, Country
+	Followers
+	Following
+	Biography
+
+
+Auth
+	Username
+	Email
+	Password
+	RegisteredOn
+	ConfirmationToken
+	PasswordToken
+	LastLogin
+	LastIPUsed
+
+
+Post
+	Username
+	PostedOn
+	Content
+	Likes
+	ImageURL
+	City
+	Appreciated
+
+
+Admin
+	Username
+	Email
+	Password
+	RegisteredOn
+	ConfirmationToken
+	PasswordToken
+	LastLogin
+	LastIPUsed

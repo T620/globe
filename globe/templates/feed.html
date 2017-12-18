@@ -1,29 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-<script src="https://storage.googleapis.com/vrview/2.0/build/vrview.min.js"></script>
+<script src="{{ url_for('static', filename='js/three.js') }}"></script>
+<script src="{{ url_for('static', filename='js/vrview.js') }}"></script>
+<script src="{{ url_for('static', filename='js/embed.js') }}"></script>
+<script src="{{ url_for('static', filename='js/device-motion-sender.min.js') }}"></script>
 
-<section class="feed-main">
- 	<div class="container text-center">
-		<div class="row">
-			<div class="col">
-				<h1>Your Feed</h1>
-			</div>
-  		</div>
-		<div class="row">
-			<div class="col">
-				<h2>Showing {{ postCount }} Posts</h2>
-			</div>
-			{% for post in content %}
-				<div class="col">
-					{{ post.id }}
-					{{ post.image | safe }}
-					{{ post.likes}} likes
-				</div>
-			{% endfor %}
-			</div>
-		</div>
-	</div>
-</section>
+
+<iframe src="{{ url_for('static', filename='js/vrview.js') }}?image=https://s3.us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/christ-redeemer.jpg&is_stereo=true">
+</iframe>
+
+
+
 
 
 

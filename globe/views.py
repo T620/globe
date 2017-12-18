@@ -3,7 +3,9 @@ from globe import app, db, mail
 from flask import render_template, request, redirect, url_for, session, abort
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS, cross_origin
 
+CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,14 +29,9 @@ def load_index():
 	return render_template("index.html")
 
 @app.route("/feed/")
-@login_required
+@cross_origin()
 def load_feed():
-	from models import Post
-
-	content = Post.query.all()
-	postCount = Post.query.count()
-
-	return render_template("feed.html", content=content, postCount=postCount)
+	return render_template("feed.html")
 
 
 
