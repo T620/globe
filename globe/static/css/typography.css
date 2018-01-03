@@ -1,0 +1,12 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Muli", sans-serif;
+  letter-spacing: 0.6px;
+  margin: 1%;
+  color: #272727;
+  text-align: center; }
+
+body, p, i {
+  font-family: "Open Sans", sans-serif;
+  color: #161616; }
+
+/*# sourceMappingURL=typography.css.map */

@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 
 
+<<<<<<< HEAD
 app = Flask(__name__)
 
 #load the default settings first
@@ -20,4 +21,19 @@ import globe.models
 
 print db
 
+=======
+app = Flask(__globe__)
+
+#load the default settings
+app.config.from_pyfile("../config/secrets.py")
+
+
+
+db = SQLAlchemy(app)
+mail = Mail(app)
+
+print db
+
+import globe.models
+>>>>>>> master
 import globe.views
