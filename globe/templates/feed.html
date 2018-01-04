@@ -1,19 +1,19 @@
-{% extends 'base.html' %}
-{% block content %}
-<script src="{{ url_for('static', filename='js/three.js') }}"></script>
-<script src="{{ url_for('static', filename='js/vrview.js') }}"></script>
-<script src="{{ url_for('static', filename='js/embed.js') }}"></script>
-<script src="{{ url_for('static', filename='js/device-motion-sender.min.js') }}"></script>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example</title>
+    <link rel="stylesheet" href="https://cdn.pannellum.org/2.3/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.pannellum.org/2.3/pannellum.js"></script>
+    <style>
+    #panorama {
+        width: 600px;
+        height: 400px;
+    }
+    </style>
+</head>
+<body>
+<iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https%3A//i.imgur.com/L6SiMTm.jpg&autoLoad=true&showControls=false"></iframe>
 
-
-<iframe src="{{ url_for('static', filename='js/vrview.js') }}?image=https://s3.us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/christ-redeemer.jpg&is_stereo=true">
-</iframe>
-
-
-
-
-
-
-
-
-{% endblock %}
+</body>
+</html>
