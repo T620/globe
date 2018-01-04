@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, url_for, session, abort
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS, cross_origin
+
 import tinys3
 
 CORS(app)
@@ -46,7 +47,7 @@ def upload():
 		url = 'static/user_uploads/jt3/file.jpg'
 
 		try:
-			conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
+			#conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
 			return 'file uploaded!'
 		except:
 			return "error when trying to upload file!"
