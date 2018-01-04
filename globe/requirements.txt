@@ -2,10 +2,13 @@ alembic==0.9.3
 Babel==2.5.0
 bcrypt==3.1.3
 blinker==1.4
+boto3==1.5.8
+botocore==1.8.22
 certifi==2017.11.5
 cffi==1.10.0
 chardet==3.0.4
 click==6.7
+docutils==0.14
 Flask==0.12.2
 Flask-BabelEx==0.9.3
 Flask-Bcrypt==0.7.1
@@ -20,11 +23,12 @@ Flask-SQLAlchemy==2.1
 Flask-WTF==0.14.2
 flask-wysiwyg==0.1
 futures==3.2.0
--e git+git@github.com:T620/globe.git@cf0858be6014872631a94e6c90d31c93ca939621#egg=globe
+-e git+git@github.com:T620/globe.git@e540f58b3a639aeeb2b230ac8f011d77dfdaa9c1#egg=globe
 gunicorn==19.4.5
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.8
+jmespath==0.9.3
 Mako==1.0.7
 MarkupSafe==0.23
 mercurial==4.3.1
@@ -36,6 +40,7 @@ python-dateutil==2.6.1
 python-editor==1.0.3
 pytz==2017.2
 requests==2.18.4
+s3transfer==0.1.12
 six==1.11.0
 speaklater==1.3
 SQLAlchemy==1.0.12
