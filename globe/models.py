@@ -5,9 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 app.config.from_envvar('APP_CONFIG_FILE')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DATABASE_URL']
-
-
 
 class User(db.Model):
 	__table_args__ = {'extend_existing': True}
