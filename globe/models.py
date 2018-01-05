@@ -1,9 +1,17 @@
-import os
+import os, sys
+
+
 from globe import app, db
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy as sa
+from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, Sequence, func
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType
 
 app.config.from_envvar('APP_CONFIG_FILE')
+secret_key = os.environ['APP_SECRET_KEY']
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 
 class User(db.Model):
@@ -42,12 +50,17 @@ class UserAuth(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	email = db.Column(db.String(60), unique=True)
 	username = db.Column(db.String(60), unique=True)
-	password=db.Column(db.String(60))
-	registeredOn = db.Column(db.String(60))
+	password = Column(PasswordType(
+        schemes=[
+            'pbkdf2_sha512',
+        ]
+	))
 	confirmationToken = db.Column(db.String(60))
-	passwordToken = db.Column(db.String(60))
-	lastLogin = db.Column(db.String(60))
-	lastIPUsed = db.Column(db.String(15))
+	passwordToken = Column(PasswordType(
+        schemes=[
+            'pbkdf2_sha512',
+        ]
+	))
 	verified = db.Column(db.Boolean)
 
 
@@ -64,16 +77,13 @@ class UserAuth(db.Model):
 		return unicode(self.id)
 
 
-	def __init__(self, id, email, username, password, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed, verified):
+	def __init__(self, id, email, username, password, confirmationToken, passwordToken, verified):
 		self.id = id
 		self.email = email
 		self.username = username
 		self.password = password
-		self.registeredOn = registeredOn
 		self.confirmationToken = confirmationToken
 		self.passwordToken = passwordToken
-		self.lastLogin = lastLogin
-		self.lastIPUsed = lastIPUsed
 		self.verified = verified
 
 	def __repr__(self):
@@ -108,7 +118,8 @@ class Post(db.Model):
 		return '<Id %r>' % self.id
 
 
-class Admin(db.Model):
+#no time to create an admin panel for now
+'''class Admin(db.Model):
 	__table_args__ = {'extend_existing': True}
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -146,3 +157,4 @@ class Admin(db.Model):
 
 	def __repr__(self):
 		return '<Username %r>' % self.username
+'''
