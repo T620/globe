@@ -17,15 +17,6 @@ login_manager.login_view =  "login"
 bcrypt = Bcrypt(app)
 
 
-@login_manager.user_loader
-def load_user(userid):
-	from models import UserAuth
-	user = UserAuth.query.filter(UserAuth.id==userid).first()
-	session['user'] = user.id
-	print "[INFO]: Current User: %s" % session['user']
-	print "aka %s" % user.username
-	return user
-
 @app.route('/')
 def load_index():
 	return render_template("index.html")
@@ -40,11 +31,15 @@ def load_feed():
 @app.route("/upload/", methods=["GET", "POST"])
 def upload():
 		conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
-		print conn
-
 		f = open('/home/josh/projects/globe/globe/static/img/test.jpg','rb')
 
-		url = 'static/user_uploads/jt3/file.jpg'
+		from util import id_gen
+		#url = 'static/user_uploads/' + session['user'] +"/" + id_gen.bookingID()
+
+		#to do: add image url to posts
+
+		#example: s3.amazonaws.com/bucket/static/user_uploads/user/1235225412e21.jpg
+		#postUrl = os.environ['S3_ENDPOINT'] + url
 
 		try:
 			#conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
@@ -108,6 +103,11 @@ def redr_to_all():
 	return redirect(url_for('load_users_posts', _filter='all'))
 
 
+@login_manager.user_loader
+def load_user(id):
+    return UserAuth.query.get(unicode(id))
+
+
 @app.route('/login/', methods=["GET", "POST"])
 def login():
 	if request.method=="GET":
@@ -120,7 +120,7 @@ def login():
 		userID = user.get_id(username)
 
 		if user.exists(userID):
-			if password_hash_matches(userID, password):
+			if user.password_hash_matches(userID, password):
 				login_user(user)
 			else:
 				return "password invalid :("
@@ -131,6 +131,7 @@ def login():
 @app.route('/register/', methods=["GET", "POST"])
 def register():
 	if request.method=="POST":
+		print "posted"
 		from util import user
 
 		newUser = {
@@ -138,13 +139,15 @@ def register():
 			"surname": request.form['surname'],
 			"email": request.form['email'],
 			"password": request.form['password'],
-			"city": request.form['city']
+			"city": "Edinburgh"
 		}
 
+
 		if user.register(newUser):
+
 			return render_template('user/register_step-2.html', username=newAccountAuth.username)
 		else:
-			return "error."
+			return 'error when trying to add user to database :('
 	else:
 		return render_template("register.html")
 
