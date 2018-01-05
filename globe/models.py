@@ -20,47 +20,19 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	email = db.Column(db.String(60), unique=True)
 	username = db.Column(db.String(60), unique=True)
+	password = Column(PasswordType(
+        schemes=[
+            'pbkdf2_sha512',
+        ]
+	))
+	confirmationToken = db.Column(db.String())
+	passwordToken = db.Column(db.String())
 	forename = db.Column(db.String(20))
 	surname = db.Column(db.String(20))
 	city = db.Column(db.String(40))
 	followers = db.Column(db.String(6000))
 	following = db.Column(db.String(6000))
 	biography = db.Column(db.String(200))
-
-
-	def __init__(self, id, email, username, forename, surname, city, followers, following, biography):
-		self.id = id
-		self.email=email
-		self.username=username
-		self.forename=forename
-		self.surname=surname
-		self.city=city
-		self.followers=followers
-		self.following=following
-		self.biography=biography
-
-
-	def __repr__(self):
-		return '<Username %r>' % self.username
-
-
-class UserAuth(db.Model):
-	__table_args__ = {'extend_existing': True}
-
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	email = db.Column(db.String(60), unique=True)
-	username = db.Column(db.String(60), unique=True)
-	password = Column(PasswordType(
-        schemes=[
-            'pbkdf2_sha512',
-        ]
-	))
-	confirmationToken = db.Column(db.String(60))
-	passwordToken = Column(PasswordType(
-        schemes=[
-            'pbkdf2_sha512',
-        ]
-	))
 	verified = db.Column(db.Boolean)
 
 
@@ -77,17 +49,24 @@ class UserAuth(db.Model):
 		return unicode(self.id)
 
 
-	def __init__(self, id, email, username, password, confirmationToken, passwordToken, verified):
+	def __init__(self, id, email, username, password, forename, surname, city, followers, following, biography, confirmationToken, passwordToken, verified):
 		self.id = id
-		self.email = email
-		self.username = username
-		self.password = password
-		self.confirmationToken = confirmationToken
-		self.passwordToken = passwordToken
-		self.verified = verified
+		self.email=email
+		self.username=username
+		self.password=password
+		self.forename=forename
+		self.surname=surname
+		self.city=city
+		self.followers=followers
+		self.following=following
+		self.biography=biography
+		self.confirmationToken=confirmationToken
+		self.passwordToken=passwordToken
+		self.verified=verified
+
 
 	def __repr__(self):
-		return '<User %r>' % self.username
+		return '<Username %r>' % self.username
 
 
 
