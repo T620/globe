@@ -1,17 +1,20 @@
 #used to handle user authentication, registration, and user's folder
+from globe import models, app, Bcrypt
+from globe.models import User
+import uuid
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt(app)
 
 def get_id(username):
-	from models import User
 
-	user = User.query.filter_by(username=username).first()
-
+	user = User.query.filter_by(username=unicode.title(username)).first()
+	print user.id
  	return user.id
 
 
 def exists(userid):
-	from models import User
 
-	checkUser = UserAuth.query.filter_by(id=userid).first.count()
+	checkUser = User.query.filter_by(id=userid).count()
 
 	if checkUser > 0:
 		return True
@@ -20,11 +23,10 @@ def exists(userid):
 
 
 def password_hash_matches(userid, password):
-	from models import UserAuth
 
-	hashedPassword = UserAuth.query.filter_by(id=userid).first()
+	storedPass = User.query.filter_by(id=userid).first()
 
-	if bcrypt.check_password_hash(hashedPassword, password):
+	if storedPass.password == password:
 		return True
 	else:
 		return False
@@ -32,14 +34,10 @@ def password_hash_matches(userid, password):
 
 
 def register(newUser):
-	from models import User, UserAuth
 	import string
 
-	#hash their password
-	hashedPassword = bcrypt.generate_password_hash(password).decode("UTF-8")
-
 	#generate some secure tokens
-	from globe.util import id_gen, clock
+	from globe.util import id_gen
 
 	userID = id_gen.user_id(5, string.digits)
 
@@ -48,50 +46,42 @@ def register(newUser):
 	passwordToken = uuid.uuid4().hex
 	confirmToken = uuid.uuid4().hex
 
-	fullname = unicode.title(newUser['forename']) + unicode.title(newUser['surname'])
-
-	todaysDate = clock.timeNow()
-
 	#for the time being, the users city wont be verified
 
-	#add the user to UserAuth
+	#add the user to User
 	newAccount = User(
 		id=userID,
 		email=newUser['email'],
 		username=username,
-		fullname=fullName,
+		forename=unicode.title(newUser['forename']),
+		surname=unicode.title(newUser['surname']),
+		password=newUser['password'],
+		confirmationToken=confirmToken,
+		passwordToken=passwordToken,
 		city=newUser['city'],
 		followers=0,
-		following="None"
-		biography="None"
-	)
-
-	newAccountAuth = UserAuth(
-		id=userID,
-		email=newUser['email'],
-		username=username,
-		password=hashedPassword,
-		registeredOn=todaysDate,
-		lastLogin="None",
-		lastIPUsed=snooper.getUserIP(),
+		following="None",
+		biography="None",
 		verified="False"
 	)
 
+
 	try:
 		db.session.add(newAccount)
-		db.session.add(newAccountAuth)
 		db.session.commit()
 
-		return mkdirs(userID, None)
+		return True
+		print 'done'
+		#return mkdirs(userID, None)
 
 	except:
+		print 'failed to add to db'
 		return False
 
 
 def authorise(token, username):
-	from models import UserAuth
 
-	user = UserAuth.query.filter_by(username=username).first_or_404()
+	user = User.query.filter_by(username=username).first_or_404()
 	if token == user.confirmationToken:
 		#verify the new account
 		print "[INFO]: tokens match. Tokens: %s" % token + ", " + user.confirmationToken
@@ -107,7 +97,7 @@ def authorise(token, username):
 
 
 
-
+'''
 def mkdirs(userID, postID):
 	import os
 	if postID is not None:
@@ -122,9 +112,9 @@ def mkdirs(userID, postID):
 	os.mkdir(folder)
 
 	return create_profile(userID, folder)
+'''
 
-
-def create_profile(userID, destFolder):
+'''def create_profile(userID, destFolder):
 	#now the user has a folder, create their profile picture and cover photo
 	import os
 	import shutil
@@ -139,7 +129,7 @@ def create_profile(userID, destFolder):
 	try:
 
 		for file_name in src_files:
-    		full_file_name = os.path.join(src, 	file_name)
+    		full_file_name = os.path.join(src, file_name)
     		if (os.path.isfile(full_file_name)):
         		shutil.copy(full_file_name, destFolder)
 
@@ -147,3 +137,4 @@ def create_profile(userID, destFolder):
 
 	except:
 		return False
+'''

@@ -9,13 +9,13 @@ def postID(size, chars, userID):
 
 
 #this function is also used to generate dispute ids
-def bookingID():
+def booking_id():
 	#random String
 	bookingID = str(uuid.uuid4().hex)
 	return bookingID
 
 
-def userID(size, chars):
+def user_id(size, chars):
 	#take the userID and add a random string to it
 	userID = ''.join(random.choice(chars) for _ in range(size))
 	print "gen'd new id: %s" % userID
