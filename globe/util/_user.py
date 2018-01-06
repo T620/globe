@@ -1,9 +1,8 @@
 #used to handle user authentication, registration, and user's folder
-from globe import models, app, Bcrypt
+from globe import app
 from globe.models import User
+
 import uuid
-from flask_bcrypt import Bcrypt
-bcrypt = Bcrypt(app)
 
 def get_id(username):
 
