@@ -1,19 +1,63 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A simple example</title>
-    <link rel="stylesheet" href="https://cdn.pannellum.org/2.3/pannellum.css"/>
-    <script type="text/javascript" src="https://cdn.pannellum.org/2.3/pannellum.js"></script>
-    <style>
-    #panorama {
-        width: 600px;
-        height: 400px;
-    }
-    </style>
-</head>
-<body>
-<iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https%3A//i.imgur.com/L6SiMTm.jpg&autoLoad=true"></iframe>
+{% extends 'base.html' %}
+{% block content %}
 
-</body>
-</html>
+<section>
+ 	<div class="container text-center">
+		<div id="feed-main_controls">
+			<form action="/upload/" method="post">
+				<i class="fa far-upload"></i>
+				<input type="text" class="form-control" id="feed-upload-form" name="content" />
+			</form>
+		</div>
+
+		<div id="feed-main">
+			<div class="row align-items-center justify-content-center">
+
+				<div class="col-xs-12">
+					<div class="card">
+						<div class="card-head">
+							<a href="#0">Josh</a> <p>Benidorm, Spain</p>
+						</div>
+						<div class="card-body">
+							<iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https%3A//i.imgur.com/L6SiMTm.jpg"></iframe>
+						</div>
+						<div class="card-footer">
+							<p>It was amazing! Check this out!</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-12">
+					<div class="card">
+						<div class="card-head">
+							<a href="#0">Josh</a> <p>Benidorm, Spain</p>
+						</div>
+						<div class="card-body">
+							<iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https%3A//i.imgur.com/L6SiMTm.jpg"></iframe>
+						</div>
+						<div class="card-footer">
+							<p>It was amazing! Check this out!</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-12">
+					<div class="card">
+						<div class="card-head">
+							<a href="#0">Josh</a> <p>Benidorm, Spain</p>
+						</div>
+						<div class="card-body">
+							<iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https%3A//i.imgur.com/L6SiMTm.jpg"></iframe>
+						</div>
+						<div class="card-footer">
+							<p>It was amazing! Check this out!</p>
+						</div>
+					</div>
+				</div>
+
+			</div> <!--/row-->
+		</div>
+</section>
+
+
+{% endblock %}
