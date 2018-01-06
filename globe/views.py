@@ -16,15 +16,21 @@ login_manager.login_view =  "login"
 
 bcrypt = Bcrypt(app)
 
+app.secret_key = os.environ['APP_SECRET_KEY']
+
 
 @app.route('/')
 def load_index():
-	return render_template("index.html")
+	if session['g_user'] is not None:
+		return redirect(url_for('load_feed'))
+	else:
+		return render_template("index.html")
 
 @app.route("/feed/")
 @cross_origin()
 def load_feed():
-	return render_template("feed.html")
+	return render_template("_feed.html")
+
 
 
 
@@ -34,7 +40,7 @@ def upload():
 		f = open('/home/josh/projects/globe/globe/static/img/test.jpg','rb')
 
 		from util import id_gen
-		#url = 'static/user_uploads/' + session['user'] +"/" + id_gen.bookingID()
+		#url = 'static/user_uploads/' + session['g_user'] +"/" + id_gen.bookingID()
 
 		#to do: add image url to posts
 
@@ -46,8 +52,6 @@ def upload():
 			return 'file uploaded!'
 		except:
 			return "error when trying to upload file!"
-
-
 
 
 @app.route("/explore/")
@@ -68,6 +72,7 @@ def load_map():
 
 
 @app.route("/user/")
+@login_required
 def redr_to_profile():
 	return redirect(url_for('load_int_user'))
 
@@ -78,7 +83,7 @@ def redr_to_profile():
 def load_int_user():
 	#grab the users details
 	from models import User
-	user = User.query.filter_by(id=session['user']).first_or_404()
+	user = User.query.filter_by(id=session['g_user']).first_or_404()
 
 	if user is not None:
 		return render_template("user/profile.html", user=user)
@@ -105,7 +110,8 @@ def redr_to_all():
 
 @login_manager.user_loader
 def load_user(id):
-    return UserAuth.query.get(unicode(id))
+	from models import User
+	return User.query.get(unicode(id))
 
 
 @app.route('/login/', methods=["GET", "POST"])
@@ -113,15 +119,22 @@ def login():
 	if request.method=="GET":
 		return render_template("/user/login.html")
 	else:
+		from models import User
+
 		username = request.form['username']
 		password = request.form['password']
 
-		from util import user
-		userID = user.get_id(username)
+		user = User.query.filter_by(username=unicode.title(username)).first()
+		print user
 
-		if user.exists(userID):
-			if user.password_hash_matches(userID, password):
+		from util import _user
+
+		if _user.exists(user.id):
+			if _user.password_hash_matches(user.id, password):
 				login_user(user)
+				session['g_user'] = user.id
+				print session['g_user']
+				return redirect(request.args.get("next") or url_for("load_index"))
 			else:
 				return "password invalid :("
 		else:
