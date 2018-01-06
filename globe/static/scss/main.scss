@@ -35,3 +35,32 @@ body {
 #feed-main{
 	background: #fefefe;
 }
+
+.profile-header{
+	padding: 2.5%;
+	background: #283c86; /* Old browsers */
+	background: -moz-linear-gradient(-45deg, #283c86 0%, #45a247 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, #283c86 0%,#45a247 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, #283c86 0%,#45a247 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#283c86', endColorstr='#45a247',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.profile-header-intro h1, h4{
+	color: #f0f0f0;
+	text-align: left;
+}
+
+.profile-header-intro h1{
+	margin-top: 5%;
+}
+
+.profile-header-img{
+	border-radius: 100%;
+	border: 2px solid #f0f0f0;
+}
+.profile-main{
+	text-align: left;
+}
+.profile-main, .profile-main_stats, .profile-main_gallery{
+	margin: 5% 1.5% 1% 1%;
+}
