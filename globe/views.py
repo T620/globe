@@ -1,6 +1,6 @@
 import os, uuid, random, string
 from globe import app, db, mail
-from flask import render_template, request, redirect, url_for, session, abort
+from flask import render_template, request, redirect, url_for, session, abort, g
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS, cross_origin
@@ -18,23 +18,29 @@ bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ['APP_SECRET_KEY']
 
+@app.before_request
+def before_request():
+    g.user = current_user
 
 @app.route('/')
 def load_index():
-	if session['g_user'] is not None:
-		return redirect(url_for('load_feed'))
+	#both conditions return true if the user is logged in
+	if current_user.is_active and current_user.is_authenticated:
+			print "Current User: %s" % current_user.username
+			return redirect(url_for('load_feed'))
 	else:
 		return render_template("index.html")
+
 
 @app.route("/feed/")
 @cross_origin()
 def load_feed():
-	return render_template("_feed.html")
+	return render_template("feed.html")
 
 
 
-
-@app.route("/upload/", methods=["GET", "POST"])
+@app.route("/post/", methods=["GET", "POST"])
+@login_required
 def upload():
 		conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
 		f = open('/home/josh/projects/globe/globe/static/img/test.jpg','rb')
