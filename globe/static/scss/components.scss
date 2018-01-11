@@ -265,3 +265,41 @@
 	margin:0;
 	margin-left: 20%;
 }
+
+.stats{
+	float: right;
+	text-align: right;
+}
+.photos-toggle{
+	margin-left:  10%;
+	margin-right: 10%;
+	text-align: center;
+	line-height: 2rem;
+}
+
+.photos-toggle .seperator{
+	margin: 0 10%;
+}
+
+.profile-header-collapse{
+	width: 100%;
+	display: none;
+    position: fixed;
+    top: 0;
+	height: 100px;
+	z-index: 999;
+	padding: .7rem;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.profile-header-collapse img{
+	position: relative;
+	top: 0;
+	margin-left: 5%;
+}
+.profile-header-collapse h3{
+	position: relative;
+	top: -8rem;
+	text-align: center;
+}

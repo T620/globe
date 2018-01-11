@@ -35,9 +35,10 @@ body {
 #feed-main{
 	background: #fefefe;
 }
-
 .profile-header{
 	padding: 2.5%;
+}
+.profile-header, .profile-header-collapse{
 	background: #283c86; /* Old browsers */
 	background: -moz-linear-gradient(-45deg, #283c86 0%, #45a247 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(-45deg, #283c86 0%,#45a247 100%); /* Chrome10-25,Safari5.1-6 */
