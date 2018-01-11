@@ -155,14 +155,15 @@
 
 #minimise-upload{
 	position: relative;
-	left: 94.5%;
+	left: 94%;
 	bottom: 1px;
 	background: #fff;
 	z-index: 9999;
+	width: 60%;
 }
 
 .mini-upload{
-	padding: 1%;
+	padding: 2%;
 	border: 2px solid #ccc;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;

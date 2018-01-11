@@ -10,70 +10,63 @@
 					<form action="/feed/filter/" method="post">
 						<div class="form-check-wrapper">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-								<label class="form-check-label" for="exampleRadios1">
-									Your Feed
-								</label>
+								<input checked class="form-check-input" id="exampleRadios1" name=
+								"exampleRadios" type="radio" value="option1"> <label class=
+								"form-check-label" for="exampleRadios1">Your Feed</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-								<label class="form-check-label" for="exampleRadios1">
-									Trending
-								</label>
+								<input checked class="form-check-input" id="exampleRadios1" name=
+								"exampleRadios" type="radio" value="option1"> <label class=
+								"form-check-label" for="exampleRadios1">Trending</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-								<label class="form-check-label" for="exampleRadios1">
-									Country
-								</label>
+								<input checked class="form-check-input" id="exampleRadios1" name=
+								"exampleRadios" type="radio" value="option1"> <label class=
+								"form-check-label" for="exampleRadios1">Country</label>
 							</div>
 						</div>
 					</form>
 				</div><!--/filter-->
 				<div id="minimise-filter">
-					<i class="fa fa-angle-left fa-2x mini-feed" aria-hidden="true"></i>
+					<i aria-hidden="true" class="fa fa-angle-left fa-2x mini-feed"></i>
 				</div>
 			</div>
-
-
 			<div class="col-xs-12 col-sm-7 m-l-4">
 				<div class="card" id="feed-upload">
 					<div class="card-head">
-						<img class="profile-thumb" src="/static/img/default_profile.jpg" width="50px" height="50px">
-						<a href="/user/1">Josh</a>
+						<img class="profile-thumb" height="50px" src=
+						"/static/img/default_profile.jpg" width="50px"> <a href=
+						"/user/1">Josh</a>
 					</div>
 					<div class="card-body">
 						<form action="/upload/" class="tiny-form" method="post">
 							<div class="col-xs-4">
 								<label for="country">Where have you been recently?</label>
 								<div class="inline">
-									<input type="text" class="form-control" name="country" placeholder="Cairo, Egpyt">
-									<button type="submit" class="btn btn-outline-primary" value="Choose a file" label="choose file">Upload Image <i class="fa fa-cloud-upload"></i></button>
+									<input class="form-control" name="country" placeholder="Cairo, Egpyt"
+									type="text"> <button class="btn btn-outline-primary" type="submit"
+									value="Choose a file">Upload Image <i class=
+									"fa fa-cloud-upload"></i></button>
 								</div>
 							</div>
 						</form>
 					</div><!--/card-body-->
 				</div><!--/card-->
 				<div id="minimise-upload">
-					<i class="fa fa-angle-up fa-2x mini-upload" aria-hidden="true"></i>
+					<i aria-hidden="true" class="fa fa-angle-up fa-2x mini-upload"></i>
 				</div>
 			</div>
-
 		</div><!--/row-->
 	</div><!--/feed-main_controls-->
-</section>
-
-<a href="#modal">
+</section><a href="#modal">
 <div class="fab">
 	<!--fabby-->
 	&plus;
-</div>
-</a>
+</div></a>
 <div class="fab-mini">
 	-
 </div>
-
-<section id="feed-main_posts" class="remodal-bg">
+<section class="remodal-bg" id="feed-main_posts">
 	<div class="container">
 		<div class="row align-items-center justify-content-center">
 			<div class="col-xs-12">
@@ -82,71 +75,43 @@
 						<p><img class="profile-thumb" height="50px" src=
 						"/static/img/default_profile.jpg" width="50px"><a href="/user/1">Josh</a>
 						<span class="card-post-location">was in Spain</span></p>
-
-
 						<div class="card-post-timestamp">
 							<i class="fa fa-clock"></i>1 wk. ago
 						</div>
 					</div>
-
-
 					<div class="card-body">
 						<iframe allowfullscreen height="400" src=
 						"https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https%3A//i.imgur.com/L6SiMTm.jpg"
 						style="border-style:none;" width="600"></iframe>
 					</div>
-
-
 					<div class="card-footer">
 						<div class="caption">
 							<p>It was amazing! Check this out!</p>
-						</div>
-						<span class="seperator"></span>
-
+						</div><span class="seperator"></span>
 						<div class="controls">
 							<ul>
-								<li><i class="fa fa-heart fa-2x"></i>
-								</li>
-
-
-								<li><i class="fa fa-upload fa-2x"></i>
-								</li>
-
-
-								<li><i class="fa fa-expand fa-2x"></i>
-								</li>
+								<li><i class="fa fa-heart fa-2x"></i></li>
+								<li><i class="fa fa-upload fa-2x"></i></li>
+								<li><i class="fa fa-expand fa-2x"></i></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-
-		</div>
-		<!--/row-->
+		</div><!--/row-->
 	</div>
-
-
 	<div class="remodal" data-remodal-id="modal">
 		<button class="remodal-close" data-remodal-action="close"></button>
-
 		<h1>Upload An Image</h1>
-		<p>Which kind of image are you uploading?</p>
-		<br>
-
+		<p>Which kind of image are you uploading?</p><br>
 		<p class="text-center">A 3D Image or Panorama</p>
-
-		<hr class="hr"></hr>
-
-		<p class="text-center">A 2D Image</p>
-
-		<br />
-		<a href="#0" class="text-tiny text-center mb-2">What's the difference?</a>
-		<br />
-
+		<hr class="hr">
+		<p class="text-center">A 2D Image</p><br>
+		<a class="text-tiny text-center mb-2" href="#0">What's the
+		difference?</a><br>
 		<button class="remodal-cancel" data-remodal-action="cancel">Cancel</button>
 		<button class="remodal-confirm" data-remodal-action="confirm">Upload</button>
 	</div>
 </section>
-
 
 {% endblock %}
