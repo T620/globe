@@ -39,14 +39,14 @@
 						"/user/1">Josh</a>
 					</div>
 					<div class="card-body">
-						<form action="/upload/" class="tiny-form" method="post">
+						<form action="/post/" class="tiny-form" method="post" enctype="multipart/form-data">
 							<div class="col-xs-4">
 								<label for="country">Where have you been recently?</label>
 								<div class="inline">
 									<input class="form-control" name="country" placeholder="Cairo, Egpyt"
-									type="text"> <button class="btn btn-outline-primary" type="submit"
-									value="Choose a file">Upload Image <i class=
-									"fa fa-cloud-upload"></i></button>
+									type="text">
+									<input type="file" name="image" class="btn btn-outline-primary">
+									<button type="submit" class="btn btn-primary">Upload</button>
 								</div>
 							</div>
 						</form>
@@ -58,11 +58,13 @@
 			</div>
 		</div><!--/row-->
 	</div><!--/feed-main_controls-->
-</section><a href="#modal">
-<div class="fab">
-	<!--fabby-->
-	&plus;
-</div></a>
+</section>
+<a href="#modal">
+	<div class="fab">
+		<!--fabby-->
+		<i class="fas fa-plus"></i>
+	</div>
+</a>
 <div class="fab-mini">
 	-
 </div>
@@ -72,11 +74,16 @@
 			<div class="col-xs-12">
 				<div class="card">
 					<div class="card-head social-head">
-						<p><img class="profile-thumb" height="50px" src=
-						"/static/img/default_profile.jpg" width="50px"><a href="/user/1">Josh</a>
-						<span class="card-post-location">was in Spain</span></p>
-						<div class="card-post-timestamp">
-							<i class="fa fa-clock"></i>1 wk. ago
+						<div class="profile-img">
+							<img class="img img-circle profile-thumb" height="50px" src="/static/img/default_profile.jpg" width="50px">
+						</div>
+						<div class="profile-creds">
+							<div class="profile-name">
+								<a href="/user/1">Josh</a>
+							</div>
+							<div class="post-loc">
+								<i class="fa fa-map-marker"></i> Madrid, Spain
+							</div>
 						</div>
 					</div>
 					<div class="card-body">
@@ -87,12 +94,11 @@
 					<div class="card-footer">
 						<div class="caption">
 							<p>It was amazing! Check this out!</p>
-						</div><span class="seperator"></span>
+						</div>
 						<div class="controls">
 							<ul>
-								<li><i class="fa fa-heart fa-2x"></i></li>
-								<li><i class="fa fa-upload fa-2x"></i></li>
-								<li><i class="fa fa-expand fa-2x"></i></li>
+								<li><i class="far fa-heart"></i></li>
+								<li><i class="far fa-comment-alt"></i></li>
 							</ul>
 						</div>
 					</div>
