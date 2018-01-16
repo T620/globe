@@ -18,6 +18,12 @@ bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ['APP_SECRET_KEY']
 
+UPLOAD_FOLDER = '/home/josh/projects/globe/globe/static/user_uploads/'
+
+ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.before_request
 def before_request():
     g.user = current_user
@@ -33,7 +39,6 @@ def load_index():
 
 
 @app.route("/feed/")
-@cross_origin()
 def load_feed():
 	return render_template("feed.html")
 
@@ -42,27 +47,80 @@ def load_feed():
 @app.route("/post/", methods=["GET", "POST"])
 @login_required
 def upload():
-		conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
-		f = open('/home/josh/projects/globe/globe/static/img/test.jpg','rb')
+		file = request.files['image']
+		#generate a file name
 
 		from util import id_gen
-		#url = 'static/user_uploads/' + session['g_user'] +"/" + id_gen.bookingID()
-
-		#to do: add image url to posts
-
-		#example: s3.amazonaws.com/bucket/static/user_uploads/user/1235225412e21.jpg
-		#postUrl = os.environ['S3_ENDPOINT'] + url
+		filename = str(session['g_user']) + "/" + id_gen.booking_id() + "_" + file.filename
+		dest = app.config['UPLOAD_FOLDER'] + filename
+		print dest
 
 		try:
-			#conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
-			return 'file uploaded!'
+			file.save(dest)
+
 		except:
-			return "error when trying to upload file!"
+			return "could not save file: %s" % dest
 
 
-@app.route("/explore/")
+		f = open(dest, 'rb')
+		conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
+
+		#filename variable matches the url structure of S3 exactly, so I can reuse it here
+		url = 'static/user_uploads/' + filename
+
+		try:
+			conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
+		except:
+			return "error uploading"
+
+
+		#example: s3.amazonaws.com/bucket/static/user_uploads/user/1235225412e21.jpg
+		postUrl = os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + url
+
+		#add post to Posts
+		from models import Post
+		postCount = Post.query.count()
+		postCount = postCount + 1
+		post = Post (
+			postCount,
+			session['g_user'],
+			"16/01/18",
+			"Look at that view!",
+			"0",
+			postUrl,
+			"Edinburgh",
+			True
+		)
+
+		try:
+			db.session.add(post)
+			db.session.commit()
+
+			return redirect(url_for('load_feed'))
+
+		except:
+			return "error when trying to add to db"
+
+
+
+
+@app.route("/explore/", methods=["GET", "POST"])
 def explore():
-	return 'enter a country'
+	#Grab the API key for GMaps
+	key = os.environ.get('MAPS_API_KEY')
+
+	if request.method=="POST":
+		from models import Post
+
+		posts = Post.query.filter_by(city=request.form['filter']).all()
+		postCount = Post.query.filter_by(city=request.form['filter']).count()
+
+	else:
+		posts = None
+		postCount = 0
+
+
+	return render_template("map.html", posts=posts, key=key, count=postCount)
 
 
 @app.route("/map/")
@@ -101,10 +159,10 @@ def load_int_user():
 @app.route("/user/<username>")
 def load_ext_user(username):
 	#grab the user's basic profile info
-	from models import User, Post, Booking
+	from models import User, Post
 	user = User.query.filter_by(username=unicode.title(username)).first_or_404()
 
-	return render_template("user/ext_profile.html", user=user, itemsBorrowed=None)
+	return render_template("user/profile.html", user=user)
 
 
 
