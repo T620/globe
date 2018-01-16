@@ -12,7 +12,7 @@ def postID(size, chars, userID):
 def booking_id():
 	#random String
 	bookingID = str(uuid.uuid4().hex)
-	return bookingID
+	return str(bookingID)
 
 
 def user_id(size, chars):
