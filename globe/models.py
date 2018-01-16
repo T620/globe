@@ -82,7 +82,7 @@ class Post(db.Model):
 	city = db.Column(db.String(15))
 	appreaciated = db.Column(db.Boolean)
 
-	def __init__(self, id, email, username, postedOn, postContent, likes, image, city, appreaciated):
+	def __init__(self, id, username, postedOn, postContent, likes, image, city, appreaciated):
 		self.id = id
 		self.username=username
 		self.postedOn = postedOn
