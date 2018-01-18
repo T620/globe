@@ -6,7 +6,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as sa
 from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, Sequence, func
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType
+from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType, JSONType
 
 app.config.from_envvar('APP_CONFIG_FILE')
 secret_key = os.environ['APP_SECRET_KEY']
@@ -80,9 +80,10 @@ class Post(db.Model):
 	likes = db.Column(db.String(5))
 	image = db.Column(db.String(60))
 	city = db.Column(db.String(15))
+	coordinates = db.Column(JSONType)
 	appreaciated = db.Column(db.Boolean)
 
-	def __init__(self, id, username, postedOn, postContent, likes, image, city, appreaciated):
+	def __init__(self, id, username, postedOn, postContent, likes, image, city, coordinates, appreaciated):
 		self.id = id
 		self.username=username
 		self.postedOn = postedOn
@@ -90,6 +91,7 @@ class Post(db.Model):
 		self.likes = likes
 		self.image = image
 		self.city = city
+		self.coordinates = coordinates
 		self.appreaciated = appreaciated
 
 
