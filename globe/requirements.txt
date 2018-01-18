@@ -23,8 +23,9 @@ Flask-SQLAlchemy==2.1
 Flask-WTF==0.14.2
 flask-wysiwyg==0.1
 futures==3.2.0
+geolocator==0.1.1
 geopy==1.11.0
--e git+git@github.com:T620/globe.git@4b392a5ff685f6d32e8e33c472933151619c6a2f#egg=globe
+-e git+git@github.com:T620/globe.git@b214357dcee855fe1e6f909c634cb1a28abf398f#egg=globe
 gunicorn==19.4.5
 idna==2.6
 itsdangerous==0.24
@@ -48,5 +49,6 @@ SQLAlchemy==1.0.12
 SQLAlchemy-Utils==0.32.21
 tinys3==0.1.12
 urllib3==1.22
+Wand==0.4.4
 Werkzeug==0.11.9
 WTForms==1.0.5
