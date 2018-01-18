@@ -112,4 +112,6 @@ css
 .css
 
 
+/static/css/*
+
 web_resources.md
