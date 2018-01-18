@@ -1,23 +1,25 @@
 #geocoding utilites
+import globe
+import geopy
+from geopy.geocoders import Nominatim
+geolocator = Nominatim()
 
-def getCoordinates(address):
+def get(address):
 	#returns the lat and long of a given address
-	from geopy.geocoders import Nominatim
+	print address
 
 	try:
-
 		lat = str(geolocator.geocode(address).latitude)
 		lo = str(geolocator.geocode(address).longitude)
 
 		coordinates = {
-			"lattitude": lat,
-			"longitude": lo
+			"lattitude:": lat,
+			"longitude:": lo
 		}
-
-		return coordinates
 	except:
 		return "geocoder timed out :("
 
+	return lat
 
 def getUserLocation():
 	#grabs the user's location when access is granted
