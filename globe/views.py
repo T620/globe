@@ -3,11 +3,15 @@ from globe import app, db, mail
 from flask import render_template, request, redirect, url_for, session, abort, g
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS, cross_origin
-
 import tinys3
+from flask_cors import CORS, cross_origin
+import geopy
+from geopy.geocoders import Nominatim
+
+
 
 CORS(app)
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -40,9 +44,27 @@ def load_index():
 
 @app.route("/feed/")
 def load_feed():
-	return render_template("feed.html")
+	from models import Post
+
+	posts = Post.query.all()
+
+	return render_template("feed.html", posts=posts)
 
 
+@app.route("/test")
+def test():
+	#used to translate an address to a set of coordinates
+	from util import coordinates
+
+	latAndLong = coordinates.get("Edinburgh")
+
+	return latAndLong
+
+@app.route("/upload/3d/")
+def upload_3d():
+	key = os.environ['MAPS_API_KEY']
+
+	return render_template("upload_3d.html", key=key)
 
 @app.route("/post/", methods=["GET", "POST"])
 @login_required
@@ -56,7 +78,8 @@ def upload():
 		print dest
 
 		try:
-			file.save(dest)
+			from util import image
+			image.crop(file, dest)
 
 		except:
 			return "could not save file: %s" % dest
@@ -69,6 +92,7 @@ def upload():
 		url = 'static/user_uploads/' + filename
 
 		try:
+			print 'uploaded!'
 			conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
 		except:
 			return "error uploading"
@@ -76,6 +100,10 @@ def upload():
 
 		#example: s3.amazonaws.com/bucket/static/user_uploads/user/1235225412e21.jpg
 		postUrl = os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + url
+
+
+		from util import geocoder
+		latAndLong = geocoder.getCoordinates("Edinburgh")
 
 		#add post to Posts
 		from models import Post
@@ -89,6 +117,7 @@ def upload():
 			"0",
 			postUrl,
 			"Edinburgh",
+			latAndLong,
 			True
 		)
 
