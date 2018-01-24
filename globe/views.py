@@ -60,11 +60,19 @@ def test():
 
 	return latAndLong
 
+
 @app.route("/upload/3d/")
 def upload_3d():
 	key = os.environ['MAPS_API_KEY']
 
 	return render_template("upload_3d.html", key=key)
+
+@app.route("/upload/2d/")
+def upload_2d():
+	key = os.environ['MAPS_API_KEY']
+
+	return render_template("upload_2d.html", key=key)
+
 
 @app.route("/post/", methods=["GET", "POST"])
 @login_required
