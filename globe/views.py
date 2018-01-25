@@ -48,7 +48,9 @@ def load_feed():
 
 	posts = Post.query.all()
 
-	return render_template("feed.html", posts=posts)
+	key = os.environ.get('MAPS_API_KEY')
+
+	return render_template("feed.html", posts=posts, key=key)
 
 
 @app.route("/test")
@@ -61,22 +63,11 @@ def test():
 	return latAndLong
 
 
-@app.route("/upload/3d/")
-def upload_3d():
-	key = os.environ['MAPS_API_KEY']
-
-	return render_template("upload_3d.html", key=key)
-
-@app.route("/upload/2d/")
-def upload_2d():
-	key = os.environ['MAPS_API_KEY']
-
-	return render_template("upload_2d.html", key=key)
-
 
 @app.route("/post/", methods=["GET", "POST"])
 @login_required
 def upload():
+	if request.method=="POST":
 		file = request.files['image']
 		#generate a file name
 
@@ -111,33 +102,49 @@ def upload():
 
 
 		from util import geocoder
-		latAndLong = geocoder.getCoordinates("Edinburgh")
+		#get the name of the city
+		city = request.form['location-city']
+
+		#this is already handled by gmaps
+		#latAndLong = geocoder.getCoordinates(location)
+		#grab coordinates of map pin
+
+		coords = request.form['location-coords']
+		imageType = request.form['image-type']
+
+		print "image is panorama: %s " % imageType
+
+		from util import clock
+		timeStamp = str(clock.timeNow())
 
 		#add post to Posts
 		from models import Post
 		postCount = Post.query.count()
 		postCount = postCount + 1
+
+		print session['g_user']
+		print postCount
+		print timeStamp
 		post = Post (
 			postCount,
 			session['g_user'],
-			"16/01/18",
-			"Look at that view!",
+			timeStamp,
+			request.form['desc'],
 			"0",
 			postUrl,
-			"Edinburgh",
-			latAndLong,
-			True
+			city,
+			coords,
+			True,
+			imageType
 		)
 
-		try:
-			db.session.add(post)
-			db.session.commit()
+		db.session.add(post)
+		db.session.commit()
 
-			return redirect(url_for('load_feed'))
+		return redirect(url_for('load_feed'))
 
-		except:
-			return "error when trying to add to db"
-
+	else:
+		return redirect(url_for('load_feed'))
 
 
 
