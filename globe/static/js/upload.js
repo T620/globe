@@ -4,26 +4,37 @@ function chooseImageType(type) {
 		console.log("panorama");
 
 		//confirm the user's choice
-		$('#select-pano').css("display:block;");
-		$('#select-2d').css("display:none;");
+		$('#select-pano').removeClass("form-hidden");
+		$('#select-pano').addClass("form-visible");
 
-		//update the form's action to 3d
-		$('#form-main').attr('action', '/3d/');
+		$('#select-2d').removeClass("form-visible");
+		$('#select-2d').addClass("form-hidden");
 
-		//show user 'next stage option'
-		return triggerNextStage();
+		//update the form's type to 3d (True, False is 2d)
+		$('#image-type').val("True");
+
+		$('#btn-next').removeClass("btn-disabled");
+		$('#btn-next').addClass("btn-primary");
+
+
 	}
 	else if (type == "2d") {
 		console.log("2d");
 		//confirm user's choice by displaying appropriate feedback to user, same as above
-		$('#select-2d').css("display:block;");
-		$('#select-pano').css("display:none;");
+		$('#select-2d').removeClass("form-hidden");
+		$('#select-2d').addClass("form-visible");
 
-		//update the form's action to 3d
-		$('#form-main').attr('action', '/2d/');
+		$('#select-pano').removeClass("form-visible");
+		$('#select-pano').addClass("form-hidden");
+
+		//update the form's type to 2d
+		$('#image-type').val("False");
+
+		$('#btn-next').removeClass("btn-disabled");
+		$('#btn-next').addClass("btn-primary");
 
 		//show user 'next stage option'
-		return triggerNextStage();
+		//return triggerNextStage();
 	}
 	else {
 		//pass
@@ -55,6 +66,8 @@ function showStage(stage) {
 			//disable the previous button here, or change label to cancel
 			$('#btn-previous').data('prev-stage', 0);
 			$('#btn-next').data('next-stage', 2);
+
+			$('#btn-next').removeClass("form-hidden");
 			break;
 		case 2:
 			console.log("case 2 fired");
@@ -80,6 +93,8 @@ function showStage(stage) {
 				$('#btn-submit').removeClass("form-visible");
 				$('#btn-submit').addClass("form-hidden");
 			}
+
+			$('#btn-next').removeClass("form-hidden");
 			break;
 		case 3:
 			//3: user drops a map pin to show where they took the photo
@@ -91,8 +106,6 @@ function showStage(stage) {
 			$('#form-stage-3').removeClass("form-hidden");				//show
 			$('#form-stage-3').addClass("form-visible");
 
-			$('#form-stage-4').removeClass("form-visible");				//hide
-			$('#form-stage-4').addClass("form-hidden");
 
 			console.log("btn-next-stage is 4");
 			$('#btn-previous').data('prev-stage', 2);
@@ -124,8 +137,14 @@ function triggerNextStage() {
 	//grabs the next stage to show, regardless of previous or next
 	var stage = $('#btn-next').data('next-stage');
 
-	console.log("triggerNextStage");
-	console.log("current stage read at:" + stage);
+	if ($('#btn-next').hasClass('btn-disabled')){
+		//stay disabled
+		console.log('next is disabled!');
+	}
+	else{
+		console.log("triggerNextStage");
+		console.log("current stage read at:" + stage);
 
-	return showStage(stage);
+		return showStage(stage);
+	}
 }
