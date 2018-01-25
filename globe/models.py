@@ -78,12 +78,13 @@ class Post(db.Model):
 	postedOn = db.Column(db.String(60))
 	postContent = db.Column(db.String(60))
 	likes = db.Column(db.String(5))
-	image = db.Column(db.String(60))
+	image = db.Column(db.String(250))
 	city = db.Column(db.String(15))
-	coordinates = db.Column(JSONType)
+	coordinates = db.Column(db.String)
 	appreaciated = db.Column(db.Boolean)
+	isPanorama = db.Column(db.Boolean)
 
-	def __init__(self, id, username, postedOn, postContent, likes, image, city, coordinates, appreaciated):
+	def __init__(self, id, username, postedOn, postContent, likes, image, city, coordinates, appreaciated, isPanorama):
 		self.id = id
 		self.username=username
 		self.postedOn = postedOn
@@ -93,6 +94,7 @@ class Post(db.Model):
 		self.city = city
 		self.coordinates = coordinates
 		self.appreaciated = appreaciated
+		self.isPanorama = isPanorama
 
 
 	def __repr__(self):
