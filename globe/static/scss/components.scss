@@ -416,10 +416,14 @@
 
 
 .remodal{
-	padding: 4%;
+	padding: 1%;
 	border-radius: 2rem;
 }
 
 .remodal-wrapper{
 	margin: 1%;
+	height: 95%;
+	min-height: 95%;
+	max-height: 95%;
+	overflow-y: scroll;
 }
