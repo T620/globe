@@ -32,6 +32,7 @@ function initialize() {
     var bounds = new google.maps.LatLngBounds();
     var mapOptions = {
 	    mapTypeId: 'roadmap',
+		center: '{{center}}'
 	}
 
     // Display a map on the page
@@ -40,22 +41,21 @@ function initialize() {
 
     // Multiple Markers
     var markers = [
-		{% for post in products %}
-			['{{ post.pickupLocation }}', {{ post.latitude }}, {{ post.longitude }}],
+		{% for post in posts %}
+			['{{ post.city }}', {{ post.coordinates }}],
 		{% endfor %}
     ];
 
-    /* Info Window Content
+     //Info Window Content
     var infoWindowContent = [
 		{% for post in products %}
         	['<div class="info_content">' +
-        	'<h5><a href="/post/{{post.id}}">{{post.title}}</a></h5>' +
-        	'<p>{{post.description}}</p>' +
-			'<p>{{post.item}}</p>' +
-			'<p>Rating: {{post.rating}}</p> /3' +
+        	'<h5><a href="/post/{{post.id}}">{{post.postContent}}</a></h5>' +
+        	'<p>{{post.postContent}}</p>' +
+			'<p>{{post.image}}</p>' +
 			'</div>'],
 		{% endfor %}
-    ]; */
+    ];
 
     // Display multiple markers on a map
     var infoWindow = new google.maps.InfoWindow(), marker, i;

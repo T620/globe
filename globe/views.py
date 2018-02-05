@@ -149,24 +149,54 @@ def upload():
 
 
 
-@app.route("/explore/", methods=["GET", "POST"])
-def explore():
-	#Grab the API key for GMaps
-	key = os.environ.get('MAPS_API_KEY')
+@app.route("/explore/<location>", methods=["GET", "POST"])
+def explore(location):
+	#grab all the records from the database according to that location
+	from models import Post
 
-	if request.method=="POST":
-		from models import Post
-
+	if request.method == "POST":
+		print 'user POSTd a country'
 		posts = Post.query.filter_by(city=request.form['filter']).all()
 		postCount = Post.query.filter_by(city=request.form['filter']).count()
 
 	else:
-		posts = None
-		postCount = 0
+		print 'found a country via GET'
+		#user used get, but supplied params in url
+		if location is not None:
+			posts = Post.query.filter_by(city=unicode.title(location)).all()
+			postCount = Post.query.filter_by(city=unicode.title(location)).count()
+			print "number of posts: %s" % postCount
+
+			#problem: geocoding service in upload form sometimes returns district/county instead of city.
+			#need to add a method which fixes this in the future.
+			if postCount < 1:
+				#if the location provided by the user has no results, show them a random place instead.
+				return teleporter()
+			else:
+				#define center of map
+				center = posts[0].coordinates
+		else:
+			#if the location provided by the user has no results, show them a random place instead.
+			return teleporter()
 
 
-	return render_template("map.html", posts=posts, key=key, count=postCount)
+	#Grab the API key for GMaps
+	key = os.environ.get('MAPS_API_KEY')
 
+	return render_template("map.html", posts=posts, key=key, count=postCount, center=center)
+
+
+def teleporter():
+	from models import Post
+	print 'not got a country via GET or POST. finding random, brb...'
+	#user used GET with no search parameters (no location provided)
+
+	randomPost = Post.query.order_by(Post.id.desc()).first()
+
+	#return the function with a new location, which is the last one which was entered into the database
+	print '***Found! Result: %s'  % randomPost.city
+
+	return explore(randomPost.city)
 
 
 @app.route("/user/")
