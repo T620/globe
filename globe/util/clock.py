@@ -1,7 +1,7 @@
 def timeNow():
 	import time
 	rightNow = time.localtime(time.time())
-	print rightNow
+
 	date = time.strftime("%a %b %d", rightNow)
 	time = time.strftime("%H:%M:%S", rightNow)
 
@@ -9,5 +9,5 @@ def timeNow():
 		"time": time,
 		"date": date
 	}
-
+	print timeStamp['time']
 	return timeStamp
