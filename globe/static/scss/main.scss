@@ -9,12 +9,17 @@
 }
 
 .intro h1{
-	font-size: 6em;
+
 }
 
-.intro h1, h3{
-	color: #f0f0f0;
-	margin-top: 5%;
+.intro{
+	h1{
+		font-size: 6em;
+	}
+	h1, h3{
+		color: #f0f0f0;
+		margin-top: 5%;
+	}
 }
 
 .form-hidden{
