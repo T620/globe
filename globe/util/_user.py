@@ -7,18 +7,8 @@ import uuid
 def get_id(username):
 
 	user = User.query.filter_by(username=unicode.title(username)).first()
-	print user.id
  	return user.id
 
-
-def exists(userid):
-
-	checkUser = User.query.filter_by(id=userid).count()
-
-	if checkUser > 0:
-		return True
-	else:
-		return False
 
 
 def password_hash_matches(userid, password):
