@@ -69,8 +69,10 @@ def test():
 def upload():
 	if request.method=="POST":
 		file = request.files['image']
-		#generate a file name
+		file.filename = "globe_pub_image"
 
+		#generate a file name
+		print session['g_user']
 		from util import id_gen
 		filename = str(session['g_user']) + "/" + id_gen.booking_id() + "_" + file.filename
 		dest = app.config['UPLOAD_FOLDER'] + filename
@@ -79,7 +81,6 @@ def upload():
 		try:
 			from util import image
 			image.crop(file, dest)
-
 		except:
 			return "could not save file: %s" % dest
 
@@ -232,12 +233,13 @@ def login():
 		username = request.form['username']
 		password = request.form['password']
 
-		user = User.query.filter_by(username=unicode.title(username)).first()
-		print user
+
+		userExists = User.query.filter_by(username=unicode.title(username)).count()
 
 		from util import _user
-
-		if _user.exists(user.id):
+		if userExists > 0:
+			user = User.query.filter_by(username=unicode.title(username)).first()
+			print "[info] user id: %s " % user.id
 			if _user.password_hash_matches(user.id, password):
 				login_user(user)
 				session['g_user'] = user.id
