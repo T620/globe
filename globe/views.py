@@ -168,17 +168,6 @@ def explore():
 	return render_template("map.html", posts=posts, key=key, count=postCount)
 
 
-@app.route("/map/")
-def load_map():
-	from models import Post
-	products = Post.query.filter_by(status="Available").all()
-	count = Post.query.filter_by(status="Available").count()
-
-	#Grab the API key for GMaps
-	key = os.environ.get('MAPS_API_KEY')
-
-	return render_template("map.html", products=products, key=key, count=count)
-
 
 @app.route("/user/")
 @login_required
