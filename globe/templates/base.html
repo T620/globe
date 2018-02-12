@@ -14,10 +14,10 @@
 
   <link rel="canonical" href="">
 
-    <!-- Google Fonts-->
-	<link href="https://fonts.googleapis.com/css?family=Muli|Open+Sans" rel="stylesheet">
+    <!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow|Roboto" rel="stylesheet">
 
-	<!--<link rel="stylesheet" href="/static/css/font-awesome.css">-->
+	<link rel="stylesheet" href="/static/css/font-awesome.css">
 
 	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 
@@ -41,15 +41,19 @@
 			</div>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav">
-					<div class="col-md-12 text-left">
-						<a class="nav-item nav-link" href="/explore/">Explore</a>
-					</div>
-					<div class="col-md-12 text-center">
+					{% if current_user.is_authenticated %}
+						<div class="col-md-12">
+							<img class="img-profile-thumb" width="50px" height="50px" src="{{current_user.photo}}" alt="profile image of {{current_user.forename}} {{current_user.surname}}"/>
+      						<a class="nav-item nav-link" href="/profile/{{current_user.id}}">{{current_user.forename}}</a>
+    					</div>
+					{% else %}
+						<div class="col-md-12 text-right">
+      						<a class="nav-item nav-link disabled" href="/profile/">Profile</a>
+    					</div>
+					{% endif %}
+					<div class="col-md-12">
       					<a class="nav-item nav-link" href="/upload/">Upload</a>
 					</div>
-					<div class="col-md-12 text-right">
-      					<a class="nav-item nav-link disabled" href="/profile/">Profile</a>
-    				</div>
   				</div>
 			</div>
 		</div>
