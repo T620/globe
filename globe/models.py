@@ -34,6 +34,7 @@ class User(db.Model):
 	following = db.Column(db.String(6000))
 	biography = db.Column(db.String(200))
 	verified = db.Column(db.Boolean)
+	photo = db.Column(db.String(150))
 
 
 	def is_authenticated(self):
@@ -49,7 +50,7 @@ class User(db.Model):
 		return unicode(self.id)
 
 
-	def __init__(self, id, email, username, password, forename, surname, city, followers, following, biography, confirmationToken, passwordToken, verified):
+	def __init__(self, id, email, username, password, forename, surname, city, followers, following, biography, confirmationToken, passwordToken, verified, photo):
 		self.id = id
 		self.email=email
 		self.username=username
@@ -63,6 +64,7 @@ class User(db.Model):
 		self.confirmationToken=confirmationToken
 		self.passwordToken=passwordToken
 		self.verified=verified
+		self.photo=photo
 
 
 	def __repr__(self):

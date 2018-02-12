@@ -23,8 +23,13 @@ def password_hash_matches(userid, password):
 
 
 def register(newUser):
+	import os
+	import tinys3
 	import string
+	from globe import db
+	print db
 
+	print newUser['forename']
 	#generate some secure tokens
 	from globe.util import id_gen
 
@@ -37,27 +42,55 @@ def register(newUser):
 
 	#for the time being, the users city wont be verified
 
+	#init conection to S3
+	conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
+
+
+	#give the file a name
+	#josh.tait912/profile/placeholder.jpg
+	filename = str(username) + "/" + "profile/" + 'placeholder.jpg'
+	#filename variable matches the url structure of S3 exactly, so I can reuse it here
+	url = 'static/user_uploads/' + filename
+
+	#now the file and path are ready, save the file to the user's folder in s3
+	photo = app.config['UPLOAD_FOLDER'] + "profiles/placeholder.jpg"
+	f = open(photo, 'rb')
+
+	try:
+		print 'uploaded!'
+		conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
+	except:
+		return "error uploading"
+
+	#https://s3.aws.com/endpoint/bucket/static/user_uploads/josh.tait516/profile/placeholder.jpg
+	#photoUrl = os.environ['S3_ENDPOINT'] + "/" os.environ['S3_BUCKET_NAME'] + url
+	photoUrl = "https://s3.us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/" + url
+	print photoUrl
+
 	#add the user to User
 	newAccount = User(
 		id=userID,
 		email=newUser['email'],
 		username=username,
-		forename=unicode.title(newUser['forename']),
-		surname=unicode.title(newUser['surname']),
 		password=newUser['password'],
 		confirmationToken=confirmToken,
 		passwordToken=passwordToken,
+		forename=unicode.title(newUser['forename']),
+		surname=unicode.title(newUser['surname']),
 		city=newUser['city'],
 		followers=0,
 		following="None",
 		biography="None",
-		verified="False"
+		verified="False",
+		photo=photoUrl
 	)
 
+	db.session.add(newAccount)
+	db.session.commit()
 
-	try:
-		db.session.add(newAccount)
-		db.session.commit()
+
+	'''try:
+
 
 		return True
 		print 'done'
@@ -66,6 +99,8 @@ def register(newUser):
 	except:
 		print 'failed to add to db'
 		return False
+		'''
+	return True
 
 
 def authorise(token, username):

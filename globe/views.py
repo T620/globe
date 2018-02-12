@@ -148,45 +148,39 @@ def upload():
 		return redirect(url_for('load_feed'))
 
 
+#problem: geocoding service in upload form sometimes returns district/county instead of city.
+#need to add a method which fixes this in the future.
+@app.route("/explore/", methods=["GET", "POST"])
+def explore():
+	location = request.args.get('filter', None)
 
-@app.route("/explore/<location>", methods=["GET", "POST"])
-def explore(location):
-	#grab all the records from the database according to that location
-	from models import Post
+	# if there is no filter in place
+	if location is not None:
+		#grab all the records from the database according to that location
+		from models import Post
 
-	if request.method == "POST":
-		print 'user POSTd a country'
-		posts = Post.query.filter_by(city=request.form['filter']).all()
-		postCount = Post.query.filter_by(city=request.form['filter']).count()
+		posts = Post.query.filter_by(city=unicode.title(location)).all()
+		postCount = Post.query.filter_by(city=unicode.title(location)).count()
+		print "number of posts: %s" % postCount
+
+		#check if that result yielded any results.
+		if postCount < 1:
+			#if the location provided by the user doesn't bring any results, ask the user to enter a place
+			return render_template("map_get_location.html")
+		else:
+			center = posts[0].coordinates
+			print 'defining center of map: %s' % center
+
+
+			key = os.environ.get('MAPS_API_KEY')
+			return render_template("map.html", posts=posts, key=key, count=postCount, center=center, location=location)
 
 	else:
-		print 'found a country via GET'
-		#user used get, but supplied params in url
-		if location is not None:
-			posts = Post.query.filter_by(city=unicode.title(location)).all()
-			postCount = Post.query.filter_by(city=unicode.title(location)).count()
-			print "number of posts: %s" % postCount
-
-			#problem: geocoding service in upload form sometimes returns district/county instead of city.
-			#need to add a method which fixes this in the future.
-			if postCount < 1:
-				#if the location provided by the user has no results, show them a random place instead.
-				return teleporter()
-			else:
-				#define center of map
-				center = posts[0].coordinates
-		else:
-			#if the location provided by the user has no results, show them a random place instead.
-			return teleporter()
+		#if the location provided by the user doesn't bring any results, ask the user to enter a place
+		return render_template("map_get_location.html")
 
 
-	#Grab the API key for GMaps
-	key = os.environ.get('MAPS_API_KEY')
-
-	return render_template("map.html", posts=posts, key=key, count=postCount, center=center)
-
-
-def teleporter():
+'''def teleporter():
 	from models import Post
 	print 'not got a country via GET or POST. finding random, brb...'
 	#user used GET with no search parameters (no location provided)
@@ -196,8 +190,13 @@ def teleporter():
 	#return the function with a new location, which is the last one which was entered into the database
 	print '***Found! Result: %s'  % randomPost.city
 
-	return explore(randomPost.city)
+	#	resultMsg = "We couldn't find the place you asked for, so here is a random location instead."
 
+	#im having to create a session because explore asks for zero parameters, so when we pass one here it throws an error.
+	#hardcoded to edinburgh atm
+	session['random_location'] = "Edinburgh"
+	return explore()
+'''
 
 @app.route("/user/")
 @login_required
@@ -252,8 +251,8 @@ def login():
 		username = request.form['username']
 		password = request.form['password']
 
-
-		userExists = User.query.filter_by(username=unicode.title(username)).count()
+		#changed this from username to email
+		userExists = User.query.filter_by(email=unicode.title(username)).count()
 
 		from util import _user
 		if userExists > 0:
@@ -274,7 +273,7 @@ def login():
 def register():
 	if request.method=="POST":
 		print "posted"
-		from util import user
+		from util import _user
 
 		newUser = {
 			"forename": request.form['forename'],
@@ -285,9 +284,9 @@ def register():
 		}
 
 
-		if user.register(newUser):
-
-			return render_template('user/register_step-2.html', username=newAccountAuth.username)
+		if _user.register(newUser):
+																									#TODO: user now needs to login via email
+			return render_template('user/register_step-2.html', username=newUser['email'])
 		else:
 			return 'error when trying to add user to database :('
 	else:
