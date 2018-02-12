@@ -27,28 +27,29 @@
 								"form-check-label" for="exampleRadios1">Country</label>
 							</div>
 						</div>
+						<button class="btn btn-outline-secondary text-center">Apply</button>
 					</form>
 				</div><!--/filter-->
 				<div id="minimise-filter">
 
 				</div>
 			</div>
-			<!--
 			<div class="col-xs-12 col-sm-7 m-l-4">
 				<div class="card" id="feed-upload">
 					<div class="card-head">
-						<img class="profile-thumb" height="50px" src=
-						"/static/img/default_profile.jpg" width="50px"> <a href=
-						"/user/1">Josh</a>
+						<img class="profile-thumb" height="40px" src=
+						"/static/img/default_profile.jpg" width="40px">
+						<a href="/user/1">Josh</a>
 					</div>
 					<div class="card-body">
 						<form action="/post/" class="tiny-form" method="post" enctype="multipart/form-data">
-							<div class="col-xs-4">
+							<div class="col">
 								<label for="country">Where have you been recently?</label>
+								<br />
 								<div class="inline">
 									<input class="form-control" name="country" placeholder="Cairo, Egpyt"
 									type="text">
-									<button type="submit" class="btn btn-primary">Share</button>
+									<button type="submit" class="btn btn-outline-secondary">Share</button>
 								</div>
 							</div>
 						</form>
@@ -58,7 +59,6 @@
 
 				</div>
 			</div>
-		-->
 		</div><!--/row-->
 	</div><!--/feed-main_controls-->
 </section>
@@ -84,7 +84,7 @@
 						</div>
 						<div class="profile-creds">
 							<div class="profile-name">
-								<a href="/user/1">Josh</a>
+								<a href="/user/{{post.username}}">{{post.username}}</a>
 							</div>
 							<div class="post-loc">
 								<i class="fa fa-map-marker"></i> {{post.city}}
