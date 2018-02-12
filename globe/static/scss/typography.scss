@@ -1,5 +1,6 @@
-$font-stack-headings: 'Muli', sans-serif;
-$font-stack-body: 'Open Sans', sans-serif;
+$headingFont: 'PT Sans Narrow', sans-serif;
+$bodyFont: 'Roboto', sans-serif;
+
 
 $heading-color: #283c86;
 $body-color: #161616;
@@ -9,18 +10,13 @@ $heading-margin: 1%;
 
 
 h1, h2, h3, h4, h5, h6{
-	font-family: $font-stack-headings;
+	font-family: $headingFont;
 	letter-spacing: $heading-spacing;
 	margin: $heading-margin;
 	color: $heading-color;
 }
 
 body, p, i{
-	font-family: $font-stack-body;
+	font-family: $bodyFont;
 	color: $body-color;
-}
-
-.section-heading{
-	color: $heading-color;
-	padding-bottom: 5%;
 }
