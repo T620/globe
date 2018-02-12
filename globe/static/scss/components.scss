@@ -1,9 +1,28 @@
+$box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+$box-shadow-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
+
+$ff_old_gradient: -moz-linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%); /* FF3.6-15 */
+
+$ff_gradient: linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%);
+
+$chrome_gradient: -webkit-linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%);
+
+
+
+$bluePrimary: #08a6f9;
+$blueSecondary: #12d0f3;
+$greenPrimary: #90fd9e;
+$greenSecondary:#77f4af;
+
+
 .card{
 	margin: 7%;
-	/*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
+	box-shadow: $box-shadow;
 	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 	padding: 0;
 }
+
 .card-head{
 	padding: 2%;
 }
@@ -91,7 +110,9 @@
 .filter{
 	text-align: left;
 	padding: 5%;
-	margin: 3% 0 0 3%;
+	margin: 3% 0;
+	height: 15rem;
+	width: 13rem;
 }
 
 
@@ -100,14 +121,16 @@
 }
 
 #feed-upload{
-	padding: 2.5%;
+	padding: 2.5% 1.5% .5% .5%;
 	margin: 1.2% 0 0 5%;
 	border-bottom-right-radius: 0;
+}
+#feed-upload .card-body{
+	padding: 1.25rem 0;
 }
 
 .profile-thumb{
 	border: 2px solid #283c86;
-	margin-right: 1%;
 	border-radius: 100%;
 }
 
@@ -115,7 +138,6 @@
 	color: #283c86;
 	background: #f0f0f0;
 	width: 100%;
-	padding: 1.5% 2%;
 	border: 2px solid #ccc;
 	border-bottom-right-radius: 0;
 }
@@ -148,11 +170,25 @@
 	border: 2px dotted #283c86;
 }
 
+.card-body .col{
+	margin-left: calc(50px + 1%);
+	margin-right: calc(50px + 1%);
+	padding-left: 0;
+}
 
 .tiny-form{
 	width: 70%;
 }
 
+.tiny-form label{
+	margin: 1% 5% 0 0;
+}
+.card-body .inline{
+	width: 130%;
+}
+#feed-main_controls{
+	margin-top: 1.5%;
+}
 .icon-btn-prepend{
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
@@ -352,7 +388,7 @@
 	margin-left: .5rem;
 }
 .profile-thumb{
-
+	margin-right: 1%;
 }
 
 
@@ -372,37 +408,51 @@
 }
 
 .map-filter{
+	box-shadow: $box-shadow;
 	padding: 1%;
 	display: inline-flex;
 	width: 80%;
 	z-index: 999;
 	position: absolute;
-	top: 5px;
+	bottom: 1px;
 	left: 0%;
 	margin: 1px 11%;
-	background: #f0f0f0;
-	border-bottom: 2px solid teal;
+	background: teal;
 }
 .map-filter form{
 	width: 100%;
 	/*override the default form display property */
 	display: inline-flex !important;
 }
+.map-filter p{
+	color: #fefefe;
+}
+.map-filter h2{
+	width: 65%;
+	color: #fefefe;
+	text-transform: capitalize;
+}
+.map-filter .btn{
+	position: relative;
+	right: 2px;
+}
+
 .filter-results{
+	box-shadow: $box-shadow;
 	position: absolute;
-	top: 4.9rem;
+	bottom: 5.3rem;
 	left: 0;
 	padding: 10px;
 	background: #f1f1f1;
-	color: teal;
+	color: #666;
 	margin: 1% 35%;
 	text-align: center;
 	width: 30%;
 	overflow-x: hidden;
 	z-index: 999;
 	font-size: .8em;
-	border-bottom-left-radius: 50px;
-	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
 }
 
 .map-filter .form-control{
