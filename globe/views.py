@@ -64,88 +64,102 @@ def test():
 
 
 
-@app.route("/post/", methods=["GET", "POST"])
+@app.route("/post/<postID>", methods=["GET", "POST"])
 @login_required
-def upload():
-	if request.method=="POST":
-		file = request.files['image']
-		file.filename = "globe_pub_image"
+def upload(postID):
+	if postID is None:
+		#user posted an image, not viewed one
+		if request.method=="POST":
+			file = request.files['image']
+			file.filename = "globe_pub_image"
 
-		#generate a file name
-		print session['g_user']
-		from util import id_gen
-		filename = str(session['g_user']) + "/" + id_gen.booking_id() + "_" + file.filename
-		dest = app.config['UPLOAD_FOLDER'] + filename
-		print dest
+			#generate a file name
+			print session['g_user']
+			from util import id_gen
+			filename = str(session['g_user']) + "/" + id_gen.booking_id() + "_" + file.filename
+			dest = app.config['UPLOAD_FOLDER'] + filename
+			print dest
 
-		try:
-			from util import image
-			image.crop(file, dest)
-		except:
-			return "could not save file: %s" % dest
-
-
-		f = open(dest, 'rb')
-		conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
-
-		#filename variable matches the url structure of S3 exactly, so I can reuse it here
-		url = 'static/user_uploads/' + filename
-
-		try:
-			print 'uploaded!'
-			conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
-		except:
-			return "error uploading"
+			try:
+				from util import image
+				image.crop(file, dest)
+			except:
+				return "could not save file: %s" % dest
 
 
-		#example: s3.amazonaws.com/bucket/static/user_uploads/user/1235225412e21.jpg
-		postUrl = os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + url
+			f = open(dest, 'rb')
+			conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
+
+			#filename variable matches the url structure of S3 exactly, so I can reuse it here
+			url = 'static/user_uploads/' + filename
+
+			try:
+				print 'uploaded!'
+				conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
+			except:
+				return "error uploading"
 
 
-		from util import geocoder
-		#get the name of the city
-		city = request.form['location-city']
+			#example: s3.amazonaws.com/bucket/static/user_uploads/user/1235225412e21.jpg
+			postUrl = os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + url
 
-		#this is already handled by gmaps
-		#latAndLong = geocoder.getCoordinates(location)
-		#grab coordinates of map pin
 
-		coords = request.form['location-coords']
-		imageType = request.form['image-type']
+			from util import geocoder
+			#get the name of the city
+			city = request.form['location-city']
 
-		print "image is panorama: %s " % imageType
+			#this is already handled by gmaps
+			#latAndLong = geocoder.getCoordinates(location)
+			#grab coordinates of map pin
 
-		from util import clock
-		timeStamp = str(clock.timeNow())
+			coords = request.form['location-coords']
+			imageType = request.form['image-type']
 
-		#add post to Posts
-		from models import Post
-		postCount = Post.query.count()
-		postCount = postCount + 1
+			print "image is panorama: %s " % imageType
 
-		print session['g_user']
-		print postCount
-		print timeStamp
-		post = Post (
-			postCount,
-			session['g_user'],
-			timeStamp,
-			request.form['desc'],
-			"0",
-			postUrl,
-			city,
-			coords,
-			True,
-			imageType
-		)
+			from util import clock
+			timeStamp = str(clock.timeNow())
 
-		db.session.add(post)
-		db.session.commit()
+			#add post to Posts
+			from models import Post
+			postCount = Post.query.count()
+			postCount = postCount + 1
 
-		return redirect(url_for('load_feed'))
+			print session['g_user']
+			print postCount
+			print timeStamp
+			post = Post (
+				postCount,
+				session['g_user'],
+				timeStamp,
+				request.form['desc'],
+				"0",
+				postUrl,
+				city,
+				coords,
+				True,
+				imageType
+			)
+
+			db.session.add(post)
+			db.session.commit()
+
+			return redirect(url_for('load_feed'))
+		else:
+			return redirect(url_for('load_feed'))
 
 	else:
-		return redirect(url_for('load_feed'))
+			from models import Post, User
+
+			#need the specific post
+			post = Post.query.filter_by(id=postID).first()
+
+			#now we need the posters profile to show to the user
+			profile = User.query.filter_by(username=post.username).first()
+
+			#render away
+			#TODO: change this template to a card in feed,html to a link saying "view full profile"
+			return render_template("user/profile.html", profile=profile, post=post, lightbox=True)
 
 
 #problem: geocoding service in upload form sometimes returns district/county instead of city.
