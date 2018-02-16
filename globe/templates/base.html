@@ -17,7 +17,8 @@
     <!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow|Roboto" rel="stylesheet">
 
-	<link rel="stylesheet" href="/static/css/font-awesome.css">
+	<!--
+	<link rel="stylesheet" href="/static/css/font-awesome.css"> -->
 
 	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 
@@ -30,40 +31,78 @@
 
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
-	<div class="container">
-		<div class="row" style="width:100%;">
-			<div class="col-md-2">
-				<a class="navbar-brand" href="/"><img src="/static/img/brand.png" class="img-brand" style="height:2.5rem;" alt="Globe icon logo"></a>
- 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    				<span class="navbar-toggler-icon"></span>
-  				</button>
-			</div>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					{% if current_user.is_authenticated %}
-						<div class="col-md-12">
-							<img class="img-profile-thumb" width="50px" height="50px" src="{{current_user.photo}}" alt="profile image of {{current_user.forename}} {{current_user.surname}}"/>
-      						<a class="nav-item nav-link" href="/profile/{{current_user.id}}">{{current_user.forename}}</a>
-    					</div>
-					{% else %}
-						<div class="col-md-12 text-right">
-      						<a class="nav-item nav-link disabled" href="/profile/">Profile</a>
-    					</div>
-					{% endif %}
-					<div class="col-md-12">
-      					<a class="nav-item nav-link" href="/upload/">Upload</a>
-					</div>
-  				</div>
-			</div>
-		</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light main-nav" id="nav">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/"><img src="/static/img/brand.png" class="img-brand" style="height:2.5rem;" alt="Globe icon logo"></a>
+
+		<div class="nav navbar-nav navbar-right">
+			<a href="#0" class="toggle-nav nav-item nav-link menu" alt="toggle menu"><i class="fa fa-bars fa-2x"></i></a>
 	</div>
 </nav>
 
+<div id="site-wrapper">
+	<div id="site-canvas">
+		<div id="site-menu">
+			<div class="site-menu_profile">
+				{% if current_user.is_authenticated %}
+				<div class="nav-user">
+					<img class="profile-thumb" width="100px" height="100px" 	src="{{current_user.photo}}" alt="profile image of {{current_user.forename}} {{current_user.surname}}"/>
+
+					<a href="/profile/{{current_user.id}}" class="name">{{current_user.forename}}</a>
+					<a href="/logout/">Log Out</a>
+				</div>
+				{% else %}
+				<a class="nav-item nav-link" href="/login/">Log In</a>
+				<a class="nav-item nav-link" href="/register/">Register</a>
+				{% endif %}
+			</div>
+			<div class="site-menu_main">
+				<h2>Menu</h2>
+				<ul>
+					<li><a class="upload" href="/upload/">Upload</a></li>
+					<li><a href="/feed/">Feed</a></li>
+					<li><a href="/explore">Explore</a></li>
+
+					<li><a href="/search/" class="search">Search</a></li>
+				</ul>
+				<img src="../static/img/brand.svg" width="60" height="60" alt="Globe logo" />
+			</div>
+			<a href="#nav" id="rocket">Jump to top</a>
+		</div>
+
+
+
+
+
     {% block content %}
     {% endblock %}
+	</div>
+</div>
 
-	<!--<script src="/static/js/font-awesome.min.js"></script>-->
+	<script>
+	$(function() {
+  $('.toggle-nav').click(function() {
+    // Calling a function in case you want to expand upon this.
+    toggleNav();
+  });
+});
+
+/*========================================
+=            CUSTOM FUNCTIONS            =
+========================================*/
+function toggleNav() {
+if ($('#site-wrapper').hasClass('show-nav')) {
+  // Do things on Nav Close
+  $('#site-wrapper').removeClass('show-nav');
+} else {
+  // Do things on Nav Open
+  $('#site-wrapper').addClass('show-nav');
+}
+
+//$('#site-wrapper').toggleClass('show-nav');
+}
+</script>
+	<script src="/static/js/font-awesome.min.js"></script>
 	<script src="/static/js/remodal.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 
