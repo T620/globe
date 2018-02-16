@@ -59,7 +59,7 @@
 			<div class="site-menu_main">
 				<h2>Menu</h2>
 				<ul>
-					<li><a class="upload" href="/upload/">Upload</a></li>
+					<li><a class="upload" href="#modal">Upload</a></li>
 					<li><a href="/feed/">Feed</a></li>
 					<li><a href="/explore">Explore</a></li>
 
@@ -79,6 +79,11 @@
 	</div>
 </div>
 
+<a href="#modal" id="fab">
+	<div class="fab_">
+		&plus;
+	</div>
+</a>
 	<script>
 	$(function() {
   $('.toggle-nav').click(function() {
@@ -93,14 +98,17 @@
 function toggleNav() {
 if ($('#site-wrapper').hasClass('show-nav')) {
   // Do things on Nav Close
+  $('#fab').removeClass("form-hidden");
   $('#site-wrapper').removeClass('show-nav');
 } else {
+	$('#fab').addClass("form-hidden");
   // Do things on Nav Open
   $('#site-wrapper').addClass('show-nav');
 }
 
 //$('#site-wrapper').toggleClass('show-nav');
 }
+
 </script>
 	<script src="/static/js/font-awesome.min.js"></script>
 	<script src="/static/js/remodal.min.js"></script>
