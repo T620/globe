@@ -248,15 +248,15 @@ def login():
 	else:
 		from models import User
 
-		username = request.form['username']
+		email = request.form['email']
 		password = request.form['password']
 
 		#changed this from username to email
-		userExists = User.query.filter_by(email=unicode.title(username)).count()
+		userExists = User.query.filter_by(email=email).count()
 
 		from util import _user
 		if userExists > 0:
-			user = User.query.filter_by(username=unicode.title(username)).first()
+			user = User.query.filter_by(email=email).first()
 			print "[info] user id: %s " % user.id
 			if _user.password_hash_matches(user.id, password):
 				login_user(user)
