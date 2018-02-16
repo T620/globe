@@ -5,30 +5,48 @@
 	<div class="profile-header">
 		<div class="row">
 			<div class="col-xs-12 col-md-2">
-				<img class="profile-header-img" src="{{url_for('static', filename='img/default_profile.jpg')}}" width="150px" height="150px">
+				<img class="profile-header-img" src="{{profile.photo}}" width="150px" height="150px">
 			</div>
 			<div class="col-xs-12 col-md-8">
 				<div class="profile-header-intro">
-					<h1>Joe Bloggs</h1>
-					<h4>Edinburgh, UK</h4>
+					<h1>{{profile.forename}} {{profile.surname}}</h1>
+					<p><a href="/profile/{{username}}">@{{profile.username}}</a></p>
+					<h4>{{profile.city}}</h4>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="profile-header-collapse">
-		<img class="profile-header-img" src="{{url_for('static', filename='img/default_profile.jpg')}}" width="75px" height="75px">
-		<h3>Joe Bloggs</h3>
-	</div>
 	<div class="profile-sub-nav">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top sticky-top">
-			<a class="navbar-brand" href="/">About</a>
-			<a class="nav-item nav-link" href="/explore/">Photos</a>
-			<a class="nav-item nav-link" href="/explore/">Followers</a>
+			{% if lightbox %}
+				<a class="navbar-brand" href="/profile/{{post.username}}#photos">About</a>
+				<a class="nav-item nav-link" href="/profile/{{post.username}}#photos">Photos</a>
+				<a class="nav-item nav-link" href="/profile/{{post.username}}#folowers">Followers</a>
+			{% else %}
+				<a class="navbar-brand" href="/profile/#photos">About</a>
+				<a class="nav-item nav-link" href="/profile/#photos">Photos</a>
+				<a class="nav-item nav-link" href="/profile/#followers">Followers</a>
+			{% endif %}
 		</nav>
 	</div>
-	<div class="container">
+	{% if lightbox %}
+		{% if post.isPanorama %}
+		<iframe allowfullscreen height="400" src=
+		"https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https://{{post.image}}"
+		style="border-style:none;" width="600"></iframe>
+		{% else %}
+			<img src="{{post.image}}" width="auto">
+		{% endif %}
+	{% else %}
+		<div class="container">
 		<div class="profile-main">
 			<h2 class="section-heading">Bio</h2>
+				{% if profile.biography == 'None' %}
+					<p>This user has no biography :(</p>
+				{% else %}
+					<p>{{profile.biography}}</p>
+					<a href="#0">Report</a>
+				{% endif %}
 		</div>
 		<div class="profile-main_stats">
 			<h2>Quick Maffs</h2>
@@ -65,22 +83,13 @@
 				</div>
 			</div>
 			<div class="row no-gutters">
+				{% for post in posts %}
 				<div class="col-xs-12 col-sm-4">
             		<div class="card gallery">
-              			<img src="{{url_for('static', filename='img/default_profile.jpg')}}" alt="Card image cap" width="100%" height="250px">
+              			<img src="{{post.image}}" alt="Card image cap" width="100%" height="250px">
             		</div>
 				</div>
-				<div class="col-xs-12 col-sm-4">
-            			<div class="card gallery">
-              				<img src="{{url_for('static', filename='img/default_profile.jpg')}}" alt="Card image cap" width="100%" height="250px">
-            			</div>
-					</div>
-				<div class="col-xs-12 col-sm-4">
-            			<div class="card gallery">
-              				<img src="{{url_for('static', filename='img/default_profile.jpg')}}" alt="Card image cap" width="100%" height="250px">
-              				<p class="card-text"></p>
-            			</div>
-					</div>
+				{% endfor %}
 			</div>
 
 			<div class="row no-gutters">
@@ -121,7 +130,7 @@
 			</div>
 		</div>
 	</div><!--/container-->
-
+	{% endif %}
 </section>
 <script>
 $(document).scroll(function () {
