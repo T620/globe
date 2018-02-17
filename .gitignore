@@ -106,14 +106,11 @@ migrations/
 
 
 # static
-.sass-cache
-css/
-*.css.map
-*.css
-user_uploads/
 
 static/css/*
 static/.sass-cache/
 static/user_uploads/
 
 web_resources.md
+img/*.txt
+*.ai
