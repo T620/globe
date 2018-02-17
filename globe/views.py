@@ -194,23 +194,6 @@ def explore():
 		return render_template("map_get_location.html")
 
 
-'''def teleporter():
-	from models import Post
-	print 'not got a country via GET or POST. finding random, brb...'
-	#user used GET with no search parameters (no location provided)
-
-	randomPost = Post.query.order_by(Post.id.desc()).first()
-
-	#return the function with a new location, which is the last one which was entered into the database
-	print '***Found! Result: %s'  % randomPost.city
-
-	#	resultMsg = "We couldn't find the place you asked for, so here is a random location instead."
-
-	#im having to create a session because explore asks for zero parameters, so when we pass one here it throws an error.
-	#hardcoded to edinburgh atm
-	session['random_location'] = "Edinburgh"
-	return explore()
-'''
 
 @app.route("/user/")
 @login_required
@@ -254,6 +237,14 @@ def load_user(id):
 	from models import User
 	return User.query.get(unicode(id))
 
+
+@app.route("/logout/")
+@login_required
+def logout():
+	logout_user()
+	session['g_user'] = None
+	print session['g_user']
+	return redirect(url_for("load_index"))
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
