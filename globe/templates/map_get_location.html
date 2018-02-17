@@ -1,17 +1,16 @@
 {% extends 'base_map.html' %}
 {% block content %}
 
-
-<div class="container">
-	<div class="map-filter">
-		<form action="/explore/" method="get">
-			<i class="text-danger">Looks like your search didnt return any results. Please try again</i>
-			<br />
-			<label for="filter">Enter a city or country</label>
-			<input type="text" class="form-control form-control-md" name="filter" placeholder="Beijing, China">
-			<input type="submit" class="btn btn-primary-outline btn-md" value="Filter"/>
-		</form>
+<section class="map_search">
+	<div class="container">
+		<h1>Spin the Globe</h1>
+		<div class="init_map">
+			<form action="/explore/" method="get">
+				<label for="filter">Enter a city or country</label>
+				<input type="text" class="form-control form-control-md" name="filter" placeholder="Edinburgh, Dublin, Swansea, London">
+				<button type="submit" class="btn btn-glb btn-sm">Spin</button>
+			</form>
+		</div>
 	</div>
-</div>
-
+</section>
 {% endblock %}

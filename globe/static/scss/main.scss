@@ -2,10 +2,13 @@
 @import 'components';
 
 .intro{
-	background: url('../img/main-bg.jpg') #272727;
-	background-position: center;
-	background-size: cover;
-	height: 100vh;
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+	z-index: -100;
 }
 
 .intro h1{

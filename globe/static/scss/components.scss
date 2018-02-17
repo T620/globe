@@ -86,18 +86,16 @@ $greenSecondary:#77f4af;
 	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 	border:0;
-	border: 1.5px solid #f0f0f0;
-	border-radius: 10px;
 	padding: 0.7rem;
 	width: 15%;
 	font-size: 1.3rem;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	transition: all 200ms ease-in-out;
+	color: #f0f0f0;
 }
 
-.btn-glb:hover{
-	border-color: #f0f0f0;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 2px 3px rgba(0,0,0,0.30);
+.btn-glb :hover{
+	box-shadow: 0.5 2px 4px rgba(0,0,0,0.4), 0 3px 4px rgba(0,0,0,0.6) !important;
 	transition: all 200ms ease-in-out;
 }
 
@@ -409,13 +407,16 @@ $greenSecondary:#77f4af;
 	box-shadow: $box-shadow;
 	padding: 1%;
 	display: inline-flex;
-	width: 80%;
+	width: 70%;
 	z-index: 999;
 	position: absolute;
 	bottom: 1px;
 	left: 0%;
-	margin: 1px 11%;
-	background: $bluePrimary;
+	margin: 1px 15%;
+	background: -moz-linear-gradient(-45deg, $bluePrimary 0%, $greenPrimary 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, $bluePrimary 0%,$greenPrimary 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 .map-filter form{
 	width: 100%;
@@ -534,7 +535,7 @@ $greenSecondary:#77f4af;
 	transform: translateX(0);
 	-webkit-transition: .3s ease all;
 	transition: .3s ease all;
-	padding: .5% 0; /* Temp: Just spacing. */
+	padding: .1px 0; /* Temp: Just spacing. */
 }
 
 #site-menu{
@@ -615,4 +616,109 @@ $greenSecondary:#77f4af;
 #site-wrapper.show-nav #site-canvas {
   -webkit-transform: translateX(-300px);
   transform: translateX(-300px);
+}
+
+
+.register{
+	background: url(../static/img/bg-2.jpg) #f2f2f2;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 100vh;
+	min-height: 100vh;
+
+		.card{
+			display: block;
+			margin: 2em auto;
+
+			.card-head{
+				text-align: center;
+				padding: 3% auto 5% auto;
+			}
+
+			.card-body{
+				padding: 2em;
+				text-align: center;
+
+			.form-control{
+				display: block;
+				margin: 0 auto;
+			}
+
+			.btn-glb{
+				margin: 11% 0 0 0;
+				min-width: 8rem;
+				width: 8rem;
+			}
+		}
+	}
+
+}
+
+.fullscreen-bg__video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.map_search{
+	height: 100vh;
+
+
+ 	h1{
+		text-align: center;
+		color: #fff;
+		font-size: 2.5em;
+		text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.7); position: fixed;
+		top: 35%;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.init_map{
+		display: block;
+		margin: 0 auto;
+		padding: 1em 2em;
+		width: 80%;
+
+		position: fixed;
+		top: 50%;
+
+		.form-control{
+			display: inline;
+			//fix this later
+			margin:0;
+			background: rgba(0,0,0,0.3);
+			color: #fff;
+			box-shadow: $box-shadow;
+		}
+		.form-control:focus{
+			border-color: $greenSecondary;
+		}
+		label{
+			display: block;
+			color: #fff;
+		}
+		.btn-glb{
+			display: inline;
+			width: 10%;
+			padding: .185em;
+		}
+	}
+
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .fullscreen-bg__video {
+    height: 300%;
+    top: -100%;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .fullscreen-bg__video {
+    width: 300%;
+    left: -100%;
+  }
 }
