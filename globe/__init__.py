@@ -9,13 +9,14 @@ app = Flask(__name__)
 
 #load the default settings
 app.config.from_pyfile("../config/config.py")
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
+#config_name = os.getenv('FLASK_CONFIGURATION', 'default')
+#app.config.from_object(config[config_name]) # object-based default configuration
 
 
 db = SQLAlchemy(app)
 mail = Mail(app)
 
-print db
 
 import globe.models
 import globe.views

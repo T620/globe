@@ -8,7 +8,9 @@ from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, S
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType, JSONType
 
-app.config.from_envvar('APP_CONFIG_FILE')
+#app.config.from_envvar('APP_CONFIG_FILE')
+app.config.from_pyfile("../config/config.py")
+
 secret_key = os.environ['APP_SECRET_KEY']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
