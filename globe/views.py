@@ -64,14 +64,11 @@ def test():
 
 
 
-@app.route("/post/<postID>", methods=["GET", "POST"])
+@app.route("/post/new/", methods=["GET", "POST"])
 @login_required
-def upload(postID):
-	if postID is None:
-		#user posted an image, not viewed one
-		if request.method=="POST":
+def upload():
+	if request.method=="POST":
 			file = request.files['image']
-			file.filename = "globe_pub_image"
 
 			#generate a file name
 			print session['g_user']
@@ -79,12 +76,12 @@ def upload(postID):
 			filename = str(session['g_user']) + "/" + id_gen.booking_id() + "_" + file.filename
 			dest = app.config['UPLOAD_FOLDER'] + filename
 			print dest
+			file.save(filename, dest)
 
-			try:
-				from util import image
-				image.crop(file, dest)
-			except:
-				return "could not save file: %s" % dest
+
+			from util import image
+			image.crop(file, dest)
+		#eturn "could not save file: %s" % dest
 
 
 			f = open(dest, 'rb')
@@ -145,21 +142,27 @@ def upload(postID):
 			db.session.commit()
 
 			return redirect(url_for('load_feed'))
-		else:
-			return redirect(url_for('load_feed'))
-
 	else:
-			from models import Post, User
+		return redirect(url_for('load_feed'))
 
-			#need the specific post
-			post = Post.query.filter_by(id=postID).first()
 
-			#now we need the posters profile to show to the user
-			profile = User.query.filter_by(username=post.username).first()
+@app.route("/post/<id>")
+def load_post(postID):
 
-			#render away
-			#TODO: change this template to a card in feed,html to a link saying "view full profile"
-			return render_template("user/profile.html", profile=profile, post=post, lightbox=True)
+	if postID == "new":
+		return redirect(url_for('load_feed'))
+	else:
+		from models import Post, User
+
+		#need the specific post
+		post = Post.query.filter_by(id=postID).first()
+
+		#now we need the posters profile to show to the user
+		profile = User.query.filter_by(username=post.username).first()
+
+		#render away
+		#TODO: change this template to a card in feed,html to a link saying "view full profile"
+		return render_template("user/profile.html", profile=profile, post=post, lightbox=True)
 
 
 #problem: geocoding service in upload form sometimes returns district/county instead of city.
@@ -180,7 +183,7 @@ def explore():
 		#check if that result yielded any results.
 		if postCount < 1:
 			#if the location provided by the user doesn't bring any results, ask the user to enter a place
-			return render_template("map_get_location.html")
+			return render_template("explore.html")
 		else:
 			center = posts[0].coordinates
 			print 'defining center of map: %s' % center
@@ -191,7 +194,7 @@ def explore():
 
 	else:
 		#if the location provided by the user doesn't bring any results, ask the user to enter a place
-		return render_template("map_get_location.html")
+		return render_template("explore.html")
 
 
 
@@ -278,6 +281,7 @@ def login():
 def register():
 	if request.method=="POST":
 		print "posted"
+		from models import User
 		from util import _user
 
 		newUser = {
@@ -288,12 +292,16 @@ def register():
 			"city": "Edinburgh"
 		}
 
+		_user.register(newUser)
 
-		if _user.register(newUser):
-																									#TODO: user now needs to login via email
-			return render_template('user/register_step-2.html', username=newUser['email'])
-		else:
-			return 'error when trying to add user to database :('
+		#set_default_photos(username)
+
+		return 'done'
+		#mail.send_email(subject, sender, recipients, text_body, html_body)
+
+			#return render_template('user/register_step-2.html', email=newUser['email'])
+		#else:
+			#return 'error when trying to add user to database :('
 	else:
 		return render_template("register.html")
 
@@ -363,6 +371,5 @@ def resend_email():
 
 
 
-if __name__ == '__app__':
-	app.debug=True
-	app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+	app.run()
