@@ -8,13 +8,12 @@ from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, S
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType, JSONType
 
-#app.config.from_envvar('APP_CONFIG_FILE')
-app.config.from_pyfile("../config/config.py")
 
 secret_key = os.environ['APP_SECRET_KEY']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
+print db
 
 class User(db.Model):
 	__table_args__ = {'extend_existing': True}
@@ -78,7 +77,7 @@ class Post(db.Model):
 	__table_args__ = {'extend_existing': True}
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	username = db.Column(db.String(60))
+	author = Column(Integer, ForeignKey('user.id'))
 	postedOn = db.Column(db.String(60))
 	postContent = db.Column(db.String(60))
 	likes = db.Column(db.String(5))
@@ -87,10 +86,14 @@ class Post(db.Model):
 	coordinates = db.Column(db.String)
 	appreaciated = db.Column(db.Boolean)
 	isPanorama = db.Column(db.Boolean)
+	#a user can have many posts, so the relationship is many to one, from post to user
+	user = db.relationship("User")
 
-	def __init__(self, id, username, postedOn, postContent, likes, image, city, coordinates, appreaciated, isPanorama):
+
+
+	def __init__(self, id, author, postedOn, postContent, likes, image, city, coordinates, appreaciated, isPanorama):
 		self.id = id
-		self.username=username
+		self.author=author
 		self.postedOn = postedOn
 		self.postContent = postContent
 		self.likes = likes
@@ -103,6 +106,7 @@ class Post(db.Model):
 
 	def __repr__(self):
 		return '<Id %r>' % self.id
+
 
 
 #no time to create an admin panel for now
