@@ -8,14 +8,13 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 
 #load the default settings
-app.config.from_pyfile("../config/config.py")
-
-#config_name = os.getenv('FLASK_CONFIGURATION', 'default')
-#app.config.from_object(config[config_name]) # object-based default configuration
-
+app.config.from_envvar("APP_CONFIG_FILE")
+print os.environ['APP_CONFIG_FILE']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db = SQLAlchemy(app)
 mail = Mail(app)
+
 
 
 import globe.models
