@@ -4,38 +4,80 @@ import os
 from globe import app
 from flask import session
 
-def file_allowed(filename, allowedExtensions):
-	#check the user isn't doing anything fishy by checking the file extension
-	return "." in filename and filename.rsplit('.', 1)[1] in allowedExtensions
+allowedExtensions= set(['jpg', 'jpeg', 'png'])
+
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1].lower() in allowedExtensions
 
 
-def save(file, folder):
-	#check the file has an allowed extension first
-	allowedExtensions = set(['jpeg', 'jpg', 'png'])
+def save(file, directory):
+	if file and allowed_file(file.filename):
+		filename = secure_filename(file.filename)
+		print 'saved file, cropping...'
+		os.makedirs(directory)
+		directory = os.path.join(directory, filename)
 
-	if file.filename != '':
-		if file_allowed(file.filename, allowedExtensions):
-			file.save(folder)
-			print 'saved file to: %s' % folder
+		try:
+			file.save(directory)
+			print directory
+			return True
+		except:
+			return False
+		#this last step creates the absolute full path for image magick to open the file from the saved dest.
 
 
-def modify(file, folder, name):
-	#do some magik
+
+
+# annoyingly, magick needs the image saved to a disk first.
+def crop(file):
+	print file
 	from wand.image import Image
 
-	#convert image to jpg format
-	print folder
-	with Image(filename=folder) as img:
-		img.format = 'jpeg'
-		#save again
-		if name == "cover":
-			img.crop(1920, 300)
+	with open(file) as f:
+		image_binary = f.read()
+
+
+	with Image(blob=image_binary) as img:
+		width = img.width
+		height = img.height
+
+		#if the width of an image is wider than 4096px, crop the width, but leave the height
+		if width > 4096:
+			print "Image too wide, cropping width"
+			img.crop(0, 0, 4096, height)
+			img.save(filename=file)
+			return True
+
 		else:
-			img.crop(250, 250)
-		subfolder = session['user'] + '/profile/' + name +".jpeg"
-		folder = os.path.join(app.config['UPLOAD_FOLDER'], subfolder)
-		img.save(filename=folder)
+			print "image is less than 4096px wide, saving"
+			img.save(filename=file)
+			return True
+
+
+
+# uploads the image to S3 and deletes from the server
+def upload_to_s3(directory, url):
+	import os, tinys3, string
+	from globe import app
+
+	#init conection to S3
+	conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
+	f = open(directory, 'rb')
+
+	try:
+		conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
+		print 'image has been uploaded to :%s' % url
+		print ", deleting local copy"
+		return True
+	except:
+		print "failed to uploadimage"
+		return False
+
 
 
 def delete(file):
-	os.remove(file)
+	try:
+		os.remove(file)
+	except:
+		print 'could not delete file: %s' % file
