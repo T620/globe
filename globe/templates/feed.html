@@ -43,7 +43,7 @@
 						<a href="#0" class="trigger">Toggle View</a>
 					</div>
 					<div class="card-body maximised-u" id="upload-main">
-						<form action="/post/" class="tiny-form" method="post" enctype="multipart/form-data">
+						<form action="/post/upload/" class="tiny-form" method="post" enctype="multipart/form-data">
 							<div class="col">
 								<label for="country">Where have you been recently?</label>
 								<br />
@@ -73,7 +73,7 @@
 						</div>
 						<div class="profile-creds">
 							<div class="profile-name">
-								<a href="/user/{{post.username}}">{{post.username}}</a>
+								<a href="/user/{{post.user.username}}">{{post.user.username}}</a>
 							</div>
 							<div class="post-loc">
 								<i class="fa fa-map-marker"></i> {{post.city}}
@@ -103,7 +103,7 @@
 	</div>
 	<div class="remodal" data-remodal-id="modal">
 		<button class="remodal-close" data-remodal-action="close"></button>
-		<form class="no-style" id="form-main" method="post" action="/post/" enctype="multipart/form-data">
+		<form class="no-style" id="form-main" method="post" action="/post/new/" enctype="multipart/form-data">
 			<div id="remodal-wrapper">
 				<div id="form-stage-1" class="form-visible">
 					<h3>New Post</h3>
