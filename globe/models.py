@@ -6,8 +6,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as sa
 from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, Sequence, func
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType, JSONType
-
+from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType
+from sqlalchemy.dialects.postgresql import JSON
 
 secret_key = os.environ['APP_SECRET_KEY']
 
@@ -31,8 +31,6 @@ class User(db.Model):
 	forename = db.Column(db.String(20))
 	surname = db.Column(db.String(20))
 	city = db.Column(db.String(40))
-	followers = db.Column(db.String(6000))
-	following = db.Column(db.String(6000))
 	biography = db.Column(db.String(200))
 	verified = db.Column(db.Boolean)
 	photo = db.Column(db.String(150))
@@ -51,7 +49,7 @@ class User(db.Model):
 		return unicode(self.id)
 
 
-	def __init__(self, id, email, username, password, forename, surname, city, followers, following, biography, confirmationToken, passwordToken, verified, photo):
+	def __init__(self, id, email, username, password, forename, surname, city, biography, confirmationToken, passwordToken, verified, photo):
 		self.id = id
 		self.email=email
 		self.username=username
@@ -59,8 +57,6 @@ class User(db.Model):
 		self.forename=forename
 		self.surname=surname
 		self.city=city
-		self.followers=followers
-		self.following=following
 		self.biography=biography
 		self.confirmationToken=confirmationToken
 		self.passwordToken=passwordToken
@@ -106,6 +102,30 @@ class Post(db.Model):
 
 	def __repr__(self):
 		return '<Id %r>' % self.id
+
+
+# a leader has followers
+# a follower has a leader
+
+class Followers(db.Model):
+	__table_args__ = {'extend_existing': True}
+
+	id=db.Column(db.Integer, primary_key=True, nullable=False)
+	#maxLength is 6 digits, so one per column
+	leader = db.Column(db.Integer, nullable=False, primary_key=False)
+	#follower is ForeignKey because we want the followers details, not the leaders, we already have those.
+	follower = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+
+
+	user = db.relationship("User")
+
+	def __init__(self, id, leader, follower):
+		self.id=id
+		self.leader=leader
+		self.follower=follower
+
+	def __repr__(self):
+		return '<leader %r>' % self.leader
 
 
 
