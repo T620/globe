@@ -5,13 +5,13 @@
 	<div class="profile-header">
 		<div class="row">
 			<div class="col-xs-12 col-md-2">
-				<img class="profile-header-img" src="{{profile.photo}}" width="150px" height="150px">
+				<img class="profile-header-img" src="{{user.photo}}" width="150px" height="150px">
 			</div>
 			<div class="col-xs-12 col-md-8">
 				<div class="profile-header-intro">
-					<h1>{{profile.forename}} {{profile.surname}}</h1>
-					<p><a href="/profile/{{username}}">@{{profile.username}}</a></p>
-					<h4>{{profile.city}}</h4>
+					<h1>{{user.forename}} {{user.surname}}</h1>
+					<p><a href="/profile/{{username}}">@{{user.username}}</a></p>
+					<h4>{{user.city}}</h4>
 				</div>
 			</div>
 		</div>
@@ -38,13 +38,13 @@
 			<img src="{{post.image}}" width="auto">
 		{% endif %}
 	{% else %}
-		<div class="container">
+	<div class="container">
 		<div class="profile-main">
 			<h2 class="section-heading">Bio</h2>
-				{% if profile.biography == 'None' %}
+				{% if user.biography == 'None' %}
 					<p>This user has no biography :(</p>
 				{% else %}
-					<p>{{profile.biography}}</p>
+					<p>{{user.biography}}</p>
 					<a href="#0">Report</a>
 				{% endif %}
 		</div>
@@ -127,6 +127,40 @@
 				</div>
 
 
+			</div>
+
+		<div class="profile-main_followers">
+			<div class="row ma-1">
+				<div class="col text-left">
+					<h2 class="section-heading gallery-nav">Followers</h2>
+				</div>
+			</div>
+			<div class="row ma-2">
+				{% for person in followers %}
+					<div class="col-xs-6 col-md-3 text-center">
+						<a href="/user/{{person.user.username}}">
+							<img src={{person.user.photo}} alt="image of user {{person.user.username}}" 	class="profile-thumb" width="75px" height="75px">
+						</a>
+						<a href="/user/{{person.user.username}}" class="follower-sub">{{person.user.forename}} {{person.user.surname}}</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="profile-main_followers">
+			<div class="row ma-1">
+				<div class="col text-left">
+					<h2 class="section-heading gallery-nav">Following</h2>
+				</div>
+			</div>
+			<div class="row ma-2">
+				{% for person in users %}
+					<div class="col-xs-6 col-md-3 text-center">
+						<a href="/user/{{person.username}}">
+							<img src={{person.photo}} alt="image of user {{person.username}}" 	class="profile-thumb" width="75px" height="75px">
+						</a>
+						<a href="/user/{{person.username}}" class="follower-sub">{{person.forename}} {{person.surname}}</a>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div><!--/container-->

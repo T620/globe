@@ -197,14 +197,45 @@ def load_int_user():
 		return "User not found after logging in??"
 
 
+
+@app.route("/profile/<username>")
+def redr_to_user(username):
+	return redirect(url_for('load_ext_user', username=username))
+
+
 #external user (not the person logged in, someone else)
 @app.route("/user/<username>")
 def load_ext_user(username):
 	#grab the user's basic profile info
-	from models import User, Post
+	from models import User, Post, Followers, Following
 	user = User.query.filter_by(username=username).first_or_404()
 	posts = Post.query.filter_by(author=user.id).all()
-	return render_template("user/profile.html", user=user, posts=posts)
+
+
+	#josh has followers:
+	#  03114
+	#  12335
+	users = []
+	#grab the followers
+	#josh.followers = ['03114', '12335']
+	followers = Followers.query.filter_by(leader=user.id).all()
+
+	UserIsFollowing = Followers.query.filter_by(follower='1587').all()
+	print UserIsFollowing
+
+	for user in UserIsFollowing:
+		print user.leader
+		leader = User.query.filter_by(id=user.leader).first()
+
+		print leader.forename
+		users.append(leader)
+
+	# now check the data was stored correctly
+	for user in users:
+		print user.forename
+
+
+	return render_template("user/profile.html", user=user, posts=posts, followers=followers, users=users)
 
 
 
