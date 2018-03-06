@@ -36,10 +36,11 @@
 			</div>
 			<div class="col-xs-12 col-sm-7 m-l-4">
 				<div class="card" id="feed-upload">
+					{% if current_user.is_authenticated %}
 					<div class="card-head">
 						<img class="profile-thumb" height="40px" src=
 						"/static/img/default_profile.jpg" width="40px">
-						<a href="/user/1">Josh</a>
+						<a href="/user/">{{current_user.forename}}</a>
 						<a href="#0" class="trigger">Toggle View</a>
 					</div>
 					<div class="card-body maximised-u" id="upload-main">
@@ -55,6 +56,9 @@
 							</div>
 						</form>
 					</div>
+					{% else %}
+					<a href="/login/" class="text-center">You need to be logged in to post</a>
+					{% endif %}
 				</div>
 			</div>
 		</div><!--/row-->
@@ -73,17 +77,22 @@
 						</div>
 						<div class="profile-creds">
 							<div class="profile-name">
-								<a href="/user/{{post.user.username}}">{{post.user.username}}</a>
+								<a href="/user/{{post.user.username}}">{{post.user.forename}}
+								{{post.user.surname}}</a>
 							</div>
 							<div class="post-loc">
-								<i class="fa fa-map-marker"></i> {{post.city}}
+								<i class="fa fa-map-marker"></i><a href="/explore/?filter={{post.city}}">{{post.city}}</a>
 							</div>
 						</div>
 					</div>
 					<div class="card-body">
-						<iframe allowfullscreen height="400" src=
-						"https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https://{{post.image}}"
-						style="border-style:none;" width="600"></iframe>
+						{% if post.isPanorama %}
+							<iframe allowfullscreen height="400" src=
+							"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{s3_repo}}{{post.image}}"
+							style="border-style:none;" width="600"></iframe>
+						{% else %}
+							<img src="{{s3_repo}}{{post.image}}" alt="{{post.postContent}}" style="border:0;"width="600">
+						{% endif %}
 					</div>
 					<div class="card-footer">
 						<div class="caption">

@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <body data-spy="scroll" data-target=".profile-header-collapse" data-offset="50">
 <section>
 	<div class="profile-header">
 		<div class="row">
 			<div class="col-xs-12 col-md-2">
-				<img class="profile-header-img" src="{{user.photo}}" width="150px" height="150px">
+				<img class="profile-header-img" src="{{master.photo}}" width="150px" height="150px">
 			</div>
 			<div class="col-xs-12 col-md-8">
 				<div class="profile-header-intro">
-					<h1>{{user.forename}} {{user.surname}}</h1>
-					<p><a href="/profile/{{username}}">@{{user.username}}</a></p>
-					<h4>{{user.city}}</h4>
+					<h1>{{master.forename}} {{master.surname}}</h1>
+					<p><a href="/profile/{{master.username}}">@{{master.username}}</a></p>
+					<h4>{{master.city}}</h4>
 				</div>
 			</div>
 		</div>
@@ -19,13 +20,13 @@
 	<div class="profile-sub-nav">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top sticky-top">
 			{% if lightbox %}
-				<a class="navbar-brand" href="/profile/{{post.username}}#photos">About</a>
+				<a class="navbar-brand" href="/profile/{{post.username}}#about">About</a>
 				<a class="nav-item nav-link" href="/profile/{{post.username}}#photos">Photos</a>
 				<a class="nav-item nav-link" href="/profile/{{post.username}}#folowers">Followers</a>
 			{% else %}
-				<a class="navbar-brand" href="/profile/#photos">About</a>
-				<a class="nav-item nav-link" href="/profile/#photos">Photos</a>
-				<a class="nav-item nav-link" href="/profile/#followers">Followers</a>
+				<a class="navbar-brand" href="/profile/{{master.username}}#about">About</a>
+				<a class="nav-item nav-link" href="/profile/{{master.username}}#photos">Photos</a>
+				<a class="nav-item nav-link" href="/profile/{{master.username}}#followers">Followers</a>
 			{% endif %}
 		</nav>
 	</div>
@@ -41,10 +42,10 @@
 	<div class="container">
 		<div class="profile-main">
 			<h2 class="section-heading">Bio</h2>
-				{% if user.biography == 'None' %}
+				{% if master.biography == 'None' %}
 					<p>This user has no biography :(</p>
 				{% else %}
-					<p>{{user.biography}}</p>
+					<p>{{master.biography}}</p>
 					<a href="#0">Report</a>
 				{% endif %}
 		</div>
@@ -153,7 +154,7 @@
 				</div>
 			</div>
 			<div class="row ma-2">
-				{% for person in users %}
+				{% for person in following %}
 					<div class="col-xs-6 col-md-3 text-center">
 						<a href="/user/{{person.username}}">
 							<img src={{person.photo}} alt="image of user {{person.username}}" 	class="profile-thumb" width="75px" height="75px">

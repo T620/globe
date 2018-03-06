@@ -7,7 +7,7 @@
 		<div class="map-filter">
 			<p>Currently exploring:</p>
 			<h2>{{location}}</h2>
-			<a href="#0" onclick="update_loc();" class="btn btn-outline-secondary mr-3">Update</a>
+			<a href="#0" onclick="update_loc();" class="btn btn-outline-secondary">Update</a>
 			<a href="#0" onclick="mini_filter();" class="btn btn-outline-secondary">Minimise</a>
 		</div>
 
@@ -41,7 +41,8 @@ function initialize() {
     var bounds = new google.maps.LatLngBounds();
     var mapOptions = {
 	    mapTypeId: 'roadmap',
-		center: '{{center}}'
+		center: '{{center}}',
+		zoom: 1
 	}
 
     // Display a map on the page
@@ -92,9 +93,37 @@ function initialize() {
 
     // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
     var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
-        this.setZoom(14);
+        this.setZoom(1);
         google.maps.event.removeListener(boundsListener);
     });
+
+	var map_moved = google.maps.event.addListener((map), 'center_changed', function(event) {
+        center = map.getCenter();
+		var lattitude = center.lat();
+		var longitude = center.lng();
+		//console.log(lattitude, longitude);
+		var coords = lattitude + ", " + longitude;
+		return reloadMap(coords);
+    });
+
+
+
+	function reloadMap(coords){
+		//console.log(coords);
+
+		$.ajax({
+			url: '/lookup/' + coords,
+			method: 'get',
+		}).done(function(data){
+			console.log(data);
+			if (data !== '{{ location }}' ) {
+				console.log("WHOOPSIE DIDDLE!");
+				var location = "http://localhost:5000/explore?filter=" + data;
+				window.location.href = location;
+			}
+		});
+	}
+
 
 }
 

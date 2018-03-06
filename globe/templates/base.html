@@ -49,7 +49,7 @@
 				<div class="nav-user">
 					<img class="profile-thumb" width="100px" height="100px" 	src="{{current_user.photo}}" alt="profile image of {{current_user.forename}} {{current_user.surname}}"/>
 
-					<a href="/profile/{{current_user.id}}" class="name">{{current_user.forename}}</a>
+					<a href="/profile/{{current_user.username}}" class="name">{{current_user.forename}}</a>
 					<a href="/logout/">Log Out</a>
 				</div>
 				{% else %}
@@ -60,7 +60,9 @@
 			<div class="site-menu_main">
 				<h2>Menu</h2>
 				<ul>
-					<li><a class="upload" href="#modal">Upload</a></li>
+					{% if current_user.is_authenticated %}
+						<li><a class="upload" href="#upload">Upload</a></li>
+					{% endif %}
 					<li><a href="/feed/">Feed</a></li>
 					<li><a href="/explore">Explore</a></li>
 
@@ -80,11 +82,14 @@
 	</div>
 </div>
 
-<a href="#modal" id="fab">
+{% if current_user.is_authenticated%}
+	<a href="#modal" id="fab">
 	<div class="fab_">
 		&plus;
 	</div>
-</a>
+	</a>
+{% endif %}
+
 	<script>
 	$(function() {
   $('.toggle-nav').click(function() {
