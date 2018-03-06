@@ -1,0 +1,22 @@
+{
+	"Wales": [{
+		"Banor": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Cardiff": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Newport": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"St Asaph (Llanelwy)": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"St Davids": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Swansea": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}]
+	}]
+}

@@ -1,8 +1,12 @@
 #geocoding utilites
 import globe
+from globe import app
 import geopy
 from geopy.geocoders import Nominatim
-geolocator = Nominatim()
+geolocator = Nominatim(timeout=3)
+import os
+
+key = os.environ['MAPS_API_KEY']
 
 def get(address):
 	#returns the lat and long of a given address
@@ -34,3 +38,11 @@ def getUserLocation():
 		"lattitude": j['latitude'],
 		"longitude": j['longitude']
 	}
+
+
+def reverse(coords):
+	from geopy.geocoders import GoogleV3
+	geolocator = GoogleV3(api_key=key, domain='maps.google.co.uk', timeout=3)
+	address = geolocator.reverse(coords)
+	print address
+	return address

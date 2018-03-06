@@ -1,0 +1,19 @@
+{
+	"N.Ireland": [{
+		"Armagh": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Belfast": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Lisburn": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Londonderry": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Newry": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}]
+	}]
+}

@@ -20,7 +20,7 @@ def password_hash_matches(userid, password):
 		return False
 
 
-def set_default_photos(username):
+def set_default_photos(url):
 	import os, tinys3, string
 	from globe import app
 
@@ -29,9 +29,7 @@ def set_default_photos(username):
 
 	# create the user's s3 subdir + image path
 	#josh.tait912/profile/placeholder.jpg
-	filename = str(username) + "/" + "profile/" + 'placeholder.jpg'
-	#filename variable matches the url structure of S3 exactly, so I can reuse it here
-	url = 'static/user_uploads/' + filename
+
 	photo = app.config['UPLOAD_FOLDER'] + "profiles/placeholder.jpg"
 
 	#now the file and path are ready, save the file to the user's folder in s3
@@ -39,10 +37,8 @@ def set_default_photos(username):
 	conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
 	#https://s3.aws.com/endpoint/bucket/static/user_uploads/josh.tait516/profile/placeholder.jpg
 	#photoUrl = os.environ['S3_ENDPOINT'] + "/" os.environ['S3_BUCKET_NAME'] + url
-	photoUrl = "https://s3.us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/" + url
-	print "[info]: photo url: %s"  % photoUrl
-	print "uploaded default profile photo, creating user_uploads subdir..."
 
+	print "uploaded default profile photo, creating user_uploads subdir..."
 
 def register(newUser):
 	from globe import app, db
@@ -55,7 +51,11 @@ def register(newUser):
 	passwordToken = uuid.uuid4().hex
 	confirmToken = uuid.uuid4().hex
 
-	#set_default_photos(username)
+	url = '/static/user_uploads/' + str(userID) + "/profile/" + 'placeholder.jpg'
+
+	photoUrl = "https://s3.us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885" + url
+	print photoUrl
+	set_default_photos(url)
 
 	newAccount = User(
 		id=userID,
@@ -67,11 +67,9 @@ def register(newUser):
 		forename=unicode.title(newUser['forename']),
 		surname=unicode.title(newUser['surname']),
 		city=newUser['city'],
-		followers=0,
-		following="None",
 		biography="None",
 		verified="False",
-		photo=None
+		photo=photoUrl
 	)
 
 	db.session.add(newAccount)
