@@ -21,7 +21,8 @@ login_manager.login_view =  "login"
 bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ['APP_SECRET_KEY']
-app.config['UPLOAD_FOLDER'] = "/home/josh/projects/globe/globe/static/user_uploads/"
+
+app.config['UPLOAD_FOLDER'] = os.envrion['UPLOAD_PATH']
 
 @app.before_request
 def before_request():
