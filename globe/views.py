@@ -22,7 +22,7 @@ bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ['APP_SECRET_KEY']
 
-app.config['UPLOAD_FOLDER'] = os.envrion['UPLOAD_PATH']
+app.config['UPLOAD_FOLDER'] = os.environ['UPLOAD_PATH']
 
 @app.before_request
 def before_request():
