@@ -44,8 +44,9 @@ def load_feed():
 	posts = Post.query.all()
 
 	key = os.environ.get('MAPS_API_KEY')
+	s3_repo = "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/"
 
-	return render_template("feed.html", posts=posts, key=key)
+	return render_template("feed.html", posts=posts, key=key, s3_repo=s3_repo)
 
 
 @app.route("/test")
@@ -85,7 +86,7 @@ def upload():
 			url = 'static/user_uploads/' + str(session['g_user']) + "/posts/" + str(postID) + "/" + str(file.filename)
 			if files.upload_to_s3(directory, url):
 				#modify so it deletes the folder and the files inside
-				#directory = app.config['UPLOAD_FOLDER'] + str(session['g_user']) + "/posts/" + str(postID) + "/"
+				directory = app.config['UPLOAD_FOLDER'] + str(session['g_user']) + "/posts/" + str(postID) + "/"
 				files.delete(directory)
 
 				# add post to Posts
@@ -116,22 +117,46 @@ def upload():
 
 
 @app.route("/post/<id>")
-def load_post(postID):
+def load_post(id):
 
-	if postID == "new":
+	if id == "new":
 		return redirect(url_for('load_feed'))
 	else:
 		from models import Post, User
 
 		#need the specific post
-		post = Post.query.filter_by(id=postID).first()
+		post = Post.query.filter_by(id=id).first_or_404()
 
 		#now we need the posters profile to show to the user
-		profile = User.query.filter_by(username=post.username).first()
+		#rofile = User.query.filter_by(username=post.author).first_or_404()
 
 		#render away
 		#TODO: change this template to a card in feed,html to a link saying "view full profile"
-		return render_template("user/profile.html", profile=profile, post=post, lightbox=True)
+		return render_template("user/post.html", post=post)
+
+
+'''
+@app.route("/lookup/<place>", methods=["GET", "POST"])
+def lookup(place):
+	from util import places
+
+	# check if the place entered was a county
+	if places.determineCounty(place):
+		# lookup the city of that county
+		for county in json.parse(counties.json, 'r'):
+			if place == county:
+				return county
+
+		filename = str(unicode.title(county)) + ".csv"
+		with open(filename, 'rb') as csv:
+			rows = csv.reader(csvfile, delimiter=' ', quotechar='|')
+			for row in rows:
+				print row
+	else:
+		return place
+
+'''
+
 
 @app.route("/demo/")
 def demo():
@@ -152,6 +177,7 @@ def explore():
 
 	# if there is no filter in place
 	if location is not None:
+		location = unicode.title(location)
 		#grab all the records from the database according to that location
 		from models import Post
 
@@ -207,18 +233,18 @@ def redr_to_user(username):
 @app.route("/user/<username>")
 def load_ext_user(username):
 	#grab the user's basic profile info
-	from models import User, Post, Followers, Following
-	user = User.query.filter_by(username=username).first_or_404()
-	posts = Post.query.filter_by(author=user.id).all()
+	from models import User, Post, Followers
+	master = User.query.filter_by(username=username).first_or_404()
+	posts = Post.query.filter_by(author=master.id).all()
 
 
 	#josh has followers:
 	#  03114
 	#  12335
-	users = []
+	following = []
 	#grab the followers
 	#josh.followers = ['03114', '12335']
-	followers = Followers.query.filter_by(leader=user.id).all()
+	followers = Followers.query.filter_by(leader=master.id).all()
 
 	UserIsFollowing = Followers.query.filter_by(follower='1587').all()
 	print UserIsFollowing
@@ -228,14 +254,14 @@ def load_ext_user(username):
 		leader = User.query.filter_by(id=user.leader).first()
 
 		print leader.forename
-		users.append(leader)
+		following.append(leader)
 
 	# now check the data was stored correctly
-	for user in users:
+	for user in following:
 		print user.forename
 
 
-	return render_template("user/profile.html", user=user, posts=posts, followers=followers, users=users)
+	return render_template("user/profile.html", master=master, posts=posts, followers=followers, following=following)
 
 
 
