@@ -1,3 +1,4 @@
+
 @import 'typography';
 @import 'components';
 
@@ -57,14 +58,11 @@ body {
 	background: #fefefe;
 }
 .profile-header{
-	padding: 2.5%;
-}
-.profile-header, .profile-header-collapse{
-	background: #283c86; /* Old browsers */
-	background: -moz-linear-gradient(-45deg, #283c86 0%, #45a247 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, #283c86 0%,#45a247 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, #283c86 0%,#45a247 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#283c86', endColorstr='#45a247',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	padding: 0;
+	background: -moz-linear-gradient(45deg, $bluePrimary 0%, $greenPrimary 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(45deg, $bluePrimary 0%,$greenPrimary 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .profile-header-intro h1, h4{
@@ -79,6 +77,8 @@ body {
 .profile-header-img{
 	border-radius: 100%;
 	border: 2px solid #f0f0f0;
+	display: block;
+	margin: 2em auto;
 }
 .profile-main{
 	text-align: left;

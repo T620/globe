@@ -388,6 +388,18 @@ $greenSecondary:#77f4af;
 }
 
 
+.profile-main_followers{
+	padding: 2em 0;
+	margin-top: 1em;
+
+	.follower-sub{
+		display: block;
+		margin: 1em auto;
+	}
+
+}
+
+
 .post-loc{
 	font-size: .8rem;
 }
