@@ -95,6 +95,12 @@ def upload():
 				postCount = postCount + 1
 				print postCount
 
+				# quick patch. for some reason python treats this form input as a string not a bool.
+				if request.form['image-type'] == "True":
+					isPanorama = True
+				else:
+					isPanorama = False
+
 				post = Post (
 					id=postCount,
 					author=session['g_user'],
@@ -105,7 +111,7 @@ def upload():
 					city=request.form['location-city'],
 					coordinates=request.form['location-coords'],
 					appreaciated=True,
-					isPanorama=request.form['image-type']
+					isPanorama=isPanorama
 				)
 
 				db.session.add(post)
