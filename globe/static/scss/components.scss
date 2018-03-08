@@ -16,6 +16,18 @@ $greenPrimary: #90fd9e;
 $greenSecondary:#77f4af;
 
 
+a{
+	color: $bluePrimary;
+	transition: all 300ms ease-in-out;
+}
+a :hover{
+	color: $blueSecondary;
+	transition: all 300ms ease-in-out;
+}
+
+.nav-item .current{
+	border-bottom: 3px solid $greenPrimary;
+}
 .card{
 	margin: 7%;
 	box-shadow: $box-shadow;
