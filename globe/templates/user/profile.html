@@ -20,11 +20,11 @@
 	<div class="profile-sub-nav">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top sticky-top">
 			{% if lightbox %}
-				<a class="navbar-brand" href="/profile/{{post.username}}#about">About</a>
+				<a class="nav-item nav-link current" href="/profile/{{post.username}}#about">About</a>
 				<a class="nav-item nav-link" href="/profile/{{post.username}}#photos">Photos</a>
 				<a class="nav-item nav-link" href="/profile/{{post.username}}#folowers">Followers</a>
 			{% else %}
-				<a class="navbar-brand" href="/profile/{{master.username}}#about">About</a>
+				<a class="nav-item nav-link current" href="/profile/{{master.username}}#about">About</a>
 				<a class="nav-item nav-link" href="/profile/{{master.username}}#photos">Photos</a>
 				<a class="nav-item nav-link" href="/profile/{{master.username}}#followers">Followers</a>
 			{% endif %}
