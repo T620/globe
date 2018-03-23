@@ -18,15 +18,25 @@ def save(file, directory):
 		os.makedirs(directory)
 		directory = os.path.join(directory, filename)
 
-		try:
-			file.save(directory)
-			print directory
-			return True
-		except:
-			return False
-		#this last step creates the absolute full path for image magick to open the file from the saved dest.
+		if os.environ['FILE_STORAGE_LOC'] == "SERVER":
+			try:
+				upload_to_s3(directory)
+			except:
+				return False
 
+		else:
+			print 'now saving file locally'
+			try:
+				#os level operation
+				file.save(directory)
+				print directory
+				return True
+			except:
+				return False
 
+	else:
+		print "file is not allowed!"
+		return False
 
 
 # annoyingly, magick needs the image saved to a disk first.
@@ -57,7 +67,7 @@ def crop(file):
 
 
 # uploads the image to S3 and deletes from the server
-def upload_to_s3(directory, url):
+def upload_to_s3(directory):
 	import os, tinys3, string
 	from globe import app
 
@@ -66,12 +76,12 @@ def upload_to_s3(directory, url):
 	f = open(directory, 'rb')
 
 	try:
-		conn.upload(url, f, os.environ['S3_BUCKET_NAME'])
-		print 'image has been uploaded to :%s' % url
+		conn.upload(directory, f, os.environ['S3_BUCKET_NAME'])
+		print 'image has been uploaded to :%s' % directory
 		print ", deleting local copy"
 		return True
 	except:
-		print "failed to uploadimage"
+		print "failed to upload image"
 		return False
 
 
