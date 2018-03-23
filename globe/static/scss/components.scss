@@ -55,14 +55,17 @@ a:hover{
 	transition: all 200ms ease-in-out;
 	font-size: .7em;
 	text-align: center;
+	background: inherit;
 }
 
 .form-control:hover{
 	border-bottom: 1.5px solid $accent;
 	transition: all 200ms ease-in-out;
+	background: inherit;
 }
 
 .form-control:focus{
+	background: inherit;
 	margin: .7em;
 	border: 0;
 	border-radius: 0;
@@ -503,35 +506,36 @@ a:hover{
 
 #map_canvas{
 	position: absolute;
-	top:0;
+	top:10%;
 	left:0;
-	width: 100%;
-	height: 100%;
+	width: 85%;
+	height: 90%;
 	padding: 10%;
-	border: 2px solid #000;
 	z-index: 0;
 }
 
 .map-filter{
-	box-shadow: $box-shadow;
 	padding: 1%;
-	display: inline-flex;
-	width: 70%;
+	display: block;
+	width: 18em;
 	z-index: 999;
 	position: absolute;
-	bottom: 1px;
-	left: 0%;
-	margin: 1px 15%;
-	background: -moz-linear-gradient(-45deg, $bluePrimary 0%, $greenPrimary 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, $bluePrimary 0%,$greenPrimary 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	top: 10%;
+	right: 0%;
+	background: #e0e0e0;
+	text-align: center;
+	height: 90%;
+
+	.search{
+		margin-top: 30%;
+		.form-control{
+			margin-bottom: 10%;
+			color: $base;
+		}
+	}
+
 }
-.map-filter form{
-	width: 100%;
-	/*override the default form display property */
-	display: inline-flex !important;
-}
+
 .map-filter p{
 	color: #fefefe;
 }
