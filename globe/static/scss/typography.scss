@@ -2,8 +2,7 @@ $headingFont: 'PT Sans Narrow', sans-serif;
 $bodyFont: 'Roboto', sans-serif;
 
 
-$heading-color: #283c86;
-$body-color: #161616;
+$heading-color: #81f8d6;
 
 $heading-spacing: .6px;
 $heading-margin: 1%;
@@ -13,10 +12,9 @@ h1, h2, h3, h4, h5, h6{
 	font-family: $headingFont;
 	letter-spacing: $heading-spacing;
 	margin: $heading-margin;
-	color: $heading-color;
+	color: $heading-color !important;
 }
 
 body, p, i{
 	font-family: $bodyFont;
-	color: $body-color;
 }
