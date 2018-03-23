@@ -106,9 +106,10 @@ migrations/
 
 
 # static
-
+*.css
+*.css.map
 static/css/*
-static/.sass-cache/
+.sass-cache
 static/user_uploads/
 
 web_resources.md
