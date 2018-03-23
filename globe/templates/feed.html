@@ -4,60 +4,61 @@
 <script src="/static/js/upload.js"></script>
 
 <section class="remodal-bg">
-	<div class="container no-padding" id="feed-main_controls">
+	<div class="container-fluid no-padding" id="feed-main_controls">
 		<div class="row no-gutters" style="width:100%;">
 			<div class="col-xs-12 col-sm-3">
 			  <div class="maximised-f" id="filter-parent">
 				<div class="card filter" id="filter-main">
-					<h3>Filter Posts</h3>
-					<a href="#0" id="toggleFilter">Toggle View</a>
-					<form action="/feed/filter/" metfilter-parenthod="post" id="feed-filter">
-						<div class="form-check-wrapper">
-							<div class="form-check">
-								<input checked class="form-check-input" id="exampleRadios1" name=
-								"exampleRadios" type="radio" value="option1"> <label class=
-								"form-check-label" for="exampleRadios1">Your Feed</label>
+					<div class="head ui">
+						<h3>Filter Posts</h3>
+					</div>
+					<div class="body">
+						<a href="#0" id="toggleFilter">Toggle View</a>
+						<form action="/feed/filter/" metfilter-parenthod="post" id="feed-filter">
+							<div class="form-check-wrapper">
+								<div class="form-check">
+									<input checked class="form-check-input" id="exampleRadios1" name=
+									"exampleRadios" type="radio" value="option1"> <label class=
+									"form-check-label" for="exampleRadios1">Your Feed</label>
+								</div>
+								<div class="form-check">
+									<input checked class="form-check-input" id="exampleRadios1" name=
+									"exampleRadios" type="radio" value="option1"> <label class=
+									"form-check-label" for="exampleRadios1">Trending</label>
+								</div>
+								<div class="form-check">
+									<input checked class="form-check-input" id="exampleRadios1" name=
+									"exampleRadios" type="radio" value="option1"> <label class=
+									"form-check-label" for="exampleRadios1">Country</label>
+								</div>
 							</div>
-							<div class="form-check">
-								<input checked class="form-check-input" id="exampleRadios1" name=
-								"exampleRadios" type="radio" value="option1"> <label class=
-								"form-check-label" for="exampleRadios1">Trending</label>
-							</div>
-							<div class="form-check">
-								<input checked class="form-check-input" id="exampleRadios1" name=
-								"exampleRadios" type="radio" value="option1"> <label class=
-								"form-check-label" for="exampleRadios1">Country</label>
-							</div>
-						</div>
-						<button class="btn btn-outline-secondary text-center">Apply</button>
-					</form>
+							<button class="btn btn-outline text-center">Apply</button>
+						</form>
+					</div>
 				</div><!--/filter-->
 			  </div>
 			</div>
-			<div class="col-xs-12 col-sm-7 m-l-4">
+			<div class="col-xs-12 col-sm-offset-4 col-sm-5" style="margin-left: 4%;">
 				<div class="card" id="feed-upload">
 					{% if current_user.is_authenticated %}
-					<div class="card-head">
-						<img class="profile-thumb" height="40px" src=
-						"/static/img/default_profile.jpg" width="40px">
+					<div class="head">
+						<img class="profile-thumb" height="50px" src=
+						"/static/img/default_profile.jpg" width="50px">
 						<a href="/user/">{{current_user.forename}}</a>
 						<a href="#0" class="trigger">Toggle View</a>
 					</div>
-					<div class="card-body maximised-u" id="upload-main">
-						<form action="/post/upload/" class="tiny-form" method="post" enctype="multipart/form-data">
+					<div class="body maximised-u" id="upload-main">
+						<form action="/search/" method="get" enctype="multipart/form-data">
 							<div class="col">
-								<label for="country">Where have you been recently?</label>
+								<label for="country">Explore a new location, {{current_user.forename}}</label>
 								<br />
-								<div class="inline">
-									<input class="form-control" name="country" placeholder="Cairo, Egpyt"
-									type="text">
-									<button type="submit" class="btn btn-outline-secondary">Share</button>
-								</div>
+								<input class="form-control" name="country" placeholder="Cairo, Paris, London, Brussels" type="text">
+								<button type="submit" class="btn btn-glb">Explore</button>
 							</div>
 						</form>
 					</div>
 					{% else %}
-					<a href="/login/" class="text-center">You need to be logged in to post</a>
+					<a href="/login/" class="text-center">You need to be logged in to post.</a>
 					{% endif %}
 				</div>
 			</div>
@@ -71,7 +72,7 @@
 			{% for post in posts %}
 			<div class="col-xs-12">
 				<div class="card">
-					<div class="card-head social-head">
+					<div class="head social-head">
 						<div class="profile-img">
 							<img class="img img-circle profile-thumb" height="50px" src="/static/img/default_profile.jpg" width="50px">
 						</div>
@@ -85,7 +86,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="card-body">
+					<div class="body">
 						{% if post.isPanorama %}
 							<iframe allowfullscreen height="400" src=
 							"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{post.image}}"
@@ -94,7 +95,7 @@
 							<img src="{{post.image}}" alt="{{post.postContent}}" style="border:0;"width="600">
 						{% endif %}
 					</div>
-					<div class="card-footer">
+					<div class="footer">
 						<div class="caption">
 							<p>{{post.postContent}}</p>
 						</div>
@@ -119,7 +120,7 @@
 					<p>First things first. Is your image 3D or 2D?</p><br>
 					<img src="/static/img/3d-model.svg" />
 					<br />
-					<a href="#0" class="btn btn-outline-primary" onClick="chooseImageType('panorama')">3D</a>
+					<a href="#0" class="btn btn-outline btn-small" onClick="chooseImageType('panorama')">3D</a>
 					<div id="select-pano" class="form-hidden">
 						<i class="fa fa-tick text-success"></i>
 						Selected
@@ -127,7 +128,7 @@
 					<br />
 					<img src="/static/img/2d-model.svg" />
 					<br />
-					<a href="#0" class="btn btn-outline-primary mb-2" onClick="chooseImageType('2d')">2D</a>
+					<a href="#0" class="btn btn-outline mb-2 btn-small" onClick="chooseImageType('2d')">2D</a>
 
 					<div class="form-hidden" id="select-2d">
 						<i class="fa fa-tick text-success"></i>
@@ -165,11 +166,11 @@
 					</div>
 				</div>
 
-				<a href="#0" class="btn btn-danger" id="btn-previous" data-prev-stage=0 onclick="triggerPrevStage();">Cancel</a>
+				<a href="#0" class="btn btn-danger mt-3" id="btn-previous" data-prev-stage=0 onclick="triggerPrevStage();">Cancel</a>
 
-				<a href="#0" class="btn btn-disabled" id="btn-next" data-next-stage=2 onclick="triggerNextStage();">Next</a>
+				<a href="#0" class="btn btn-disabled mt-3" id="btn-next" data-next-stage=2 onclick="triggerNextStage();">Next</a>
 
-				<button class="btn btn-primary form-hidden" id="btn-submit"> Upload </button>
+				<button class="btn btn-glb form-hidden" id="btn-submit"> Upload </button>
 			</div><!--/remodal-wrapper-->
 		</form>
 	</div>
