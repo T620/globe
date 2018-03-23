@@ -88,10 +88,10 @@
 					<div class="card-body">
 						{% if post.isPanorama %}
 							<iframe allowfullscreen height="400" src=
-							"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{s3_repo}}{{post.image}}"
+							"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{post.image}}"
 							style="border-style:none;" width="600"></iframe>
 						{% else %}
-							<img src="{{s3_repo}}{{post.image}}" alt="{{post.postContent}}" style="border:0;"width="600">
+							<img src="{{post.image}}" alt="{{post.postContent}}" style="border:0;"width="600">
 						{% endif %}
 					</div>
 					<div class="card-footer">
