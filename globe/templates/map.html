@@ -3,27 +3,21 @@
 
 <section class="map-full">
 	<div id="map_canvas"></div>
+
 	<div class="container">
 		<div class="map-filter">
-			<p>Currently exploring:</p>
+			<p>Exploring:</p>
 			<h2>{{location}}</h2>
-			<a href="#0" onclick="update_loc();" class="btn btn-outline-secondary">Update</a>
-			<a href="#0" onclick="mini_filter();" class="btn btn-outline-secondary">Minimise</a>
-		</div>
-
-		<div class="filter-results">
 			<span>Showing {{count}} pins in 50mi radius</span>
+			<div class="search">
+				<form action="/explore/" method="get">
+					<input type="text" class="form-control" name="filter" placeholder="Rome, Athens, London"/>
+					<input type="submit" class="btn btn-glb" value="Explore"/>
+				</form>
+			</div>
 		</div>
-
-		<div class="map-update" style="display: none;">
-			<form action="/explore/" method="get">
-				<label for="filter">Enter a city or country</label>
-				<input type="text" class="form-control form-control-md" name="filter" placeholder="Beijing, 	China">
-				<input type="submit" class="btn btn-primary-outline btn-md" value="Filter"/>
-			</form>
-		</div>
-
 	</div>
+
 </section>
 
 
