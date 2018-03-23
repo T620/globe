@@ -16,17 +16,22 @@ $greenPrimary: #169660;
 $greenSecondary:#77f4af;
 
 
+$dangerPrimary: #e74c3c;
+$dangerSecondary: #c0392b;
+
 $base: #2D6073;
 $accent: #81f8d6;
 
 $dark: #424c59;
-$light: #cee0f9;
+$light: #e0e0e0;
 
-$white: #F0F7DA;
+$white: #eaeaea;
+
+
+
 
 body{
-	background: $white;
-
+	background: #f2f2f2;
 }
 
 a{
@@ -49,63 +54,68 @@ a:hover{
 	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 	padding: 0;
 	background: $white;
+
+	.head{
+		padding: 2%;
+	}
+	.body{
+		padding: 1.25rem 0;
+	}
+	.footer{
+		padding: 1% 3%;
+		border: 0;
+		background: inherit;
+		text-align: left;
+	}
+	 .form-control{
+		margin: 1% 0;
+	}
+	label{
+		margin: 2%;
+		text-align: left !important;
+	}
+	 .btn{
+		margin: 4% 0;
+	}
+	.name{
+		width: 45%;
+		display: inline;
+	}
+	.upload{
+		padding: 2%;
+	}
+	.upload{
+		.form-control, .footer{
+			width: 60%;
+			margin: 1% 20% 5% 20%;
+			text-align: center;
+		}
+	}
 }
 
-.card-head{
-	padding: 2%;
-}
-.card-body{
-	padding: 1.25rem 0;
-}
-.card-footer{
-	padding: 1% 3%;
-	border: 0;
-	background: inherit;
-	text-align: left;
-}
-
-
-.card .form-control{
-	margin: 1% 0;
-}
-
-.card label{
-	margin: 2%;
-	text-align: left !important;
-}
-
-.card .btn{
-	margin: 4% 0;
-}
-
-.card .name{
-	width: 45%;
-	display: inline;
-}
-
-
-.card-label{
-	text-align: left;
-}
-
-.card-upload .card-body{
-	padding: 2%;
-}
-
-.card-upload .form-control{
-	width: 60%;
-	margin: 1% 20% 5% 20%;
-	text-align: center;
-}
-
-.card-upload .card-footer{
-	width: 60%;
-	margin: 1% 20% 5% 20%;
-	text-align: center;
-}
 
 .btn{
 	text-align: center;
+	color: #f0f0f0 !important;
+	border:0;
+	padding: 0.7rem;
+	width: 15%;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	transition: all 200ms ease-in-out;
+}
+
+.btn:hover, .btn-glb:hover, .btn-disabled:hover, .btn-danger:hover{
+	box-shadow: 0.5 2px 4px rgba(0,0,0,0.4), 0 3px 4px rgba(0,0,0,0.6) !important;
+	transition: all 200ms ease-in-out;
+	color: #f0f0f0 !important;
+}
+
+.btn-danger{
+	background: $dangerPrimary; /* Old browsers */
+	background: -moz-linear-gradient(-45deg, $dangerPrimary 0%, $dangerSecondary 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, $dangerPrimary 0%, $dangerSecondary 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, $dangerPrimary 0%, $dangerSecondary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$dangerPrimary', endColorstr='$dangerSecondary',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .btn-glb{
@@ -113,18 +123,13 @@ a:hover{
 	background: -webkit-linear-gradient(-45deg, $bluePrimary 0%,$greenPrimary 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-	border:0;
-	padding: 0.7rem;
-	width: 15%;
-	font-size: 1.3rem;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-	transition: all 200ms ease-in-out;
-	color: #f0f0f0;
 }
-
-.btn-glb :hover{
-	box-shadow: 0.5 2px 4px rgba(0,0,0,0.4), 0 3px 4px rgba(0,0,0,0.6) !important;
-	transition: all 200ms ease-in-out;
+.btn-disabled{
+	background: #9ca0bf; /* Old browsers */
+	background: -moz-linear-gradient(-45deg, #9ca0bf 0%, #658789 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, #9ca0bf 0%,#658789 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, #9ca0bf 0%,#658789 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9ca0bf', endColorstr='#658789',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .main-nav{
@@ -157,9 +162,9 @@ a:hover{
 	padding: 2.5% 1.5% .5% .5%;
 	margin: 1.2% 0 0 5%;
 	border-bottom-right-radius: 0;
-}
-#feed-upload .card-body{
-	padding: 1.25rem 0;
+	.card-body{
+		padding: 1.25rem 0;
+	}
 }
 
 .profile-thumb{
@@ -174,8 +179,6 @@ a:hover{
 	border: 2px solid #ccc;
 	border-bottom-right-radius: 0;
 }
-
-
 
 .feed-upload_main{
 	width: 100%;
