@@ -64,60 +64,43 @@ def upload():
 		from util import id_gen, _user, files, clock
 
 		file = request.files['image']
-
 		postID = id_gen.booking_id()
-
 		directory = app.config['UPLOAD_FOLDER'] + str(session['g_user']) + "/posts/" + str(postID) + "/"
 		print directory
+
 
 		if files.save(file, directory):
 			directory = os.path.join(directory, file.filename)
 
 			#if the image is a panorama, check the width
-			if request.form['image-type']:
-				print "image is panorama?: %s " % request.form['image-type']
+			# quick patch, python treats this form input as a string not a bool.
+			if request.form['image-type'] == "True":
+				isPanorama = True
 				files.crop(directory)
+			else:
+				isPanorama = False
 
-			#upload to s3
-			#directory links to local file, url specifies s3 url for file.
-			url = 'static/user_uploads/' + str(session['g_user']) + "/posts/" + str(postID) + "/" + str(file.filename)
+			from models import Post
+			postCount = Post.query.count()
+			postCount = postCount + 1
 
-			if files.upload_to_s3(directory, url):
-				#modify so it deletes the folder and the files inside
-				directory = app.config['UPLOAD_FOLDER'] + str(session['g_user']) + "/posts/" + str(postID) + "/"
-				files.delete(directory)
+			post = Post(
+				id=postCount,
+				author=session['g_user'],
+				postedOn=str(clock.timeNow()),
+				postContent=request.form['desc'],
+				likes="0",
+				image=url,
+				city=request.form['location-city'],
+				coordinates=request.form['location-coords'],
+				appreaciated=True,
+				isPanorama=isPanorama
+			)
 
-				from models import Post
-				print Post
-				postCount = Post.query.count()
-				postCount = postCount + 1
+			db.session.add(post)
+			db.session.commit()
 
-				#refURL stores absolute S3 Path to database.
-				refURL = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + url
-
-				# quick patch. for some reason python treats this form input as a string not a bool.
-				if request.form['image-type'] == "True":
-					isPanorama = True
-				else:
-					isPanorama = False
-
-				post = Post (
-					id=postCount,
-					author=session['g_user'],
-					postedOn=str(clock.timeNow()),
-					postContent=request.form['desc'],
-					likes="0",
-					image=refURL,
-					city=request.form['location-city'],
-					coordinates=request.form['location-coords'],
-					appreaciated=True,
-					isPanorama=isPanorama
-				)
-
-				db.session.add(post)
-				db.session.commit()
-
-				return redirect(url_for('load_feed'))
+			return redirect(url_for('load_feed'))
 	else:
 		return redirect(url_for('load_feed'))
 
