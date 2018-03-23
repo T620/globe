@@ -45,6 +45,34 @@ a:hover{
 	text-decoration: none;
 }
 
+
+.form-control{
+	margin: .5em;
+	color: $base;
+	border: 0;
+	border-radius: 0;
+	border-bottom: 1.5px solid $base;
+	transition: all 200ms ease-in-out;
+	font-size: .7em;
+	text-align: center;
+}
+
+.form-control:hover{
+	border-bottom: 1.5px solid $accent;
+	transition: all 200ms ease-in-out;
+}
+
+.form-control:focus{
+	margin: .7em;
+	border: 0;
+	border-radius: 0;
+	border-bottom: 1.5px solid $accent;
+	transition: all 200ms ease-in-out;
+	box-shadow: none;
+	font-size: 1em;
+}
+
+
 .nav-item .current{
 	border-bottom: 3px solid $greenPrimary;
 }
@@ -58,6 +86,7 @@ a:hover{
 	.head{
 		padding: 2%;
 	}
+
 	.body{
 		padding: 1.25rem 0;
 	}
@@ -99,7 +128,7 @@ a:hover{
 	color: #f0f0f0 !important;
 	border:0;
 	padding: 0.7rem;
-	width: 15%;
+	width: 5em;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	transition: all 200ms ease-in-out;
 }
@@ -124,12 +153,27 @@ a:hover{
 	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
+.btn-outline{
+	background: $white;
+	color: $bluePrimary !important;
+	border: 1.3px solid $bluePrimary;
+}
+.btn-outline:hover{
+	color: $blueSecondary !important;
+	border-color: $blueSecondary;
+}
+
 .btn-disabled{
 	background: #9ca0bf; /* Old browsers */
 	background: -moz-linear-gradient(-45deg, #9ca0bf 0%, #658789 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(-45deg, #9ca0bf 0%,#658789 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(135deg, #9ca0bf 0%,#658789 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9ca0bf', endColorstr='#658789',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.btn-small{
+	padding: .3em;
+	width: 10%;
 }
 
 .main-nav{
@@ -147,10 +191,9 @@ a:hover{
 
 .filter{
 	text-align: center;
-	padding: 5%;
 	margin: 3% 0;
-	height: 17rem;
-	width: 13rem;
+	height: 22em;
+	width: 16em;
 
 	h3{
 		margin-top: 10%;
@@ -159,12 +202,25 @@ a:hover{
 
 
 #feed-upload{
-	padding: 2.5% 1.5% .5% .5%;
-	margin: 1.2% 0 0 5%;
-	border-bottom-right-radius: 0;
+	margin: 1.2%;
 	.card-body{
 		padding: 1.25rem 0;
 	}
+	.card .head{
+		padding: 2% 0 2% 2%;
+	}
+	.btn{
+		display: inline;
+		margin: 0 auto;
+	}
+	.form-control{
+		display: inline;
+		margin: 0 4%;
+	}
+	label{
+		margin: 0 6%;
+	}
+
 }
 
 .profile-thumb{
@@ -177,13 +233,16 @@ a:hover{
 	background: #f0f0f0;
 	width: 100%;
 	border: 2px solid #ccc;
-	border-bottom-right-radius: 0;
 }
 
 .feed-upload_main{
 	width: 100%;
 	margin: 1% 5%;
 	padding: 2%;
+}
+
+#upload_main{
+	padding: .5em 0;
 }
 
 
@@ -551,7 +610,7 @@ a:hover{
 		display: none;
 	}
 	#filter-main{
-		height: 7em;
+		height: 10em;
 	}
 }
 
