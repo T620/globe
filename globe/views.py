@@ -22,7 +22,13 @@ bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ['APP_SECRET_KEY']
 
-app.config['UPLOAD_FOLDER'] = os.environ['UPLOAD_PATH']
+if os.environ['FILE_STORAGE_LOC'] == "LOCAL":
+	app.config['UPLOAD_FOLDER'] = "/home/josh/projects/globe/globe/static/user_uploads/"
+else:
+	app.config['UPLOAD_FOLDER'] = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/static/user_uploads/"
+
+print "SAVING :%s" % os.environ['FILE_STORAGE_LOC']
+print "DIRECTORY: %s" % app.config['UPLOAD_FOLDER']
 
 @app.before_request
 def before_request():
@@ -41,23 +47,13 @@ def load_index():
 @app.route("/feed/")
 def load_feed():
 	from models import Post, User
-
+	#TO DO: filter and sort via POST
 	posts = Post.query.all()
 
-	key = os.environ.get('MAPS_API_KEY')
-	s3_repo = "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/"
+	#s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/"
+	#s3_repo = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/"
 
-	return render_template("feed.html", posts=posts, key=key, s3_repo=s3_repo)
-
-
-@app.route("/test")
-def test():
-	#used to translate an address to a set of coordinates
-	from util import coordinates
-
-	latAndLong = coordinates.get("Edinburgh")
-
-	return latAndLong
+	return render_template("feed.html", posts=posts, key=os.environ['MAPS_API_KEY'])
 
 
 
@@ -85,16 +81,19 @@ def upload():
 			#upload to s3
 			#directory links to local file, url specifies s3 url for file.
 			url = 'static/user_uploads/' + str(session['g_user']) + "/posts/" + str(postID) + "/" + str(file.filename)
+
 			if files.upload_to_s3(directory, url):
 				#modify so it deletes the folder and the files inside
 				directory = app.config['UPLOAD_FOLDER'] + str(session['g_user']) + "/posts/" + str(postID) + "/"
 				files.delete(directory)
 
-				# add post to Posts
 				from models import Post
+				print Post
 				postCount = Post.query.count()
 				postCount = postCount + 1
-				print postCount
+
+				#refURL stores absolute S3 Path to database.
+				refURL = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + url
 
 				# quick patch. for some reason python treats this form input as a string not a bool.
 				if request.form['image-type'] == "True":
@@ -108,7 +107,7 @@ def upload():
 					postedOn=str(clock.timeNow()),
 					postContent=request.form['desc'],
 					likes="0",
-					image=url,
+					image=refURL,
 					city=request.form['location-city'],
 					coordinates=request.form['location-coords'],
 					appreaciated=True,
@@ -161,11 +160,10 @@ def lookup(place):
 				print row
 	else:
 		return place
-
 '''
 
-
-@app.route("/demo/")
+#demoing the new db relationships
+@app.route("/relationship/")
 def demo():
 	from models import Post, User
 
@@ -210,36 +208,39 @@ def explore():
 
 
 
+# only for usability, redirects to /profile/
 @app.route("/user/")
 @login_required
 def redr_to_profile():
-	return redirect(url_for('load_int_user'))
+	return redirect(url_for('load_user', username=""))
 
 
-#this is the current user's personal profile
-@login_required
-@app.route("/user/profile/")
-def load_int_user():
-	#grab the users details
-	from models import User
-	user = User.query.filter_by(id=session['g_user']).first_or_404()
-
-	if user is not None:
-		return render_template("user/profile.html", user=user)
+@app.route("/user/profile/<username>")
+def load_user(username):
+	# loads another user's profile. This is not the user who is logged in.
+	# if no username is specified, the route below will be triggered, which will load the logged in user
+	if username is None:
+		print 'username provided'
+		return redirect(url_for('load_int_user'))
 	else:
-		return "User not found after logging in??"
+		return profile(username)
 
 
+@app.route("/user/profile/")
+@login_required
+def load_int_user():
+	# loads a user's profile based on their session
+	if session['g_user'] is None:
+		redirect(url_for('login'))
+	else:
+		user = session['g_user']
+		from models import User
+		user = User.query.filter_by(id=user).first()
+		user = user.username
+		return profile(user)
 
-@app.route("/profile/<username>")
-def redr_to_user(username):
-	return redirect(url_for('load_ext_user', username=username))
-
-
-#external user (not the person logged in, someone else)
-@app.route("/user/<username>")
-def load_ext_user(username):
-	#grab the user's basic profile info
+def profile(username):
+	#shows a given profile or 404s if not found
 	from models import User, Post, Followers
 	master = User.query.filter_by(username=username).first_or_404()
 	posts = Post.query.filter_by(author=master.id).all()
@@ -267,7 +268,6 @@ def load_ext_user(username):
 	for user in following:
 		print user.forename
 
-
 	return render_template("user/profile.html", master=master, posts=posts, followers=followers, following=following)
 
 
@@ -284,7 +284,7 @@ def load_user(id):
 	return User.query.get(unicode(id))
 
 
-@app.route("/logout/")
+@app.route("/user/logout/")
 @login_required
 def logout():
 	logout_user()
@@ -292,7 +292,7 @@ def logout():
 	print session['g_user']
 	return redirect(url_for("load_index"))
 
-@app.route('/login/', methods=["GET", "POST"])
+@app.route('/user/login/', methods=["GET", "POST"])
 def login():
 	if request.method=="GET":
 		return render_template("/user/login.html")
@@ -320,7 +320,7 @@ def login():
 			return "User does not exist."
 
 
-@app.route('/register/', methods=["GET", "POST"])
+@app.route('/user/register/', methods=["GET", "POST"])
 def register():
 	if request.method=="POST":
 		print "posted"
@@ -349,8 +349,7 @@ def register():
 		return render_template("register.html")
 
 
-
-@app.route("/register/auth/")
+@app.route("/user/register/auth/")
 def confirm_new_user():
 	#user didnt post anything, so they've accessed this URL from their email
 	token = request.args.get("token", None)
@@ -378,9 +377,7 @@ def confirm_new_user():
 		return "invalid token/username combination"
 
 
-
-
-@app.route("/register/resend-email", methods=["GET", "POST"])
+@app.route("/user/register/resend-email", methods=["GET", "POST"])
 def resend_email():
 	if request.method == "POST":
 		username = request.args.get("username", None)
@@ -410,7 +407,6 @@ def resend_email():
 
 	else:
 		abort(403)
-
 
 
 
