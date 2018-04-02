@@ -90,7 +90,7 @@ def upload():
 				postedOn=str(clock.timeNow()),
 				postContent=request.form['desc'],
 				likes="0",
-				image=url,
+				image=directory,
 				city=request.form['location-city'],
 				coordinates=request.form['location-coords'],
 				appreaciated=True,

@@ -14,7 +14,7 @@ function chooseImageType(type) {
 		$('#image-type').val("True");
 
 		$('#btn-next').removeClass("btn-disabled");
-		$('#btn-next').addClass("btn-primary");
+		$('#btn-next').addClass("btn-glb");
 
 
 	}
@@ -31,7 +31,7 @@ function chooseImageType(type) {
 		$('#image-type').val("False");
 
 		$('#btn-next').removeClass("btn-disabled");
-		$('#btn-next').addClass("btn-primary");
+		$('#btn-next').addClass("btn-glb");
 
 		//show user 'next stage option'
 		//return triggerNextStage();
