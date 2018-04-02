@@ -101,6 +101,9 @@ def upload():
 			db.session.commit()
 
 			return redirect(url_for('load_feed'))
+		else:
+			return "unknown error"
+
 	else:
 		return redirect(url_for('load_feed'))
 
