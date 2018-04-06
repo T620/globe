@@ -22,14 +22,6 @@ bcrypt = Bcrypt(app)
 
 app.secret_key = os.environ['APP_SECRET_KEY']
 
-if os.environ['FILE_STORAGE_LOC'] == "LOCAL":
-	app.config['UPLOAD_FOLDER'] = "/home/josh/projects/globe/globe/static/user_uploads/"
-else:
-	app.config['UPLOAD_FOLDER'] = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/static/user_uploads/"
-
-print "SAVING :%s" % os.environ['FILE_STORAGE_LOC']
-print "DIRECTORY: %s" % app.config['UPLOAD_FOLDER']
-
 @app.before_request
 def before_request():
     g.user = current_user
@@ -61,56 +53,22 @@ def load_feed():
 @login_required
 def upload():
 	if request.method=="POST":
-		from util import id_gen, _user, files, clock
+		from util import post
 
-		file = request.files['image']
-		postID = id_gen.booking_id()
-		directory = app.config['UPLOAD_FOLDER'] + str(session['g_user']) + "/posts/" + str(postID) + "/"
-		print directory
+		formParams = {
+			"file": request.files['image'],
+			"user": session['g_user'],
+			"desc": request.form['desc'],
+			"city": request.form['location-city'],
+			"coords": request.form['location-coords'],
+			"pano": request.form['image-type']
+		}
+		post.new(formParams)
 
-
-		if files.save(file, directory):
-			directory = os.path.join(directory, file.filename)
-
-			#if the image is a panorama, check the width
-			# quick patch, python treats this form input as a string not a bool.
-			if request.form['image-type'] == "True":
-				isPanorama = True
-				files.crop(directory)
-			else:
-				isPanorama = False
-
-			from models import Post
-			postCount = Post.query.count()
-			postCount = postCount + 1
-
-			post = Post(
-				id=postCount,
-				author=session['g_user'],
-				postedOn=str(clock.timeNow()),
-				postContent=request.form['desc'],
-				likes="0",
-				image=directory,
-				city=request.form['location-city'],
-				coordinates=request.form['location-coords'],
-				appreaciated=True,
-				isPanorama=isPanorama
-			)
-
-			db.session.add(post)
-			db.session.commit()
-
-			return redirect(url_for('load_feed'))
-		else:
-			return "unknown error"
-
-	else:
 		return redirect(url_for('load_feed'))
-
 
 @app.route("/post/<id>")
 def load_post(id):
-
 	if id == "new":
 		return redirect(url_for('load_feed'))
 	else:
