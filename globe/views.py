@@ -63,9 +63,10 @@ def upload():
 			"coords": request.form['location-coords'],
 			"pano": request.form['image-type']
 		}
-		post.new(formParams)
-
-		return redirect(url_for('load_feed'))
+		if post.new(formParams):
+			return redirect(url_for('load_feed'))
+		else:
+			return "oh shit"
 
 @app.route("/post/<id>")
 def load_post(id):
