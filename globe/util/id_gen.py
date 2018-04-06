@@ -4,7 +4,7 @@ import os, uuid, random, string
 
 def postID(size, chars, userID):
 	#take the userID and add a random string to it
-	postID = userID + "." + ''.join(random.choice(chars) for _ in range(size))
+	postID = str(userID) + "." + ''.join(random.choice(chars) for _ in range(size))
 	return postID
 
 

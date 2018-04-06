@@ -11,40 +11,24 @@ def allowed_file(filename):
 		filename.rsplit('.', 1)[1].lower() in allowedExtensions
 
 
-def save(file, directory):
+def passes_checks(file, dest):
+	#returns True if the file is allowed, and if it's a pano, crop it accordingly
 	if file and allowed_file(file.filename):
 		filename = secure_filename(file.filename)
-		print 'saved file, cropping...'
-		os.makedirs(directory)
-		directory = os.path.join(directory, filename)
-
-		if os.environ['FILE_STORAGE_LOC'] == "SERVER":
-			try:
-				upload_to_s3(directory)
-			except:
-				return False
-
-		else:
-			print 'now saving file locally'
-			try:
-				#os level operation
-				file.save(directory)
-				print directory
-				return True
-			except:
-				return False
+		print 'file allowed...'
+		print "dir: %s" % dest
+		return True
 
 	else:
-		print "file is not allowed!"
 		return False
 
 
-# annoyingly, magick needs the image saved to a disk first.
-def crop(file):
+
+def crop(dest):
 	print file
 	from wand.image import Image
 
-	with open(file) as f:
+	with open(dest) as f:
 		image_binary = f.read()
 
 
@@ -57,33 +41,63 @@ def crop(file):
 			print "Image too wide, cropping width"
 			img.crop(0, 0, 4096, height)
 			img.save(filename=file)
-			return True
 
 		else:
 			print "image is less than 4096px wide, saving"
 			img.save(filename=file)
-			return True
 
 
 
 # uploads the image to S3 and deletes from the server
-def upload_to_s3(directory):
-	import os, tinys3, string
+def upload_to_s3(file, dest):
+
+	import os, tinys3, string, boto3, botocore
 	from globe import app
 
-	#init conection to S3
-	conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True)
-	f = open(directory, 'rb')
+	s3 = boto3.client(
+   		"s3",
+   		aws_access_key_id=os.environ['S3_PUB_KEY'],
+   		aws_secret_access_key=os.environ['S3_PRIVATE_KEY']
+	)
+
+	print "dir: %s" % dest
 
 	try:
+		s3.upload_fileobj(
+			file,
+			os.environ['S3_BUCKET_NAME'],
+			#TO DO: modify this param to use the correct path, as the above only takes the bucket name, need to add /static/user_... etc
+			file.filename,
+			ExtraArgs={
+				"ACL": "public-read",
+				"ContentType": file.content_type
+			}
+		)
+
+	except Exception as e:
+		# This is a catch all exception, edit this part to fit your needs.
+		print("Something Happened: ", e)
+		return e
+
+	print "URL: " + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "{}{}".format(dest, file.filename)
+	return True
+
+	'''try:
+		#init conection to S3
+		conn = tinys3.Connection(os.environ['S3_PUB_KEY'], os.environ['S3_PRIVATE_KEY'], tls=True, endpoint=os.environ['S3_ENDPOINT'])
+
+		f = open(src, 'rb')
+
 		conn.upload(directory, f, os.environ['S3_BUCKET_NAME'])
+
 		print 'image has been uploaded to :%s' % directory
 		print ", deleting local copy"
 		return True
-	except:
-		print "failed to upload image"
-		return False
 
+	except:
+		print "failed"
+		return False
+'''
 
 
 def delete(file):
