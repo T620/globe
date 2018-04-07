@@ -159,6 +159,10 @@ def explore():
 def redr_to_profile():
 	return redirect(url_for('load_user', username=""))
 
+# /user/<username> was old
+@app.route("/profile/<username>")
+def redir_to_load_user(username):
+	return redirect(url_for('load_user', username=username))
 
 @app.route("/user/profile/<username>")
 def load_user(username):
@@ -190,7 +194,6 @@ def profile(username):
 	master = User.query.filter_by(username=username).first_or_404()
 	posts = Post.query.filter_by(author=master.id).all()
 
-
 	#josh has followers:
 	#  03114
 	#  12335
@@ -213,7 +216,25 @@ def profile(username):
 	for user in following:
 		print user.forename
 
-	return render_template("user/profile.html", master=master, posts=posts, followers=followers, following=following)
+	if find(session['g_user']) == username:
+		ownProfile = True
+	else:
+		ownProfile = False
+
+	print "own profile: %s"  % ownProfile
+
+	return render_template("user/profile.html", master=master, posts=posts, followers=followers, following=following, ownProfile=ownProfile)
+
+
+#finds a users username based on userID
+def find(id):
+	from models import User
+	person = User.query.filter_by(id=id).first()
+	numRows = User.query.filter_by(id=id).count()
+	if numRows > 0:
+		return person.username
+	else:
+		return False
 
 
 
@@ -229,8 +250,8 @@ def load_user(id):
 	return User.query.get(unicode(id))
 
 
+
 @app.route("/user/logout/")
-@login_required
 def logout():
 	logout_user()
 	session['g_user'] = None
@@ -353,6 +374,19 @@ def resend_email():
 	else:
 		abort(403)
 
+
+
+@app.route("/logout/")
+def redr_to_logout():
+	return redirect(url_for('logout'))
+
+@app.route("/login/")
+def redr_to_login():
+	return redirect(url_for('login'))
+
+@app.route("/register/")
+def redr_to_register():
+	return redirect(url_for('register'))
 
 
 if __name__ == '__main__':
