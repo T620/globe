@@ -181,8 +181,94 @@ def search():
 			return "error. "
 
 
+# Likes
+
+@app.route("/add/like/", methods=["POST"])
+def like_post():
+	try:
+		author = request.form['author']
+		post = request.form['post']
+	except:
+		abort(500)
+
+	# look how long this logic statement is!
+	if author is not None and post is not None:
+		from models import Like
+		likeID = Like.query.count()
+		new = Like(
+			likeID + 1,
+			post,
+			author,
+		)
+		try:
+			db.session.add(new)
+			db.session.commit()
+
+			return "200"
+		except:
+			return abort(500)
+	else:
+		return abort(500)
+
+# Comments
+@app.route("/add/comment/", methods=["POST"])
+def add_comment():
+	try:
+		comment = request.form['comment']
+		author = request.form['author']
+		post = request.form['post']
+	except:
+		abort(500)
+
+	# look how long this logic statement is!
+	if comment is not None and author is not None and post is not None:
+		from models import Comment
+		commentID = Comment.query.count()
+		new = Comment(
+			commentID + 1,
+			post,
+			author,
+			comment
+		)
+		try:
+			db.session.add(new)
+			db.session.commit()
+
+			return "200"
+		except:
+			return abort(500)
+	else:
+		return abort(500)
 
 
+# helpers for comments and links
+@app.route("/test/")
+def load():
+	return "<!doctype html>"  + "<form action='/add/like/' method='post'><input type='text' name='author' value='96732' /> <input type='text' name='post' value='3' /><input type='submit' value='submit' />"
+
+def get_comments(postID):
+	from models import Comment
+
+	comments = Comment.query.filter_by(id=postID).all()
+
+	return comments
+
+def count_comments(postID):
+	from models import Comments
+	count = Comment.query.filter_by(id=postID).count()
+	return count
+
+def get_likes(postID):
+	from models import Like
+
+	likes = Like.query.filter_by(id=postID).all()
+
+	return likes
+
+def count_likes(postID):
+	from models import Like
+	count = Like.query.filter_by(id=postID).count()
+	return count
 
 # only for usability, redirects to /profile/
 @app.route("/user/")
