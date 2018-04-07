@@ -127,47 +127,44 @@ class Followers(db.Model):
 		return '<leader %r>' % self.leader
 
 
-
-#no time to create an admin panel for now
-'''class Admin(db.Model):
+class Like(db.Model):
 	__table_args__ = {'extend_existing': True}
 
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	email = db.Column(db.String(60), unique=True)
-	username = db.Column(db.String(60))
-	registeredOn = db.Column(db.String(60))
-	confirmationToken = db.Column(db.String(60))
-	passwordToken = db.Column(db.String(60))
-	lastLogin = db.Column(db.String(60))
-	lastIPUsed = db.Column(db.String(15))
+	id = db.Column(db.Integer, primary_key=True, nullable=False)
+	postID = db.Column(db.Integer, ForeignKey('post.id'), nullable=False, primary_key=False)
+	userID = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
 
+	user = db.relationship("User")
+	post = db.relationship("Post")
 
-	def __init__(self, id, email, username, registeredOn, confirmationToken, passwordToken, lastLogin, lastIPUsed):
-		self.id = id
-		self.email = email
-		self.username = username
-		self.registeredOn = registeredOn
-		self.confirmationToken = confirmationToken
-		self.passwordToken = passwordToken
-		self.lastLogin = lastLogin
-		self.lastIPUsed=lastIPUsed
-
-
-	def is_authenticated(self):
-		return True
-
-	def is_active(self):
-		return True
-
-	def is_anonymous(self):
-		return False
-
-	def get_id(self):
-		return unicode(self.id)
+	def __init__(self, id, postID, userID):
+		self.id=id
+		self.postID=postID
+		self.userID=userID
 
 	def __repr__(self):
-		return '<Username %r>' % self.username
-'''
+		return '<Liked By %r>' % self.UserID
+
+
+class Comment(db.Model):
+	__table_args__ = {'extend_existing': True}
+
+	id = db.Column(db.Integer, primary_key=True, nullable=False)
+	postID = db.Column(db.Integer, ForeignKey('post.id'), nullable=False, primary_key=False)
+	userID = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+	comment = db.Column(db.String(60), nullable=False)
+
+	user = db.relationship("User")
+	post = db.relationship("Post")
+
+	def __init__(self, id, postID, userID, comment):
+		self.id=id
+		self.postID=postID
+		self.userID=userID
+		self.comment=comment
+
+	def __repr__(self):
+		return '<Comment %r>' % self.comment
 
 whooshalchemy.whoosh_index(app, Post)
 whooshalchemy.whoosh_index(app, User)
