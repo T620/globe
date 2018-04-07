@@ -4,44 +4,38 @@
 <section class="register">
  	<div class="container">
 		<div class="row">
-			<div class="col-xs-12">
+			<h1>Register</h1>
+		</div>
+		<div class="row">
+			<div class="col">
 				<div class="card" style="width:30rem;">
 					<div class="card-body">
-						<h2 class="card-title">Create an Account</h2>
-						<h6 class="card-subtitle mb-5">It's free and only takes a minute</h6>
 						<form class="card-form" method="post" action="/user/register/">
 							<label class="card-label" for="email">Email</label>
 							<input class="form-control" type="email" name="email" placeholder="you@example.com" />
 
 							<label class="card-label" for="name">Name</label>
-							<br />
-
 							<div class="form-inline">
 								<div class="form-group">
-									<input class="form-control name" type="text" name="forename" placeholder="Forename" style="margin-right: 2.5%;" />
-									<input class="form-control name" type="text" name="surname" placeholder="Surname" />
+									<input class="form-control name" type="text" name="forename" placeholder="Forename" style="margin-right: 5.5%;" />
+									<input class="form-control name" type="text" name="surname" placeholder="Surname" style="margin-left: 5.5%;" />
 								</div>
 							</div>
-
-							<br />
 
 							<label class="card-label" for="password">Secure Password</label>
 							<input class="form-control" name="password" type="password" />
 
 							<div class="text-center">
-								<input type="submit" class="btn btn-primary text-center" value="Next" />
+								<input type="submit" class="btn btn-glb text-center" value="Register" />
 							</div>
 					</div>
 				</div>
-				<div class="progress">
-  					<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="33.3" aria-valuemin="0" aria-valuemax="100" style="width: 33.3%; height: 30px;"></div>
-				</div>
-			</div>
   		</div>
+		</div>
+		<div class="row text-center login-cta">
+			<h3><a href="/login/">Login to account</a></h3>
+		</div>
 	</div>
 </section>
-
-
-
 
 {% endblock %}
