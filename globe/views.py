@@ -1,6 +1,6 @@
 import os, uuid, random, string
 from globe import app, db, mail
-from flask import render_template, request, redirect, url_for, session, abort, g
+from flask import render_template, request, redirect, url_for, session, abort, g, jsonify, json
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
 import tinys3
@@ -186,29 +186,49 @@ def search():
 @app.route("/add/like/", methods=["POST"])
 def like_post():
 	try:
-		author = request.form['author']
-		post = request.form['post']
-	except:
+		#author = request.get_json['author']
+		post = jsonify(request.json)
+		data = json.loads(post.data)
+
+	 	postID = str(data['id'])
+		authorID = str(data['author'])
+		str(postID)
+		str(authorID)
+
+		#author = request.form.getlist('data')['']
+	except Exception as e:
+		print e
 		abort(500)
 
 	# look how long this logic statement is!
-	if author is not None and post is not None:
+	if authorID is not None and postID is not None:
 		from models import Like
 		likeID = Like.query.count()
-		new = Like(
-			likeID + 1,
-			post,
-			author,
-		)
-		try:
-			db.session.add(new)
-			db.session.commit()
 
-			return "200"
-		except:
-			return abort(500)
+		# check if the user's already liked this post
+		like = Like.query.filter_by(postID=postID).filter_by(userID=authorID).first()
+		count = Like.query.filter_by(postID=postID).filter_by(userID=authorID).count()
+		if count > 0:
+			print "already liked, unliking..."
+			db.session.delete(like)
+			db.session.commit()
+		else:
+			new = Like(
+				likeID + 1,
+				postID,
+				authorID,
+			)
+			try:
+				db.session.add(new)
+				db.session.commit()
+				return "200"
+			except Exception as e:
+				print ("failed to save", e)
+				return abort(500)
 	else:
+		print "author/post is none"
 		return abort(500)
+
 
 # Comments
 @app.route("/add/comment/", methods=["POST"])
@@ -218,6 +238,7 @@ def add_comment():
 		author = request.form['author']
 		post = request.form['post']
 	except:
+		print "fuck!"
 		abort(500)
 
 	# look how long this logic statement is!
@@ -236,11 +257,10 @@ def add_comment():
 
 			return "200"
 		except:
+			print "fuck when adding to db"
 			return abort(500)
 	else:
-		return abort(500)
-
-
+		print abort(500)
 # helpers for comments and links
 @app.route("/test/")
 def load():

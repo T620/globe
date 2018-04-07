@@ -3,6 +3,9 @@
 
 <script src="/static/js/upload.js"></script>
 
+<div id="flash">
+</div>
+
 <section class="remodal-bg">
 	<div class="container-fluid no-padding" id="feed-main_controls">
 		<div class="row no-gutters" style="width:100%;">
@@ -176,10 +179,13 @@
 	</div>
 </section>
 
+<button class="btn btn-glb" onclick="addLike(3, 96732);" value="test"> </button>
 
 <div id="choose-pin">
     <a href="#0" onclick="choose();" class="btn btn-primary">Select</a>
 </div>
+
+
 
 <script>
 	var map;
@@ -291,6 +297,28 @@ $(function() {
 	})
 });
 
+
+function addLike(postID, author){
+
+	var data = {"id": postID, "author": author};
+
+	$.ajax({
+  	url: '/add/like/',
+    data: JSON.stringify(data),
+    type: 'POST',
+		contentType: 'application/json;charset=UTF-8',
+    success: function(response) {
+			$('#flash').html(
+				"Success!"
+			);
+    	$('#flash').show();
+			$('#flash').fadeOut(4000);
+    },
+    error: function(error) {
+    	console.log(error);
+    }
+	});
+}
 </script>
 
     <script async defer
