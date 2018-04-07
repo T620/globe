@@ -152,6 +152,37 @@ def explore():
 		return render_template("explore.html")
 
 
+@app.route("/search/", methods=["GET", "POST"])
+def search():
+	if request.method == "GET":
+		return render_template("search.html")
+	else:
+		searchParams = request.form['params']
+		category = request.form['category']
+
+		if searchParams is not None and category is not None:
+			# either Post or User
+			# init users and posts to prevent ref before assignment erorr
+			users = None
+			posts = None
+			if category == "user":
+				from models import User
+
+				users = User.query.whoosh_search(searchParams)
+				count = User.query.whoosh_search(searchParams).count()
+			else:
+				from models import Post
+
+				posts = Post.query.whoosh_search(searchParams)
+				count = Post.query.whoosh_search(searchParams).count()
+
+			return render_template("search_results.html", category=category, users=users, count=count, posts=posts)
+		else:
+			return "error. "
+
+
+
+
 
 # only for usability, redirects to /profile/
 @app.route("/user/")
