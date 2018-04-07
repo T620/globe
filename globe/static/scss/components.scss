@@ -1,6 +1,5 @@
-ar$box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+$box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 $box-shadow-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-
 
 $ff_old_gradient: -moz-linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%); /* FF3.6-15 */
 
@@ -28,10 +27,19 @@ $light: #e0e0e0;
 $white: #eaeaea;
 
 
-
+.dark{
+	background :$light;
+}
+.light{
+	background: $white;
+}
 
 body{
 	background: #f2f2f2;
+}
+
+.section{
+	min-height: 66%;
 }
 
 a{
@@ -53,7 +61,7 @@ a:hover{
 	border-radius: 0;
 	border-bottom: 1.5px solid $base;
 	transition: all 200ms ease-in-out;
-	font-size: .7em;
+	font-size: 1em;
 	text-align: center;
 	background: inherit;
 }
@@ -72,7 +80,6 @@ a:hover{
 	border-bottom: 1.5px solid $accent;
 	transition: all 200ms ease-in-out;
 	box-shadow: none;
-	font-size: 1em;
 }
 
 
@@ -110,7 +117,7 @@ a:hover{
 		margin: 4% 0;
 	}
 	.name{
-		width: 45%;
+		width: 35%;
 		display: inline;
 	}
 	.upload{

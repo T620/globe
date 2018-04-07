@@ -162,7 +162,7 @@ def crop_if_too_wide(file, filename, formParams):
 				print "image is less than 4096px wide, skipping"
 
 
-		return upload_to_s3(name, filename, formParams)
+			return upload_to_s3(name, filename, formParams)
 
 
 

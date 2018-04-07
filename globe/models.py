@@ -1,6 +1,4 @@
 import os, sys
-
-
 from globe import app, db
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as sa
@@ -8,15 +6,15 @@ from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, S
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType
 from sqlalchemy.dialects.postgresql import JSON
+import flask_whooshalchemy as whooshalchemy
 
 secret_key = os.environ['APP_SECRET_KEY']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
-print db
-
 class User(db.Model):
 	__table_args__ = {'extend_existing': True}
+	__searchable__ = ['username']
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	email = db.Column(db.String(60), unique=True)
@@ -71,6 +69,7 @@ class User(db.Model):
 
 class Post(db.Model):
 	__table_args__ = {'extend_existing': True}
+	__searchable__ = ['author', 'postedOn', 'city', 'postContent']
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	author = Column(Integer, ForeignKey('user.id'))
@@ -169,3 +168,6 @@ class Followers(db.Model):
 	def __repr__(self):
 		return '<Username %r>' % self.username
 '''
+
+whooshalchemy.whoosh_index(app, Post)
+whooshalchemy.whoosh_index(app, User)

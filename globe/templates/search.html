@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<section class="light" id="search-main">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h1> Search</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<form action="/search/" method="post">
+
+					<label for="params">Enter a search term</label>
+					<input type="text" class="form-control" name="params">
+
+					<input type="text" class="form-control" name="category" value="post"/>
+					<button type="submit" class="btn btn-glb">Search</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}
