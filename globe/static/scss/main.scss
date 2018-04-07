@@ -71,3 +71,69 @@
 .profile-main, .profile-main_stats, .profile-main_gallery{
 	margin: 5% 1.5% 1% 1%;
 }
+
+.login{
+	background: url(../img/login.jpg);
+	background-size: cover;
+	height: 110vh;
+	background-repeat: no-repeat;
+	text-align: center;
+
+	.card{
+		.form-control{
+			margin: 1% auto;
+		}
+	}
+	h1{
+		font-size: 4em;
+		margin: 1em auto .5em auto;;
+		text-align: center;
+		text-shadow: $textShadow;
+	}
+	.register-cta{
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+		background: none;
+		font-size: 1.3em;
+		a{
+			color: #fff !important;
+			text-shadow: $textShadow;
+		}
+	}
+}
+
+
+.register{
+	background: url(../img/register.jpg);
+	background-size: cover;
+	height: 125vh;
+	background-repeat: no-repeat;
+	text-align: center;
+
+	h1{
+		font-size: 4em;
+		margin: 1em auto .5em auto;
+		text-align: center;
+		text-shadow: $textShadow;
+	}
+	.card{
+		label{
+			margin: 10% 0 0 0;
+		}
+		.form-control{
+			padding-top: 0;
+		}
+	}
+	.login-cta{
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+		background: none;
+		font-size: 1.3em;
+	}
+	a{
+		color: #fff !important;
+		text-shadow: $textShadow;
+	}
+}
