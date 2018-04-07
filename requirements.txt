@@ -1,4 +1,3 @@
-adium-theme-ubuntu==0.3.4
 alembic==0.9.3
 autoenv==1.0.0
 Babel==2.5.0
@@ -14,7 +13,6 @@ decorator==4.0.11
 demjson==2.2.4
 docutils==0.14
 ecdsa==0.13
--e git+https://git.heroku.com/epb-dev1.git@599c543e4ee1d4e9df8fffcc96f3ff0bad67ddfb#egg=epb
 eventlet==0.19.0
 Flask==0.11.1
 Flask-BabelEx==0.9.3
@@ -28,6 +26,7 @@ Flask-Script==2.0.5
 Flask-Security==3.0.0
 Flask-SocketIO==2.7.1
 Flask-SQLAlchemy==2.1
+Flask-WhooshAlchemy==0.56
 Flask-WTF==0.14.2
 flask-wysiwyg==0.1
 futures==3.2.0
@@ -81,4 +80,5 @@ virtualenv-clone==0.2.6
 virtualenvwrapper==4.7.2
 Wand==0.4.4
 Werkzeug==0.11.11
+Whoosh==2.7.4
 WTForms==1.0.5
