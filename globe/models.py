@@ -75,7 +75,7 @@ class Post(db.Model):
 	author = Column(Integer, ForeignKey('user.id'))
 	postedOn = db.Column(db.String(60))
 	postContent = db.Column(db.String(60))
-	likesCount = db.Column(db.String(5), default=0)
+	likes = db.Column(db.String(5))
 	image = db.Column(db.String(250))
 	city = db.Column(db.String(15))
 	coordinates = db.Column(db.String)
@@ -83,8 +83,7 @@ class Post(db.Model):
 	isPanorama = db.Column(db.Boolean)
 	#a user can have many posts, so the relationship is many to one, from post to user
 	user = db.relationship("User")
-	comments = db.relationship('Comment')
-	likes = db.relationship("Like")
+
 
 
 	def __init__(self, id, author, postedOn, postContent, likes, image, city, coordinates, appreaciated, isPanorama):
