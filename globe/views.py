@@ -43,8 +43,6 @@ def load_feed():
 	posts = Post.query.all()
 	comments = Comment.query.limit(2).all()
 	likes = Like.query.all()
-	#s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/"
-	#s3_repo = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/"
 
 	return render_template("feed.html", posts=posts, key=os.environ['MAPS_API_KEY'], comments=comments, likes=likes)
 
@@ -81,10 +79,12 @@ def load_post(id):
 
 		#now we need the posters profile to show to the user
 		#rofile = User.query.filter_by(username=post.author).first_or_404()
-
+		backLink = request.referrer
 		#render away
 		#TODO: change this template to a card in feed,html to a link saying "view full profile"
-		return render_template("user/post.html", post=post)
+		return render_template("lightbox.html", post=post, backLink=backLink)
+
+
 
 
 '''
