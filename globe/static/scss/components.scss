@@ -221,6 +221,9 @@ a:hover{
 	}
 	.submit{
 		display: inline-flex;
+		margin: 0 !important;
+		margin-left: 2%;
+		width: 20% !important;
 	}
 	img{
 		display: inline-flex;
@@ -252,11 +255,11 @@ a:hover{
 	}
 	p{
 		width: 90%;
-		margin-top: 1%;
+		margin-left: 1%;
 	}
 	.likes{
 		margin-top: 1%;
-		width: 5%;
+		width: 8%;
 		text-align: right;
 		float: right;
 	}
@@ -268,12 +271,9 @@ a:hover{
 		width: 10%;
 		margin-top: 4%;
 	}
-	.submit{
-		display: inline-flex;
-		margin-left: 2%;
-		width: auto;
+	.fa{
+		margin-right: 1%;
 	}
-	padding: 1em 0em;
 }
 
 
@@ -285,9 +285,10 @@ a:hover{
 		border-radius: 4px;
 		box-shadow: $box-shadow;
 		position: fixed;
-		bottom: 20%;
-		right: 3.5%;
+		bottom: 5%;
+		left: 3.5%;
 		width: 15%;
+		display: none;
 	}
 	.success{
 		background: $greenPrimary;
@@ -703,6 +704,14 @@ a:hover{
 	font-size: auto;
 }
 
+#filter-parent{
+	z-index: 999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 1em 0 0 0;
+}
+
 .maximised-f{
 	#feed-filter{
 		display: block;
@@ -714,7 +723,7 @@ a:hover{
 		display: none;
 	}
 	#filter-main{
-		height: 10em;
+		height: 8em;
 	}
 }
 
