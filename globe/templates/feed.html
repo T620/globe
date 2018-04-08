@@ -101,14 +101,9 @@
 						</div>
 						<div class="controls">
 							<ul>
-								<li><a href="#0" onclick="addLike( {{post.id}}, {{current_user.id}})"><i class="far fa-heart"></i><a/></li>
+								<li><i class="far fa-heart"></i></li>
+								<li><i class="far fa-comment-alt"></i></li>
 							</ul>
-							<form id="commentForm" role="form">
-									<input type="text" name="comment" placeholder="Say something..." id="comment">
-									<input type="text" id="postID" value="{{post.id}}">
-									<input type="text" id="author" value="{{current_user.id}}">
-									<button type="submit" class="btn btn-glb">Send</button>
-								</form>
 						</div>
 					</div>
 				</div>
@@ -187,35 +182,32 @@
 </div>
 
 <script>
-var initRan = "false";
-if (initRan == "false") {
-	$('.flash').hide();
-	$initRan = "true";
-}
-var map;
-var marker;
-var infowindow;
-var messagewindow;
+	var map;
+	var marker;
+	var infowindow;
+	var messagewindow;
 
-function initMap() {
-	var edinburgh = {
-		lat: 55.936894769039434
-		, lng: -3.1640625
-	};
-	map = new google.maps.Map(document.getElementById('map'), {
-		center: edinburgh
-		, zoom: 13
-	});
-	infowindow = new google.maps.InfoWindow({
-		content: document.getElementById('choose-pin')
-	});
-	messagewindow = new google.maps.InfoWindow({
-		content: document.getElementById('message')
-	});
-	google.maps.event.addListenerOnce(map, 'click', function(event) {
-		marker = new google.maps.Marker({
-			position: event.latLng
-			, map: map
+	function initMap() {
+		//console.log(geocoder);
+		var edinburgh = {
+			lat: 55.936894769039434,
+			lng: -3.1640625
+		};
+		map = new google.maps.Map(document.getElementById('map'), {
+			center: edinburgh,
+			zoom: 13
+		});
+
+		infowindow = new google.maps.InfoWindow({
+			content: document.getElementById('choose-pin')
+		});
+		messagewindow = new google.maps.InfoWindow({
+			content: document.getElementById('message')
+		});
+		google.maps.event.addListenerOnce(map, 'click', function(event) {
+			marker = new google.maps.Marker({
+			position: event.latLng,
+			map: map
 		});
 		google.maps.event.addListener(marker, 'click', function() {
 			infowindow.open(map, marker);
@@ -224,64 +216,74 @@ function initMap() {
 	});
 };
 
-function choose(geocoder) {
-	var latlng = marker.getPosition();
-	var lattitude = latlng.lat();
-	var longitude = latlng.lng();
-	//console.log(lattitude, longitude);
-	var coords = lattitude + ", " + longitude;
-	//success msg
-	$('#choose-pin').html("<i class='fa fa-check text-success'></i>");
-	console.log("placing coords into input");
-	$('#location-coords').val(coords);
-	return geocodeLatLng();
-}
+	function choose(geocoder){
+		var latlng = marker.getPosition();
+		var lattitude = latlng.lat();
+		var longitude = latlng.lng();
+		//console.log(lattitude, longitude);
 
-function geocodeLatLng() {
-	var geocoder = new google.maps.Geocoder;
-	var input = $('#location-coords').val();
-	console.log("read from input: " + input);
-	var latlngStr = input.split(',', 2);
-	var latlng = {
-		lat: parseFloat(latlngStr[0])
-		, lng: parseFloat(latlngStr[1])
-	};
-	console.log("reading from geocoder func: " + latlng.lat);
-	geocoder.geocode({
-		'location': latlng
-	}, function(results, status) {
-		if (status === 'OK') {
-			if (results[0]) {
-				//grab the city
-				city = results[0].address_components[3].long_name;
-				console.log(city);
-				$('#location-city').val(city);
-			} else {
-				window.alert('No results found');
-			}
-		} else {
-			window.alert('Geocoder failed due to: ' + status);
-		}
-	});
-}
+		var coords = lattitude + ", " + longitude;
+
+		//success msg
+		$('#choose-pin').html(
+			"<i class='fa fa-check text-success'></i>"
+		);
+
+		console.log("placing coords into input");
+		$('#location-coords').val(coords);
+
+		return geocodeLatLng();
+	}
+
+	function geocodeLatLng() {
+		var geocoder = new google.maps.Geocoder;
+
+		var input = $('#location-coords').val();
+		console.log("read from input: " + input);
+		var latlngStr = input.split(',', 2);
+
+        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+
+		console.log("reading from geocoder func: " + latlng.lat);
+
+		geocoder.geocode({'location': latlng}, function(results, status) {
+	    	if (status === 'OK') {
+	            if (results[0]) {
+				  //grab the city
+				  city = results[0].address_components[3].long_name;
+				  console.log(city);
+	              $('#location-city').val(city);
+	            }
+				else {
+	              window.alert('No results found');
+	            }
+	          }
+			  else {
+	            window.alert('Geocoder failed due to: ' + status);
+	          }
+	    });
+	 }
+
 $(function() {
 	$('.trigger').click(function() {
-		if ($('#upload-main').hasClass("maximised-u")) {
+		if ($('#upload-main').hasClass("maximised-u")){
 			console.log("minimising...");
 			$('#upload-main').removeClass("maximised-u");
 			$('#upload-main').addClass("minimised-u");
-		} else {
+		}
+		else{
 			console.log("doing the opposite...");
 			$('#upload-main').removeClass("minimised-u");
 			$('#upload-main').addClass("maximised-u");
 		}
 	})
 	$('#toggleFilter').click(function() {
-		if ($('#filter-parent').hasClass("maximised-f")) {
+		if ($('#filter-parent').hasClass("maximised-f")){
 			console.log("minimising...");
 			$('#filter-parent').removeClass("maximised-f");
 			$('#filter-parent').addClass("minimised-f");
-		} else {
+		}
+		else{
 			console.log("doing the opposite...");
 			$('#filter-parent').removeClass("minimised-f");
 			$('#filter-parent').addClass("maximised-f");
@@ -289,82 +291,6 @@ $(function() {
 	})
 });
 
-function addLike(postID, author) {
-	var data = {
-		"id": postID
-		, "author": author
-	};
-	console.log(data);
-	$.ajax({
-		url: '/add/like/'
-		, data: JSON.stringify(data)
-		, type: 'POST'
-		, contentType: 'application/json;charset=UTF-8'
-		, success: function(response) {
-			console.log(response['msg']);
-			var msg = response['msg'].toString();
-			console.log(msg);
-			switch (msg) {
-				case 'unliked':
-					var message = "Unliked post!";
-				case 'liked':
-					var message = "You liked a post";
-			}
-			$('.flash').removeClass("danger").addClass("success");
-			$('.flash').html(message);
-			$('.flash').show();
-			$('.flash').delay(1000).fadeOut(2000);
-		}
-		, error: function(error, data) {
-			console.log(data);
-			$('.flash').removeClass("success").addClass("danger");
-			$('.flash').html("Something went wrong...");
-			$('.flash').show();
-			$('.flash').delay(1000).fadeOut(2000);
-		}
-	});
-}
-
-$('#commentForm').on('submit', function addComment(e){
-
-	var data =
-	{ "id": $('#postID').val(),
-	"user": $('#author').val(),
-	"comment": $('#comment').val() };
-
-	console.log(data);
-
-	$.ajax({
-		url: '/add/comment/',
-		data: JSON.stringify(data),
-		type: 'POST',
-		contentType: 'application/json;charset=UTF-8',
-		success: function(response) {
-			console.log(response['msg']);
-			var msg = response['msg'].toString();
-			console.log(msg);
-			switch (msg) {
-				case 'added':
-					var message = "Added new comment";
-				case 'updated':
-					var message = "Updated your comment";
-			}
-			$('.flash').removeClass("danger").addClass("success");
-			$('.flash').html(message);
-			$('.flash').show();
-			$('.flash').delay(1000).fadeOut(2000);
-		},
-		error: function(error, data) {
-			console.log(data);
-			$('.flash').removeClass("success").addClass("danger");
-			$('.flash').html("Something went wrong...");
-			$('.flash').show();
-			$('.flash').delay(1000).fadeOut(2000);
-		}
-	});
-	e.preventDefault();
-}
-);
 </script>
 
     <script async defer
