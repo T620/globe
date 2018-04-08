@@ -212,6 +212,7 @@ def like_post():
 			print "already liked, unliking..."
 			db.session.delete(like)
 			db.session.commit()
+			return "200"
 		else:
 			new = Like(
 				likeID + 1,
