@@ -166,7 +166,6 @@ a:hover{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 .btn-outline{
-	background: $white;
 	color: $bluePrimary !important;
 	border: 1.3px solid $bluePrimary;
 }
@@ -916,7 +915,7 @@ a:hover{
 			margin-top:0;
 			color: #fff !important;
 		}
-		
+
 }
 
 

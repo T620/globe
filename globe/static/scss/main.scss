@@ -48,11 +48,19 @@
 	background: -webkit-linear-gradient(45deg, $bluePrimary 0%,$greenPrimary 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(135deg, $bluePrimary 0%,$greenPrimary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+	.follow{
+		position: absolute;
+		top: 5%;
+	}
 }
 
-.profile-header-intro h1, h4{
-	color: #f0f0f0;
-	text-align: left;
+.profile-header-intro{
+	 h1, h4, p, a{
+		 color: #f0f0f0 !important;
+		text-align: left;
+		text-shadow: $textShadow;
+	}
 }
 
 .profile-header-intro h1{
