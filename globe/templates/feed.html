@@ -14,7 +14,7 @@
 					</div>
 					<div class="body">
 						<a href="#0" id="toggleFilter">Toggle View</a>
-						<form action="/feed/filter/" metfilter-parenthod="post" id="feed-filter">
+						<form action="/feed/filter/" method="post" id="feed-filter">
 							<div class="form-check-wrapper">
 								<div class="form-check">
 									<input checked class="form-check-input" id="exampleRadios1" name=
@@ -82,7 +82,7 @@
 								{{post.user.surname}}</a>
 							</div>
 							<div class="post-loc">
-								<i class="fa fa-map-marker"></i><a href="/explore/?filter={{post.city}}">{{post.city}}</a>
+								<i class="fa fa-map-marker"></i><a href="/explore/?filter={{post.city}}"> {{post.city}}</a>
 							</div>
 						</div>
 					</div>
@@ -97,18 +97,35 @@
 					</div>
 					<div class="footer">
 						<div class="caption">
+							<a href="/user/profile/{{post.user.username}}">
+								<b>{{post.user.username}}</b>
+							</a>
 							<p>{{post.postContent}}</p>
+							<div class="likes">
+								<a href="#0" onclick="addLike( {{post.id}}, {{current_user.id}})">
+									<i class="fa fa-heart"></i> {{post.likesCount}}
+								</a>
+							</div>
 						</div>
-						<div class="controls">
-							<ul>
-								<li><a href="#0" onclick="addLike( {{post.id}}, {{current_user.id}})"><i class="far fa-heart"></i><a/></li>
-							</ul>
+						<div class="comments">
+							<div class="public-comments">
+								{% for comment in post.comments %}
+									<div class="comment">
+										<a href="/user/profile/{{comment.user.username}}">
+											<b>{{comment.user.username}}</b>
+										</a>
+										<p>{{comment.comment}}</p>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="comment-new">
 							<form id="commentForm" role="form">
-									<input type="text" name="comment" placeholder="Say something..." id="comment">
-									<input type="text" id="postID" value="{{post.id}}">
-									<input type="text" id="author" value="{{current_user.id}}">
-									<button type="submit" class="btn btn-glb">Send</button>
-								</form>
+								<input type="text" name="comment" class="form-control" placeholder="Say something..." id="comment">
+								<input type="hidden" id="postID" value="{{post.id}}">
+								<input type="hidden" id="author" value="{{current_user.id}}">
+								<button type="submit" class="submit btn btn-glb"><i class="fa fa-paper-plane"></i>   comment</button>
+							</form>
 						</div>
 					</div>
 				</div>
