@@ -73,15 +73,13 @@
 			<a href="#nav" id="rocket">Jump to top</a>
 		</div>
 
-
-
-
-
     {% block content %}
     {% endblock %}
 	</div>
 </div>
 
+<div class="flash">
+</div>
 {% if current_user.is_authenticated%}
 	<a href="#modal" id="fab">
 	<div class="fab_">
@@ -89,6 +87,7 @@
 	</div>
 	</a>
 {% endif %}
+
 
 	<script>
 	$(function() {

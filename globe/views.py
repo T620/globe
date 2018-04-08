@@ -186,7 +186,6 @@ def search():
 @app.route("/add/like/", methods=["POST"])
 def like_post():
 	try:
-		#author = request.get_json['author']
 		post = jsonify(request.json)
 		data = json.loads(post.data)
 
@@ -194,8 +193,6 @@ def like_post():
 		authorID = str(data['author'])
 		str(postID)
 		str(authorID)
-
-		#author = request.form.getlist('data')['']
 	except Exception as e:
 		print e
 		abort(500)
@@ -212,7 +209,8 @@ def like_post():
 			print "already liked, unliking..."
 			db.session.delete(like)
 			db.session.commit()
-			return "200"
+			response = {"msg": "unliked"}
+			return jsonify(response)
 		else:
 			new = Like(
 				likeID + 1,
@@ -222,7 +220,8 @@ def like_post():
 			try:
 				db.session.add(new)
 				db.session.commit()
-				return "200"
+				response = {"msg": "liked"}
+				return jsonify(response)
 			except Exception as e:
 				print ("failed to save", e)
 				return abort(500)
@@ -234,18 +233,33 @@ def like_post():
 # Comments
 @app.route("/add/comment/", methods=["POST"])
 def add_comment():
-	try:
-		comment = request.form['comment']
-		author = request.form['author']
-		post = request.form['post']
-	except:
-		print "fuck!"
-		abort(500)
+
+	post = jsonify(request.json)
+	data = json.loads(post.data)
+	print data
+	
+ 	post = str(data['id'])
+	author = str(data['user'])
+	comment = str(data['comment'])
+	print post, author, comment
 
 	# look how long this logic statement is!
 	if comment is not None and author is not None and post is not None:
 		from models import Comment
 		commentID = Comment.query.count()
+
+		# check if the user's commented on this post
+		commentCheck = Comment.query.filter_by(postID=post).filter_by(userID=author).first()
+		count = Comment.query.filter_by(postID=post).filter_by(userID=author).count()
+
+		if count > 0:
+			print "already commented, replacing comment..."
+			commentCheck.comment = comment
+			db.session.add(commentCheck)
+			db.session.commit()
+			response = {"msg": "updated"}
+			return jsonify(response)
+
 		new = Comment(
 			commentID + 1,
 			post,
@@ -256,7 +270,8 @@ def add_comment():
 			db.session.add(new)
 			db.session.commit()
 
-			return "200"
+			response = {"msg": "added"}
+			return jsonify(response)
 		except:
 			print "fuck when adding to db"
 			return abort(500)

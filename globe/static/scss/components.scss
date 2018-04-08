@@ -8,7 +8,6 @@ $ff_gradient: linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%);
 $chrome_gradient: -webkit-linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%);
 
 
-
 $bluePrimary: #14598D;
 $blueSecondary: #12d0f3;
 $greenPrimary: #169660;
@@ -210,6 +209,33 @@ a:hover{
 	}
 }
 
+	.flash{
+		padding: .8em;
+		color: $white;
+		font-size: .9em;
+		text-align: center;
+		border-radius: 4px;
+		box-shadow: $box-shadow;
+		position: fixed;
+		bottom: 20%;
+		right: 3.5%;
+		width: 15%;
+	}
+	.success{
+		background: $greenPrimary;
+	}
+	.warning{
+		background: #f39c12;
+	}
+	.danger{
+		background: #e74c3c;
+	}
+	.info{
+		background: $base;
+	}
+
+#feed-main_posts{
+}
 
 #feed-upload{
 	margin: 1.2%;
