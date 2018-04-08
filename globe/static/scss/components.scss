@@ -876,6 +876,48 @@ a:hover{
 
 }
 
+#fourohfour {
+        background: url(../img/space.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+		height: 100vh;
+		text-shadow: $textShadow;
+		h1, h3{
+			color: #fff !important;
+			margin-top:0;
+		}
+}
+
+#fourohthree {
+        background: url(../img/city.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+		height: 100vh;
+		text-shadow: $textShadow;
+		h1, h3{
+			color: #fff !important;
+			margin-top:0;
+		}
+}
+
+#stuck {
+        background: #000;
+        background-size: cover;
+        background-position: center;
+		height: 100vh;
+		text-shadow: $textShadow;
+		h1, h3{
+			margin-top:0;
+			color: #fff !important;
+		}
+		
+}
+
+
+
 .fullscreen-bg__video {
 	position: absolute;
 	top: 0;
