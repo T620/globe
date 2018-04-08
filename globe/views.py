@@ -38,15 +38,14 @@ def load_index():
 
 @app.route("/feed/")
 def load_feed():
-	from models import Post, User, Comment, Like
+	from models import Post, User
 	#TO DO: filter and sort via POST
 	posts = Post.query.all()
-	comments = Comment.query.limit(2).all()
-	likes = Like.query.all()
+
 	#s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/"
 	#s3_repo = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/"
 
-	return render_template("feed.html", posts=posts, key=os.environ['MAPS_API_KEY'], comments=comments, likes=likes)
+	return render_template("feed.html", posts=posts, key=os.environ['MAPS_API_KEY'])
 
 
 
@@ -200,7 +199,7 @@ def like_post():
 
 	# look how long this logic statement is!
 	if authorID is not None and postID is not None:
-		from models import Like, Post
+		from models import Like
 		likeID = Like.query.count()
 
 		# check if the user's already liked this post
@@ -218,11 +217,8 @@ def like_post():
 				postID,
 				authorID,
 			)
-			likePost = Post.query.filter_by(id=postID).first()
-			likePost.likesCount = (likePost.likesCount + 1)
 			try:
 				db.session.add(new)
-				db.session.add(likePosts)
 				db.session.commit()
 				response = {"msg": "liked"}
 				return jsonify(response)
@@ -241,7 +237,7 @@ def add_comment():
 	post = jsonify(request.json)
 	data = json.loads(post.data)
 	print data
-
+	
  	post = str(data['id'])
 	author = str(data['user'])
 	comment = str(data['comment'])
