@@ -1,6 +1,6 @@
 import os, uuid, random, string
 from globe import app, db, mail
-from flask import render_template, request, redirect, url_for, session, abort, g
+from flask import render_template, request, redirect, url_for, session, abort, g, jsonify, json
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
 import tinys3
@@ -38,14 +38,15 @@ def load_index():
 
 @app.route("/feed/")
 def load_feed():
-	from models import Post, User
+	from models import Post, User, Comment, Like
 	#TO DO: filter and sort via POST
 	posts = Post.query.all()
-
+	comments = Comment.query.limit(2).all()
+	likes = Like.query.all()
 	#s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/"
 	#s3_repo = "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/"
 
-	return render_template("feed.html", posts=posts, key=os.environ['MAPS_API_KEY'])
+	return render_template("feed.html", posts=posts, key=os.environ['MAPS_API_KEY'], comments=comments, likes=likes)
 
 
 
@@ -186,44 +187,83 @@ def search():
 @app.route("/add/like/", methods=["POST"])
 def like_post():
 	try:
-		author = request.form['author']
-		post = request.form['post']
-	except:
+		post = jsonify(request.json)
+		data = json.loads(post.data)
+
+	 	postID = str(data['id'])
+		authorID = str(data['author'])
+		str(postID)
+		str(authorID)
+	except Exception as e:
+		print e
 		abort(500)
 
 	# look how long this logic statement is!
-	if author is not None and post is not None:
-		from models import Like
+	if authorID is not None and postID is not None:
+		from models import Like, Post
 		likeID = Like.query.count()
-		new = Like(
-			likeID + 1,
-			post,
-			author,
-		)
-		try:
-			db.session.add(new)
-			db.session.commit()
 
-			return "200"
-		except:
-			return abort(500)
+		# check if the user's already liked this post
+		like = Like.query.filter_by(postID=postID).filter_by(userID=authorID).first()
+		count = Like.query.filter_by(postID=postID).filter_by(userID=authorID).count()
+		if count > 0:
+			print "already liked, unliking..."
+			db.session.delete(like)
+			db.session.commit()
+			response = {"msg": "unliked"}
+			return jsonify(response)
+		else:
+			new = Like(
+				likeID + 1,
+				postID,
+				authorID,
+			)
+			likePost = Post.query.filter_by(id=postID).first()
+			likePost.likesCount = (likePost.likesCount + 1)
+			try:
+				db.session.add(new)
+				db.session.add(likePosts)
+				db.session.commit()
+				response = {"msg": "liked"}
+				return jsonify(response)
+			except Exception as e:
+				print ("failed to save", e)
+				return abort(500)
 	else:
+		print "author/post is none"
 		return abort(500)
+
 
 # Comments
 @app.route("/add/comment/", methods=["POST"])
 def add_comment():
-	try:
-		comment = request.form['comment']
-		author = request.form['author']
-		post = request.form['post']
-	except:
-		abort(500)
+
+	post = jsonify(request.json)
+	data = json.loads(post.data)
+	print data
+
+ 	post = str(data['id'])
+	author = str(data['user'])
+	comment = str(data['comment'])
+	print post, author, comment
 
 	# look how long this logic statement is!
 	if comment is not None and author is not None and post is not None:
 		from models import Comment
 		commentID = Comment.query.count()
+
+		# check if the user's commented on this post
+		commentCheck = Comment.query.filter_by(postID=post).filter_by(userID=author).first()
+		count = Comment.query.filter_by(postID=post).filter_by(userID=author).count()
+
+		if count > 0:
+			print "already commented, replacing comment..."
+			commentCheck.comment = comment
+			db.session.add(commentCheck)
+			db.session.commit()
+			response = {"msg": "updated"}
+			return jsonify(response)
+
 		new = Comment(
 			commentID + 1,
 			post,
@@ -234,13 +274,13 @@ def add_comment():
 			db.session.add(new)
 			db.session.commit()
 
-			return "200"
+			response = {"msg": "added"}
+			return jsonify(response)
 		except:
+			print "fuck when adding to db"
 			return abort(500)
 	else:
-		return abort(500)
-
-
+		print abort(500)
 # helpers for comments and links
 @app.route("/test/")
 def load():
