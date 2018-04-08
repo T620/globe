@@ -340,8 +340,8 @@ def load_int_user():
 def profile(username):
 	#shows a given profile or 404s if not found
 	from models import User, Post, Followers
-	master = User.query.filter_by(username=username).first_or_404()
-	posts = Post.query.filter_by(author=master.id).all()
+	user = User.query.filter_by(username=username).first_or_404()
+	posts = Post.query.filter_by(author=user.id).all()
 
 	#josh has followers:
 	#  03114
@@ -349,7 +349,7 @@ def profile(username):
 	following = []
 	#grab the followers
 	#josh.followers = ['03114', '12335']
-	followers = Followers.query.filter_by(leader=master.id).all()
+	followers = Followers.query.filter_by(leader=user.id).all()
 
 	UserIsFollowing = Followers.query.filter_by(follower='1587').all()
 	print UserIsFollowing
@@ -372,7 +372,7 @@ def profile(username):
 
 	print "own profile: %s"  % ownProfile
 
-	return render_template("user/profile.html", master=master, posts=posts, followers=followers, following=following, ownProfile=ownProfile)
+	return render_template("user/profile.html", user=user, posts=posts, followers=followers, following=following, ownProfile=ownProfile)
 
 
 #finds a users username based on userID
