@@ -310,29 +310,21 @@ def count_likes(postID):
 	count = Like.query.filter_by(id=postID).count()
 	return count
 
-# only for usability, redirects to /profile/
+# only for usability, redirects to /profile/ shouldnt be used really.
 @app.route("/user/")
 @login_required
 def redr_to_profile():
 	return redirect(url_for('load_user', username=""))
 
-# /user/<username> was old
-@app.route("/profile/<username>")
-def redir_to_load_user(username):
-	return redirect(url_for('load_user', username=username))
-
-@app.route("/user/profile/<username>")
+@app.route("/user/<username>/profile/")
 def load_user(username):
-	# loads another user's profile. This is not the user who is logged in.
-	# if no username is specified, the route below will be triggered, which will load the logged in user
 	if username is None:
-		print 'username provided'
-		return redirect(url_for('load_int_user'))
+		abort(404)
 	else:
 		return profile(username)
 
 
-@app.route("/user/profile/")
+@app.route("/me/profile/")
 @login_required
 def load_int_user():
 	# loads a user's profile based on their session

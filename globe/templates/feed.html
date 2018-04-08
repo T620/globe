@@ -76,7 +76,7 @@
 						</div>
 						<div class="profile-creds">
 							<div class="profile-name">
-								<a href="/user/{{post.user.username}}">{{post.user.forename}}
+								<a href="/user/{{post.user.username}}/profile">{{post.user.forename}}
 								{{post.user.surname}}</a>
 							</div>
 							<div class="post-loc">
@@ -95,7 +95,7 @@
 					</div>
 					<div class="footer">
 						<div class="caption">
-							<a href="/user/profile/{{post.user.username}}">
+							<a href="/user/{{post.user.username}}/profile/">
 								<b>{{post.user.username}}</b>
 							</a>
 							<p>{{post.postContent}}</p>
@@ -109,7 +109,7 @@
 							<div class="public-comments">
 								{% for comment in post.comments %}
 									<div class="comment">
-										<a href="/user/profile/{{comment.user.username}}">
+										<a href="/user/{{comment.user.username}}/profile/">
 											<b>{{comment.user.username}}</b>
 										</a>
 										<p>{{comment.comment}}</p>
