@@ -9,7 +9,13 @@
 		</a>
 	</div>
 	<div class="image">
-		<img src="{{post.image}}" alt="{{post.postContent}}">
+		{% if post.isPanorama %}
+			<iframe allowfullscreen height="100vh" src=
+			"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{post.image}}&amp;autoLoad=true"
+			style="border-style:none;" width="80vw"></iframe>
+		{% else %}
+			<img src="{{post.image}}" alt="{{post.postContent}}" style="border:0;"width="600">
+		{% endif %}
 	</div>
 	<div class="bottom-nav">
 		<div class="profile">
