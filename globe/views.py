@@ -86,41 +86,6 @@ def load_post(id):
 		return render_template("lightbox.html", post=post, backLink=backLink)
 
 
-
-
-'''
-@app.route("/lookup/<place>", methods=["GET", "POST"])
-def lookup(place):
-	from util import places
-
-	# check if the place entered was a county
-	if places.determineCounty(place):
-		# lookup the city of that county
-		for county in json.parse(counties.json, 'r'):
-			if place == county:
-				return county
-
-		filename = str(unicode.title(county)) + ".csv"
-		with open(filename, 'rb') as csv:
-			rows = csv.reader(csvfile, delimiter=' ', quotechar='|')
-			for row in rows:
-				print row
-	else:
-		return place
-'''
-
-#demoing the new db relationships
-@app.route("/relationship/")
-def demo():
-	from models import Post, User
-
-	me = User.query.filter_by(id=1587).first()
-	print me.id
-
-	postsByMe = Post.query.filter_by(author=me.id).first()
-
-	return postsByMe.city
-
 #problem: geocoding service in upload form sometimes returns district/county instead of city.
 #need to add a method which fixes this in the future.
 @app.route("/explore/", methods=["GET", "POST"])
