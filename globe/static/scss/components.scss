@@ -740,12 +740,41 @@ a:hover{
 	overflow-y: scroll;
 }
 
+.search-main{
+	height: 100vh;
+	background: url(../img/search.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	h1{
+		text-align: center;
+		font-size: 3em !important;
+		color: #fefefe !important;
+	}
+
+	.form-control{
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+		width: 60%;
+	}
+	label{
+		display: block;
+		margin: 3em auto 0 auto;
+		text-align: center;
+		color: #000;
+	}
+	.btn{
+		display: block;
+		margin: 2em auto;
+		text-align: center;
+	}
+}
 
 #site-wrapper {
 	position: relative;
 	overflow: hidden;
 	width: 100%;
-	//height: 5000px; /* Temp: Simulates a tall page. */
 }
 
 #site-canvas {

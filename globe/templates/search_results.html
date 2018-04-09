@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 {% block content %}
 
 <section class="light" id="search-results">
@@ -15,12 +14,23 @@
 					<p> No Search results found :( </p>
 				{% else %}
 					{% if category == "post" %}
-						{% for post in posts %}
-							{{ post.id }}
-						{% endfor %}
+						<div class="row no-gutters">
+							{% for post in posts %}
+							<div class="col-xs-12 col-sm-4">
+			            		<div class="card gallery">
+			              			<img src="{{post.image}}" alt="Card image cap" width="100%" height="250px">
+			            		</div>
+							</div>
+							{% endfor %}
+						</div>
 					{% else %}
-						{% for user in users %}
-							{{ user.id }}
+						{% for person in users %}
+							<div class="col-xs-6 col-md-3 text-center">
+								<a href="/user/{{person.user.username}}">
+									<img src={{person.user.photo}} alt="image of user {{person.user.username}}" 	class="profile-thumb" width="75px" height="75px">
+								</a>
+								<a href="/user/{{person.user.username}}" class="follower-sub">{{person.user.forename}} {{person.user.surname}}</a>
+							</div>
 						{% endfor %}
 					{% endif %}
 				{% endif %}
