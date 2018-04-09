@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<section class="search-main">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h1>Search</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<form action="/search/" method="post">
+
+					<label for="params">For</label>
+					<input type="text" class="form-control" name="params">
+
+					<label for="params">In</label>
+					<select name="category" class="form-control">
+						<option selected="selected" value="posts">Posts</option>
+						<option value="users">Users</option>
+					</select>
+					<button type="submit" class="btn btn-glb">Go</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% if results %}
+	{% extends 'search_results.html %'}
+{% endif %}
+
+{% endblock %}

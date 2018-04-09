@@ -99,3 +99,19 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+# server migrations
+migrations/
+
+
+# static
+*.css
+*.css.map
+static/css/*
+.sass-cache
+static/user_uploads/
+
+web_resources.md
+img/*.txt
+*.ai

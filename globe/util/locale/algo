@@ -1,0 +1,52 @@
+locating the user via gmaps
+
+the user moves maps from the original point
+
+on center change:
+	check the city
+	compare the city against the one loaded from ?filter=
+
+if city different:
+	if result is actually a county within a city, do a lookup
+
+
+on lookup
+	compare county against every list in countries.json until found
+
+
+open country data for England:
+	compare each entry in csv file for the one entered from user
+
+if match:
+	lookup county for city
+	return city
+	load new city's posts
+
+
+it might be easier to load all posts in that country and display them to the user that way, just start in the city they asked for. Check performance.
+
+
+The for loop
+=================================
+for county in country:
+	if county.csv file == desiredCounty:
+		return county
+	else:
+		keep looking
+
+
+
+Open the file
+==================================
+with_open as file etc:
+	country = file.column(xyz)
+	return country
+
+
+
+Grab the results
+==================================
+posts = Post.query.filter_by("location=country").all(;
+return posts
+
+done

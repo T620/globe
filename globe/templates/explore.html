@@ -1,0 +1,17 @@
+{% extends 'base_map.html' %}
+{% block content %}
+
+<section class="map_search">
+	<div class="container">
+		<h1>Spin the Globe</h1>
+		<div class="init_map">
+			<form action="/explore/" method="get">
+				<label for="filter">Enter a city or country</label>
+				<input type="text" class="form-control form-control-md" name="filter" placeholder="Edinburgh, Dublin, Swansea, London">
+				<button type="submit" class="btn btn-glb btn-sm">Spin</button>
+			</form>
+			<i class="text text-info">{{message}}</i>
+		</div>
+	</div>
+</section>
+{% endblock %}

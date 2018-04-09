@@ -1,0 +1,22 @@
+{
+	"Scotland": [{
+		"Edinburgh": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Glasgow": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Aberdeen": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Glasgow": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Inverness": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}],
+		"Stirling": [{
+			"Coordinates": "['1293,123, 1234,134']"
+		}]
+	}]
+}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+<section class="remodal-bg">
+	<div class="profile-header">
+		<div class="row">
+			<div class="col-xs-12 col-md-2">
+				{% if ownProfile %}
+					<img class="profile-header-img" src="{{user.photo}}" width="150px" height="150px">
+					<a href="#update-profile"><i class="far fa-edit"></i> Edit</a>
+				{% else %}
+					<img class="profile-header-img" src="{{user.photo}}" width="150px" height="150px">
+				{% endif %}
+			</div>
+			<div class="col-xs-12 col-md-8">
+				<div class="profile-header-intro">
+					<h1>{{user.forename}} {{user.surname}}</h1>
+					<p><a href="/profile/{{user.username}}">@{{user.username}}</a></p>
+					<h4>{{user.city}}</h4>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-2">
+				{% if ownProfile %}
+					<a href="#update-profile" style="color: #fff !important; margin-top: 5%;">Update Profile Picture</a>
+				{% else %}
+					<a href="/user/follow/{{user.id}}" style="color: #fff !important; margin-top: 5%;">Follow</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="profile-main_gallery">
+			<div class="row ma-1">
+				<div class="col text-left">
+					<div class="stat gallery-nav">
+						<h2 class="section-heading gallery-nav">Recent Photographs</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row no-gutters">
+				{% for post in posts %}
+					<div class="col-xs-12 col-sm-4">
+						<div class="card gallery">
+							{% if post.isPanorama %}
+								<iframe allowfullscreen height="250px" src=
+								"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{post.image}}"
+								style="border-style:none;" width="100%"></iframe>
+								<div class="footer text-center">
+									<a href="/post/{{post.id}}">view in lightbox</a>
+								</div>
+    						{% else %}
+              					<img src="{{post.image}}" alt="{{post.postContent}}" width="100%" height="250px">
+								<div class="footer text-center">
+									<a href="/post/{{post.id}}">view in lightbox</a>
+								</div>
+							{% endif %}
+            			</div>
+					</div>
+				{% endfor %}
+			</div>
+			</div>
+		<div class="profile-main">
+			<h2 class="section-heading">About</h2>
+				{% if ownProfile %}
+					{% if user.biography == 'None' %}
+						<form id="bio">
+							<input type="text" class="faux-input" name="bio" id="biog" placeholder="Tell us about yourself">
+							<input type="hidden" name="user" id="user" value="{{user.id}}">
+							<button type="submit" class="submit btn btn-glb"><i class="fa fa-paper-plane"></i>   update</button>
+						</form>
+					{% else %}
+						<form id="bio">
+							<input type="text" class="faux-input" name="bio" id="biog" value="{{user.biography}}">
+							<input type="hidden" name="user" id="user" value="{{user.id}}">
+							<button type="submit" class="submit btn btn-glb"><i class="fa fa-paper-plane"></i>   update</button>
+						</form>
+					{% endif %}
+				{% else %}
+					{% if user.biography == 'None' %}
+						<p>This user prefers to be mysterious...</p>
+					{% else %}
+						<p>{{user.biography}}</p>
+						<a href="#0">Report</a>
+					{% endif %}
+				{% endif %}
+		</div>
+	</div><!--/container-->
+	{% if ownProfile %}
+	<div class="remodal" data-remodal-id="update-profile">
+		<button class="remodal-close" data-remodal-action="close"></button>
+		<form class="no-style" id="update-photo" action="/user/profile/edit/photo/" enctype="multipart/form-data" method="post">
+			<div id="remodal-wrapper">
+				<input type="hidden" value="{{current_user.id}}" name="id">
+
+				<input type="file" id="image" name="image" class="form-control">
+
+				<a href="#0" class="btn btn-danger mt-3" data-remodal-action="close">Cancel</a>
+
+				<button type="submit" class="btn btn-glb" id="btn-submit"> Update </button>
+			</div><!--/remodal-wrapper-->
+		</form>
+	</div>
+	{% endif %}
+</section>
+<script>
+$('#bio').on('submit', function updateBio(e){
+	var data =
+	{ "id": $('#user').val(),
+	"bio": $('#biog').val()};
+
+	console.log(data);
+
+	$.ajax({
+		url: '/user/profile/edit/bio/',
+		data: JSON.stringify(data),
+		type: 'POST',
+		contentType: 'application/json;charset=UTF-8',
+		success: function(response) {
+			console.log(response['msg']);
+			var msg = response['msg'].toString();
+			console.log(msg);
+			$('.flash').removeClass("danger").addClass("success");
+			$('.flash').html(msg);
+			$('.flash').show();
+			$('.flash').delay(1000).fadeOut(2000);
+		},
+		error: function(data) {
+			console.log(data);
+			$('.flash').removeClass("success").addClass("danger");
+			$('.flash').html("Something went wrong...");
+			$('.flash').show();
+			$('.flash').delay(1000).fadeOut(2000);
+		}
+	});
+	e.preventDefault();
+}
+);
+</script>
+{% endblock %}

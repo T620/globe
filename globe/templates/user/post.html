@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<body data-spy="scroll" data-target=".profile-header-collapse" data-offset="50">
+<section>
+	<div class="profile-header">
+		<div class="row">
+			<div class="col-xs-12 col-md-2">
+				<img class="profile-header-img" src="{{post.user.photo}}" width="150px" height="150px">
+			</div>
+			<div class="col-xs-12 col-md-8">
+				<div class="profile-header-intro">
+					<h1>{{post.user.forename}} {{post.user.surname}}</h1>
+					<p><a href="/profile/{{post.username}}">@{{post.user.username}}</a></p>
+					<h4>{{post.city}}</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="profile-sub-nav">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top sticky-top">
+			<a class="navbar-brand" href="/profile/{{post.user.username}}#about">About</a>
+			<a class="nav-item nav-link" href="/profile/{{post.user.username}}#photos">Photos</a>
+			<a class="nav-item nav-link" href="/profile/{{post.user.username}}#folowers">Followers</a>
+		</nav>
+	</div>
+	<div class="row">
+		<div class="col centered">
+			<div class="row align-items-center justify-content-center">
+				<div class="col-xs-12">
+					<div class="card">
+						<div class="card-head social-head">
+							<div class="profile-img">
+								<img class="img img-circle profile-thumb" height="50px" src="/static/img/default_profile.jpg" width="50px">
+							</div>
+							<div class="profile-creds">
+								<div class="profile-name">
+									<a href="/user/{{post.user.username}}">{{post.user.forename}}
+									{{post.user.surname}}</a>
+								</div>
+								<div class="post-loc">
+									<i class="fa fa-map-marker"></i><a href="/explore/?filter={{post.city}}">{{post.city}}</a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							{% if post.isPanorama %}
+								<iframe allowfullscreen height="400" src=
+								"https://cdn.pannellum.org/2.3/pannellum.htm#panorama=https://{{post.image}}"
+								style="border-style:none;" width="600"></iframe>
+							{% else %}
+								<img src="{{post.image}}" width="auto">
+							{% endif %}
+						</div>
+						<div class="card-footer">
+							<div class="caption">
+								<p>{{post.postContent}}</p>
+							</div>
+							<div class="controls">
+								<ul>
+									<li><i class="far fa-heart"></i></li>
+									<li><i class="far fa-comment-alt"></i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+</section>
+<script>
+$(document).scroll(function () {
+    var y = $(this).scrollTop();
+    if (y > 385) {
+        $('.profile-header-collapse').fadeIn("smooth");
+    } else if (y < 385){
+        $('.profile-header-collapse').fadeOut("smooth");
+    }
+
+});
+</script>
+{% endblock %}

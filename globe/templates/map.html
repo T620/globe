@@ -1,0 +1,131 @@
+{% extends 'base_map.html' %}
+{% block content %}
+
+<section class="map-full">
+	<div id="map_canvas"></div>
+
+	<div class="container">
+		<div class="map-filter">
+			<p>Exploring:</p>
+			<h2>{{location}}</h2>
+			<span>Showing {{count}} pins in 50mi radius</span>
+			<div class="search">
+				<form action="/explore/" method="get">
+					<input type="text" class="form-control" name="filter" placeholder="Edinburgh"/>
+					<input type="submit" class="btn btn-glb" value="Explore"/>
+				</form>
+			</div>
+			<p>Globe is still in early development, so all posts are locked to Edinburgh for the time being. Sorry :(</p>
+		</div>
+	</div>
+
+</section>
+
+
+<script>
+
+jQuery(function($) {
+    // Asynchronously Load the map API
+    var script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize&key={{key}}";
+    document.body.appendChild(script);
+});
+
+function initialize() {
+	var styles = [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]}];
+
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+	    mapTypeId: 'roadmap',
+		center: '{{center}}',
+		styles: styles
+	}
+
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map.setTilt(45);
+    // Multiple Markers
+    var markers = [
+		{% for post in posts %}
+			['{{ post.city }}', {{ post.coordinates }}],
+		{% endfor %}
+    ];
+
+     //Info Window Content
+    var infoWindowContent = [
+		{% for post in posts %}
+        	['<div class="info_content">' +
+			"<img width='100px' height='100px' src='{{post.image}}'> "+
+        	"<a href='/post/{{post.id}}'>" +
+				"<h4>open</h4>" +
+			'</a>' +
+			'</div>'],
+		{% endfor %}
+    ];
+
+    // Display multiple markers on a map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+
+    // Loop through our array of markers & place each one on the map
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0],
+			icon: "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-908893185885/static/map-marker..png"
+        });
+
+        // Allow each marker to have an info window
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(infoWindowContent[i][0]);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(10);
+        google.maps.event.removeListener(boundsListener);
+    });
+
+	/*
+	var map_moved = google.maps.event.addListener((map), 'center_changed', function(event) {
+        center = map.getCenter();
+		var lattitude = center.lat();
+		var longitude = center.lng();
+		//console.log(lattitude, longitude);
+		var coords = lattitude + ", " + longitude;
+		return reloadMap(coords);
+    });
+
+
+
+	function reloadMap(coords){
+		//console.log(coords);
+
+		$.ajax({
+			url: '/lookup/' + coords,
+			method: 'get',
+		}).done(function(data){
+			console.log(data);
+			if (data !== '{{ location }}' ) {
+				console.log("WHOOPSIE DIDDLE!");
+				var location = "http://localhost:5000/explore?filter=" + data;
+				window.location.href = location;
+			}
+		});
+	} */
+
+
+}
+
+</script>
+{% endblock %}

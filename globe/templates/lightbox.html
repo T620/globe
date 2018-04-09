@@ -1,0 +1,43 @@
+{% extends 'no_nav.html' %}
+{% block content %}
+
+<section class="lightbox">
+	<div class="action">
+		<a href="{{backLink}}">
+			<i class="fas fa-long-arrow-alt-left "></i>
+			Back
+		</a>
+	</div>
+	<div class="image">
+		{% if post.isPanorama %}
+			<iframe allowfullscreen height="100vh" src=
+			"https://cdn.pannellum.org/2.3/pannellum.htm#panorama={{post.image}}&amp;autoLoad=true"
+			style="border-style:none;" width="80vw"></iframe>
+		{% else %}
+			<img src="{{post.image}}" alt="{{post.postContent}}" style="border:0;"width="600">
+		{% endif %}
+	</div>
+	<div class="bottom-nav">
+		<div class="profile">
+			<a href="/user/{{post.user.username}}/profile/" class="no-margin">
+				<img class="img img-circle profile-thumb" height="50px" src="/static/img/default_profile.jpg" width="50px">
+			</a>
+			<!--<img src={{post.user.photo}} alt="users profile picture">-->
+			<a href="/user/{{post.user.username}}/profile/"><b class="post-caption">{{post.user.username}}</b></a>
+			<p class="post-caption">{{post.postContent}}</p>
+		</div>
+		<div class="likes-counter">
+			<i class="far fa-heart"></i>{{post.likesCount}}
+			<p class="post-caption"><a href="/explore/{{post.city}}">{{post.city}}</a></p>
+		</div>
+
+		<!--<div class="comments">
+			{% for comment in post.comments %}
+				<img src={{comment.user.photo}} alt="users profile picture">
+				<p class="post-caption">{{comment.comment}}</p>
+			{% endfor %}
+		</div>-->
+	<div>
+</section>
+
+{% endblock %}
