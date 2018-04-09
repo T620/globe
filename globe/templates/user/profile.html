@@ -85,40 +85,6 @@
 					{% endif %}
 				{% endif %}
 		</div>
-		<div class="profile-main_followers">
-			<div class="row ma-1">
-				<div class="col text-left">
-					<h2 class="section-heading gallery-nav">Followers</h2>
-				</div>
-			</div>
-			<div class="row ma-2">
-				{% for person in followers %}
-					<div class="col-xs-6 col-md-3 text-center">
-						<a href="/user/{{person.user.username}}/profile/">
-							<img src={{person.user.photo}} alt="image of user {{person.user.username}}" 	class="profile-thumb" width="75px" height="75px">
-						</a>
-						<a href="/user/{{person.user.username}}/profile/" class="follower-sub">{{person.user.forename}} {{person.user.surname}}</a>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-		<div class="profile-main_followers">
-			<div class="row ma-1">
-				<div class="col text-left">
-					<h2 class="section-heading gallery-nav">Following</h2>
-				</div>
-			</div>
-			<div class="row ma-2">
-				{% for person in following %}
-					<div class="col-xs-6 col-md-3 text-center">
-						<a href="/user/{{person.username}}/profile/">
-							<img src={{person.photo}} alt="image of user {{person.username}}" class="profile-thumb" width="75px" height="75px">
-						</a>
-						<a href="/user/{{person.username}}/profile/" class="follower-sub">{{person.forename}} {{person.surname}}</a>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
 	</div><!--/container-->
 	{% if ownProfile %}
 	<div class="remodal" data-remodal-id="update-profile">

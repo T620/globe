@@ -293,31 +293,9 @@ def load_int_user():
 
 def profile(username):
 	#shows a given profile or 404s if not found
-	from models import User, Post, Followers
+	from models import User, Post
 	user = User.query.filter_by(username=username).first_or_404()
 	posts = Post.query.filter_by(author=user.id).all()
-
-	#josh has followers:
-	#  03114
-	#  12335
-	following = []
-	#grab the followers
-	#josh.followers = ['03114', '12335']
-	followers = Followers.query.filter_by(leader=user.id).all()
-
-	UserIsFollowing = Followers.query.filter_by(follower='1587').all()
-	print UserIsFollowing
-
-	for user in UserIsFollowing:
-		print user.leader
-		leader = User.query.filter_by(id=user.leader).first()
-
-		print leader.forename
-		following.append(leader)
-
-	# now check the data was stored correctly
-	for user in following:
-		print user.forename
 
 	if current_user.is_authenticated:
 		if find(session['g_user']) == username:
@@ -329,7 +307,7 @@ def profile(username):
 
 	print "own profile: %s"  % ownProfile
 
-	return render_template("user/profile.html", user=user, posts=posts, followers=followers, following=following, ownProfile=ownProfile)
+	return render_template("user/profile.html", user=user, posts=posts, ownProfile=ownProfile)
 
 
 #finds a users username based on userID
