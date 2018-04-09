@@ -365,8 +365,11 @@ def profile(username):
 	for user in following:
 		print user.forename
 
-	if find(session['g_user']) == username:
-		ownProfile = True
+	if current_user.is_authenticated:
+		if find(session['g_user']) == username:
+			ownProfile = True
+		else:
+			ownProfile = False
 	else:
 		ownProfile = False
 
