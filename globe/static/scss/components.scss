@@ -606,10 +606,10 @@ a:hover{
 
 #map_canvas{
 	position: absolute;
-	top:10%;
+	top:12.5%;
 	left:0;
-	width: 85%;
-	height: 90%;
+	width: 80%;
+	height: 87.5%;
 	padding: 10%;
 	z-index: 0;
 }
@@ -617,14 +617,19 @@ a:hover{
 .map-filter{
 	padding: 1%;
 	display: block;
-	width: 18em;
+	width: 20%;
 	z-index: 999;
 	position: absolute;
-	top: 10%;
+	top: 12.5%;
 	right: 0%;
 	background: #e0e0e0;
 	text-align: center;
-	height: 90%;
+	height: 87.5%;
+	text-align: center;
+	p{
+		color: $black !important;
+		margin-top: 1em;
+	}
 
 	.search{
 		margin-top: 30%;
@@ -635,13 +640,8 @@ a:hover{
 	}
 
 }
-
-.map-filter p{
-	color: #fefefe;
-}
 .map-filter h2{
-	width: 65%;
-	color: #fefefe;
+	text-align: center !important;
 	text-transform: capitalize;
 }
 .map-filter .btn{

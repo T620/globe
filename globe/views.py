@@ -87,71 +87,24 @@ def load_post(id):
 
 
 
-
-'''
-@app.route("/lookup/<place>", methods=["GET", "POST"])
-def lookup(place):
-	from util import places
-
-	# check if the place entered was a county
-	if places.determineCounty(place):
-		# lookup the city of that county
-		for county in json.parse(counties.json, 'r'):
-			if place == county:
-				return county
-
-		filename = str(unicode.title(county)) + ".csv"
-		with open(filename, 'rb') as csv:
-			rows = csv.reader(csvfile, delimiter=' ', quotechar='|')
-			for row in rows:
-				print row
-	else:
-		return place
-'''
-
-#demoing the new db relationships
-@app.route("/relationship/")
-def demo():
-	from models import Post, User
-
-	me = User.query.filter_by(id=1587).first()
-	print me.id
-
-	postsByMe = Post.query.filter_by(author=me.id).first()
-
-	return postsByMe.city
-
-#problem: geocoding service in upload form sometimes returns district/county instead of city.
-#need to add a method which fixes this in the future.
 @app.route("/explore/", methods=["GET", "POST"])
 def explore():
-	location = request.args.get('filter', None)
+	from models import Post
 
-	# if there is no filter in place
-	if location is not None:
-		location = unicode.title(location)
-		#grab all the records from the database according to that location
-		from models import Post
+	posts = Post.query.filter_by(city="Edinburgh").all()
+	postCount = Post.query.filter_by(city="Edinburgh").count()
+	print "number of posts: %s" % postCount
 
-		posts = Post.query.filter_by(city=unicode.title(location)).all()
-		postCount = Post.query.filter_by(city=unicode.title(location)).count()
-		print "number of posts: %s" % postCount
-
-		#check if that result yielded any results.
-		if postCount < 1:
-			#if the location provided by the user doesn't bring any results, ask the user to enter a place
-			return render_template("explore.html", message="Your search didn't return any results. Try somewhere else.")
-		else:
-			center = posts[0].coordinates
-			print 'defining center of map: %s' % center
-
-
-			key = os.environ.get('MAPS_API_KEY')
-			return render_template("map.html", posts=posts, key=key, count=postCount, center=center, location=location)
-
-	else:
+	#check if that result yielded any results.
+	if postCount < 1:
 		#if the location provided by the user doesn't bring any results, ask the user to enter a place
-		return render_template("explore.html")
+		return render_template("explore.html", message="Weird. Looks like there's no posts in Edinburgh right now. Add some content")
+	else:
+		center = "55.9533, 3.1883"
+		print 'defining center of map: %s' % center
+
+		key = os.environ.get('MAPS_API_KEY')
+		return render_template("map.html", posts=posts, key=key, count=postCount, center=center, location="Edinburgh")
 
 
 @app.route("/search/", methods=["GET", "POST"])
