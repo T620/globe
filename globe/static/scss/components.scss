@@ -7,6 +7,7 @@ $ff_gradient: linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%);
 
 $chrome_gradient: -webkit-linear-gradient(45deg,  #08a6f9 0%, #90fd9e 100%);
 
+$text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
 
 $bluePrimary: #14598D;
 $blueSecondary: #12d0f3;
@@ -25,8 +26,6 @@ $light: #e0e0e0;
 
 $white: #eaeaea;
 $black: #2f3640;
-
-
 
 
 .dark{
@@ -134,13 +133,11 @@ a:hover{
 	}
 }
 
-
 .btn{
 	text-align: center;
 	color: #f0f0f0 !important;
 	border:0;
 	padding: 0.7rem;
-	width: 5em;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	transition: all 200ms ease-in-out;
 }
@@ -166,7 +163,6 @@ a:hover{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$bluePrimary, endColorstr=$greenPrimary,GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 .btn-outline{
-	background: $white;
 	color: $bluePrimary !important;
 	border: 1.3px solid $bluePrimary;
 }
@@ -886,7 +882,7 @@ a:hover{
         background-position: center;
         z-index: -1;
 		height: 100vh;
-		text-shadow: $textShadow;
+		text-shadow: $text-shadow;
 		h1, h3{
 			color: #fff !important;
 			margin-top:0;
@@ -899,7 +895,7 @@ a:hover{
         background-size: cover;
         background-position: center;
 		height: 100vh;
-		text-shadow: $textShadow;
+		text-shadow: text-shadow;
 		h1, h3{
 			color: #fff !important;
 			margin-top:0;
@@ -911,12 +907,12 @@ a:hover{
         background-size: cover;
         background-position: center;
 		height: 100vh;
-		text-shadow: $textShadow;
+		text-shadow: text-shadow;
 		h1, h3{
 			margin-top:0;
 			color: #fff !important;
 		}
-		
+
 }
 
 
