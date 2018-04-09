@@ -916,7 +916,7 @@ a:hover{
 			margin-top:0;
 			color: #fff !important;
 		}
-		
+
 }
 
 
@@ -1003,7 +1003,7 @@ a:hover{
 		padding: .5em .7em;
 		color: $white !important;
 		position: fixed;
-		top: 0;
+		bottom: 12%;
 		left: 0;
 		background: #000;
 		a{
@@ -1017,6 +1017,14 @@ a:hover{
 		img{
 			display: block;
 			margin: 0 auto;
+			max-height: 100vh;
+			//this will force-scale the image if it's height is smaller than the lightbox itself
+			height: 100vh;
+		}
+		iframe{
+			display: block;
+			margin: 0 auto;
+			width: 100vw;
 			max-height: 100vh;
 			//this will force-scale the image if it's height is smaller than the lightbox itself
 			height: 100vh;
