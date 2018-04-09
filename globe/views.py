@@ -3,10 +3,11 @@ from globe import app, db, mail
 from flask import render_template, request, redirect, url_for, session, abort, g, jsonify, json
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
-import tinys3
 from flask_cors import CORS, cross_origin
 import geopy
 from geopy.geocoders import Nominatim
+from werkzeug.utils import secure_filename
+import boto3
 
 
 
@@ -526,7 +527,94 @@ def resend_email():
 	else:
 		abort(403)
 
+@login_required
+@app.route("/user/profile/edit/bio/", methods=["POST"])
+def update_bio():
+	try:
+		post = jsonify(request.json)
+		data = json.loads(post.data)
 
+	 	userID = str(data['id'])
+		bio = str(data['bio'])
+		str(userID)
+		str(bio)
+		print bio, userID
+	except Exception as e:
+		print e
+		abort(500)
+
+	if str(current_user.id) != str(userID):
+		print "user ids dont match: %s" % current_user.id + userID
+		abort(403)
+	else:
+		print "ids match, allowing"
+
+	# look how long this logic statement is!
+	if bio is not None:
+		from models import User
+
+		user = User.query.filter_by(id=current_user.id).first()
+		user.biography = bio
+
+		db.session.add(user)
+		db.session.commit()
+		response = {"msg": "updated"}
+		return jsonify(response)
+
+	else:
+		print "bio is none"
+		return abort(500)
+
+
+@app.route("/user/profile/edit/photo/", methods=["POST"])
+def update_photo():
+	file = request.files['image']
+
+	if file and allowed_file(file.filename):
+		filename = secure_filename(file.filename)
+
+		dest = str(session['g_user']) + "/profile/" + str(file.filename)
+
+		s3 = boto3.client(
+			"s3",
+			aws_access_key_id=os.environ['S3_PUB_KEY'],
+			aws_secret_access_key=os.environ['S3_PRIVATE_KEY']
+		)
+		try:
+			print "trying to upload..."
+			s3.upload_fileobj(
+				file,
+				os.environ['S3_BUCKET_NAME'],
+				#TO DO: modify this param to use the correct path, as the above only takes the bucket name, need to add /static/user_... etc
+				dest + filename,
+				ExtraArgs={
+					"ACL": "public-read"
+				}
+			)
+			print "done!"
+			url =  "https://" + os.environ['S3_ENDPOINT'] + "/" + os.environ['S3_BUCKET_NAME'] + "/" + dest + filename
+			print url
+
+			from models import User
+			user = User.query.filter_by(id=current_user.id).first()
+			user.photo = url
+
+			db.session.add(user)
+			db.session.commit()
+
+			return redirect(url_for('load_int_user'))
+		except Exception as e:
+			print "error:", e
+			abort(500)
+	else:
+		print "no file"
+		abort(500)
+
+
+allowedExtensions= set(['jpg', 'jpeg', 'png'])
+def allowed_file(filename):
+	return '.' in filename and \
+	filename.rsplit('.', 1)[1].lower() in allowedExtensions
 
 @app.route("/logout/")
 def redr_to_logout():
