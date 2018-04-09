@@ -331,7 +331,7 @@ function addLike(postID, author) {
 			$('.flash').show();
 			$('.flash').delay(1000).fadeOut(2000);
 		}
-		, error: function(error, data) {
+		, error: function(data) {
 			console.log(data);
 			$('.flash').removeClass("success").addClass("danger");
 			$('.flash').html("Something went wrong...");
@@ -370,7 +370,7 @@ $('#commentForm').on('submit', function addComment(e){
 			$('.flash').show();
 			$('.flash').delay(1000).fadeOut(2000);
 		},
-		error: function(error, data) {
+		error: function(data) {
 			console.log(data);
 			$('.flash').removeClass("success").addClass("danger");
 			$('.flash').html("Something went wrong...");
