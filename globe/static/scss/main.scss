@@ -2,52 +2,47 @@
 @import 'typography';
 @import 'components';
 
-.intro{
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-		z-index: -100;
-}
-
-
-.intro{
-	h1{
-		font-size: 6em;
+#index{
+	section{
+		height: 50%;
+		padding: 1.3em .7em;
 	}
-	h1, h3{
-		color: #f0f0f0 !important;
-		margin-top: 1em;
+	.intro{
+	    background: url(../img/index.jpg);
+		background-size: cover;
+		background-position: top;
+		background-repeat: no-repeat;
+		height: 100vh;
+		h1{
+			font-size: 6em;
+		}
+		h1, h3{
+			color: #f0f0f0 !important;
+			margin-top: 1em;
+		}
 	}
-}
 
-
-section {
-	padding: 2.5% 5%;
-	 p{
-		 margin: 0 auto;
-	 }
-	 h1, h2{
-		 margin: 1.3em 0 1.5em 0;
-	 }
-}
-
-#index-1{
-	margin-top: 20em;
-	h2{
-		margin-top: 0;
+	#index-1{
+		h2{
+			margin-top: 0;
+		}
+		p{
+			text-align: center;
+		}
 	}
-	p{
-		text-align: center;
+
+	#howItWorks{
+		p, a{
+			text-align: center;
+		}
 	}
 }
 
-#howItWorks{
-	p, a{
-		text-align: center;
-	}
+
+.no-padding{
+	padding: 0;
 }
+
 
 .minimise{
 	position: relative;
