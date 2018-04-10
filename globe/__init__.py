@@ -3,8 +3,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
-import flask_whooshalchemy as whooshalchemy
-
 
 app = Flask(__name__)
 
