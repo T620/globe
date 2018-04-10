@@ -1,102 +1,135 @@
-{% extends 'base_map.html' %}
+{% extends 'no_nav.html' %}
 {% block content %}
 
-<section class="intro">
-	<video loop muted autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
-        <source src="../static/img/index_vid.mp4" type="video/mp4">
-	</video>
-
- 	<div class="container text-center">
-		<div class="row">
-			<div class="col">
-				<h1>Explore Earth.</h1>
-				<h3>In 3D, on your smartphone.</h3>
-				<a href="/explore/" class="btn btn-primary btn-glb mt-3">Explore</a>
-			</div>
-  		</div>
-	</div>
-</section>
-
-<section class="light" id="index-1">
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<h2>Earth. Like you haven't seen it before. </h2>
-
-				<br />
-				<p>Globe lets you take 3D pictures of Earth (called panoramas,) and share them with everyone. <a href="#howItWorks"> See how it works </a></p>
-			</div>
+<div id="index">
+	<section class="intro">
+ 		<div class="container text-center">
+			<div class="row">
+				<div class="col">
+					<h1>Explore Earth.</h1>
+					<h3>In 3D, on your smartphone.</h3>
+					<a href="/explore/" class="btn btn-primary btn-glb mt-3">Explore</a>
+				</div>
+  			</div>
 		</div>
-		<div class="row">
-			<div class="col-xs-6" style="margin-left:20%;">
-				<div class="card">
-					<div class="head social-head">
-						<div class="profile-img">
-							<img class="img img-circle profile-thumb" height="50px" src="/static/img/default_profile.jpg" width="50px">
-						</div>
-						<div class="profile-creds">
-							<div class="profile-name">
-								<a href="#0">@Josh</a>
+
+	</section>
+
+	<section class="light" id="index-1">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h2>Earth. Like you haven't seen it before. </h2>
+					<br />
+					<p>Globe lets you take 3D pictures of places and share them with everyone. <a href="#howItWorks"> See how it works </a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6" style="margin-left:20%;">
+					<div class="card">
+						<div class="head social-head">
+							<div class="profile-img">
+								<img class="img img-circle profile-thumb" height="50px" src="/static/img/default_profile.jpg" width="50px">
 							</div>
-							<div class="post-loc">
-								<i class="fa fa-map-marker"></i><a href="/explore/?filter=edinburgh">Edinburgh</a>
+							<div class="profile-creds">
+								<div class="profile-name">
+									<a href="#0">@Josh</a>
+								</div>
+								<div class="post-loc">
+									<i class="fa fa-map-marker"></i><a href="/explore/?filter=edinburgh">Edinburgh</a>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="body">
-						<iframe allowfullscreen height="400" src=
-							"https://cdn.pannellum.org/2.3/pannellum.htm#panorama=''"
-							style="border-style:none;" width="600"></iframe>
-					</div>
-					<div class="footer">
-						<div class="caption">
-							<p>Such a good looking city!</p>
+						<div class="body">
+							<iframe allowfullscreen height="400" src=
+								"https://cdn.pannellum.org/2.3/pannellum.htm#panorama=''"
+								style="border-style:none;" width="600"></iframe>
 						</div>
-						<div class="controls">
-							<ul>
-								<li><i class="far fa-heart"></i> 32</li>
-								<li><i class="far fa-comment-alt"></i> 69</li>
-							</ul>
+						<div class="footer">
+							<div class="caption">
+								<p>Such a good looking city!</p>
+							</div>
+							<div class="controls">
+								<ul>
+									<li><i class="far fa-heart"></i> 32</li>
+									<li><i class="far fa-comment-alt"></i> 69</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
-<section class="dark" id="explore">
-	<div class="container">
+	<section class="dark" id="explore">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h2>Discover New Places </h2>
+					<!-- SEARCH -->
+					<p>Explore by searching for places everywhere.</p>
+					<!-- MAP VIEW -->
+					<p>Pan the interactive map and browse user's pins</p>
+					<!-- PANORAMA -->
+					<p>Mind = Blown.</p>
+					<a href="/user/register/" class="btn btn-glb text-center">Sign Up</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="light" id="howItWorks">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h2>How it works </h2>
+					<p>Using your smartphone, take a panoramic picture. <a href="#0">Read the guide</a></p>
+					<p>Drop a pin on the interactive map to mark where you took it.</p>
+					<p>Add a comment on your experience.</p>
+					<p>Posts that get more than 1,000 likes for that place get special status which everyone can see first. </p>
+					<a href="/upload/new/">Get Started</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<section class="register">
+ 	<div class="container">
+		<div class="row">
+			<h1>Register</h1>
+		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Discover New Places </h2>
-				<!-- SEARCH -->
-				<p>Explore by searching for places on Earth.</p>
-				<!-- MAP VIEW -->
-				<p>Pan the interactive map and browse user's pins</p>
-				<!-- PANORAMA -->
-				<p>Mind = Blown.</p>
-				<a href="/user/register/" class="btn btn-glb text-center">Sign Up</a>
-			</div>
+				<div class="card" style="width:30rem;">
+					<div class="card-body">
+						<form class="card-form" method="post" action="/user/register/">
+							<label class="card-label" for="email">Email</label>
+							<input class="form-control" type="email" name="email" placeholder="you@example.com" />
+
+							<label class="card-label" for="name">Name</label>
+							<div class="form-inline">
+								<div class="form-group">
+									<input class="form-control name" type="text" name="forename" placeholder="Forename" style="margin-right: 5.5%;" />
+									<input class="form-control name" type="text" name="surname" placeholder="Surname" style="margin-left: 5.5%;" />
+								</div>
+							</div>
+
+							<label class="card-label" for="password">Secure Password</label>
+							<input class="form-control" name="password" type="password" />
+
+							<div class="text-center">
+								<input type="submit" class="btn btn-glb text-center" value="Register" />
+							</div>
+					</div>
+				</div>
+  		</div>
+		</div>
+		<div class="row text-center login-cta">
+			<h3><a href="/login/">Login to account</a></h3>
 		</div>
 	</div>
 </section>
-
-<section class="light" id="howItWorks">
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<h2>How it works </h2>
-				<p>Using your smartphone, take a panoramic picture. <a href="#0">Read the guide</a></p>
-				<p>Drop a pin on the interactive map to mark where you took it.</p>
-				<p>Add a comment on your experience.</p>
-				<p>Posts that get more than 1,000 likes for that place get special status which everyone can see first. </p>
-				<a href="/upload/new/">Get Started</a>
-			</div>
-		</div>
-	</div>
-</section>
-
-{% include 'user/register_no_nav.html' %}
 
 {% endblock %}
