@@ -109,6 +109,10 @@ def explore():
 
 @app.route("/search/", methods=["GET", "POST"])
 def search():
+	abort(404)
+
+'''
+def search():
 	if request.method == "GET":
 		return render_template("search.html")
 	else:
@@ -134,7 +138,7 @@ def search():
 			return render_template("search_results.html", category=category, users=users, count=count, posts=posts)
 		else:
 			return "error. "
-
+'''
 
 # Likes
 

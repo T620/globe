@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Unicode, ForeignKey, S
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils import PasswordType, IPAddressType, EncryptedType, URLType
 from sqlalchemy.dialects.postgresql import JSON
-import flask_whooshalchemy as whooshalchemy
+#import flask_whooshalchemy as whooshalchemy
 
 secret_key = os.environ['APP_SECRET_KEY']
 
@@ -167,5 +167,5 @@ class Comment(db.Model):
 	def __repr__(self):
 		return '<Comment %r>' % self.comment
 
-whooshalchemy.whoosh_index(app, Post)
-whooshalchemy.whoosh_index(app, User)
+#whooshalchemy.whoosh_index(app, Post)
+#whooshalchemy.whoosh_index(app, User)
