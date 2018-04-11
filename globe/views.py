@@ -393,12 +393,10 @@ def register():
 
 		#set_default_photos(username)
 
-		return 'done'
-		#mail.send_email(subject, sender, recipients, text_body, html_body)
+		#return 'done'
+		mail.send_email(subject, sender, recipients, text_body, html_body)
 
-			#return render_template('user/register_step-2.html', email=newUser['email'])
-		#else:
-			#return 'error when trying to add user to database :('
+		return render_template('user/register_step-2.html', email=newUser['email'])
 	else:
 		return render_template("register.html")
 

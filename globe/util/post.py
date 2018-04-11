@@ -103,6 +103,11 @@ def create(url, formParams):
 		postCount = Post.query.count()
 		postCount = postCount + 1
 
+		if formParams['pano'] == "True":
+			pano = True
+		else:
+			pano = False
+
 		post = Post(
 			id=postCount,
 			author=formParams['user'],
@@ -113,7 +118,7 @@ def create(url, formParams):
 			city=formParams['city'],
 			coordinates=formParams['coords'],
 			appreaciated=True,
-			isPanorama=formParams['pano']
+			isPanorama=pano
 		)
 		db.session.add(post)
 		db.session.commit()
