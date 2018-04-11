@@ -66,7 +66,7 @@ def upload():
 		if post.new(formParams):
 			return redirect(url_for('load_feed'))
 		else:
-			return "oh shit"
+			return redirect(url_for('load_feed'))
 
 @app.route("/post/<id>")
 def load_post(id):
